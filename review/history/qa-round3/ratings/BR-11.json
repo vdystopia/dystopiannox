@@ -1,0 +1,6 @@
+{
+  "note": "On one side of the bridge, the cobblestone ends before the bridge with a small gap of dirt. On the other side of the bridge, it ends on the cobblestone. Make sure both sides start/end just on the edge of the end of the cobblestone. And make sure they're consistent with each other. ",
+  "rating": 4,
+  "updatedAt": "2026-10-24T02:53:11.029Z",
+  "verdict": "fix"
+}

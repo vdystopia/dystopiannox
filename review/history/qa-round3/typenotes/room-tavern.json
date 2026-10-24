@@ -1,0 +1,4 @@
+{
+  "note": "Huge improvement but The carpet floor is wrong in 01, 03, and 04.  02 has the proper edge between the carpet and the plank floor. The other carpets are all blended into the floor. Although the blend job is good, it's wrong to use here. Think about real life. A carpet doesn't blend into the floor underneath. It has solid, distinct edges. 05 is different because it uses carpet objects that require no blending since they sit on top of the floor. 05 looks good.\n\nAll taverns need to have the floor properly transitioned between the bar floor and the main tavern floor where the bar entrance / gap is. This is because the transition there is visible. Meanwhile, the transition on the rest of it is obscured by the bar. ",
+  "updatedAt": "2026-10-24T02:37:55.603Z"
+}

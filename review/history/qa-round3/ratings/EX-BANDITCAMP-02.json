@@ -1,0 +1,6 @@
+{
+  "note": "The entrance is completely blocked by objects. The treasure chest is between the bed and the wall, which is not correct. Move the bed back a little bit closer to the wall, and move the treasure chest to the side a little bit against the wall. Don't put treasure chests between a bed or cot and the wall. ",
+  "rating": 4,
+  "updatedAt": "2026-10-24T02:44:37.410Z",
+  "verdict": "fix"
+}
