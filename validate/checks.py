@@ -2979,7 +2979,18 @@ SACRED_ALTAR_SHARE = 0.6     # (round 1's share; since QA round 2 the altar obje
 # more than ceil(rooms / ALTAR_OPTIONS[type]) times (kit/sacred.py CHAPEL_ALTARS, COVEN_ALTARS)
 ALTAR_OBJ_RE = re.compile(r"^(DunMirAltar\d|LOTDLichGodStatue\d|LOTDFlamingSkulls(Static|Animated)|OrbPoolWithOrb|"
                           r"Fountain|HorrendousStatue\d|Crypt\d+)$")
-ALTAR_OPTIONS = {"chapel": 5, "coven": 3}
+ALTAR_OPTIONS = {"chapel": 5, "coven": 3, "shrine": 5}
+# QA round 3 (Q3R-2..5), the shrine set: "Good, but stop using that same altar so often, as I've said before in other
+# sets. Use alternate objects instead of that altar in every single [one]": a map's shrines, light and dark together,
+# share a holy thing no more than ceil(shrines / 5) times (kit/works.py SHRINE_HOLY, DARK_HOLY). A shrine's holy thing is
+# its largest piece of these (a dark shrine's lich god before the incense basin in its square of obelisks)
+SHRINE_KINDS = {"shrine", "dark_shrine"}
+SHRINE_HOLY_RE = re.compile(r"^(DunMirAltar\d|Brazier|LOTDLichGodStatue\d|HorrendousStatue\d|DunMirWolfStatue|"
+                            r"OrbPoolWithOrb|Fountain|Crypt\d+|LOTDArk\d|LOTDJudgementBalance\d|"
+                            r"LOTDFlamingSkulls(Static|Animated))$")
+ALTAR_QUOTE = {"shrine": "\"stop using that same altar so often ... Use alternate objects instead of that altar\"; Q3R-2",
+               "chapel": "\"Every single one of these chapels has the same square stone altar\"; Q1C-4, Q2S-1",
+               "coven": "\"Every single one of these chapels has the same square stone altar\"; Q1C-4, Q2S-1"}
 # QA round 2 (Q2T-2: "The carpet is slightly off-center with the door and altar" (RM-CHAPEL-01/02/03, RM-COVEN-01);
 # "Center the tables and chairs on the carpet" (RM-SOLAR-03/04/05); "The mana obelisk arrangement is not centered on
 # the carpet" (RM-SHRINE-03); "The statues and torches are not centered with the carpet" (RM-GALLERY-03)). Recurring
@@ -3216,15 +3227,19 @@ def check_sacred(m, ctx, base):
                              f"({', '.join(sorted({o['type'] for o in crates}))}): a crypt holds no crates, its storage is "
                              f"the crypt chest (\"the pair of crates in each room look off. Remove them\"; Q3R-1).",
                              crates[0]["x"], crates[0]["y"], rule="sacred.crates"))
+    for r in indoor_rooms(m):                  # (the shrines' holy things, Q3R-2)
+        if (r.get("declared") or {}).get("kind") not in SHRINE_KINDS: continue
+        holy = [o for o in r["objects"] if SHRINE_HOLY_RE.match(o["type"])]
+        big = max(holy, key=lambda o: _half_uv(o)[0] * _half_uv(o)[1]) if holy else None
+        ends["shrine"].append({re.sub(r"\d+$", "", big["type"]) if big else ""})
     for kind, sigs in ends.items():
         if len(sigs) < 2: continue
         # (each altar kind counted in every room it stands on the axis of, beside another or alone)
         top, n = collections.Counter(k for sig in sigs for k in sig).most_common(1)[0]
         if n > math.ceil(len(sigs) / ALTAR_OPTIONS.get(kind, 3)):
             out.append(F("sacred", "warning", f"{n} of the map's {len(sigs)} {kind.replace('_', ' ')} rooms end in the same "
-                         f"altar ({top or 'none'}): vary the altar itself, not what stands beside it (\"Every single one "
-                         f"of these chapels has the same square stone altar\"; Q1C-4, Q2S-1).", None, None,
-                         rule="sacred.altar_kind"))
+                         f"altar ({top or 'none'}): vary the altar itself, not what stands beside it "
+                         f"({ALTAR_QUOTE.get(kind, ALTAR_QUOTE['chapel'])}).", None, None, rule="sacred.altar_kind"))
     # the carpets of every room composed on an axis or about its pieces, centred as drawn (Q2T-2; the sacred.carpet rule
     # extended past the sacred rooms)
     for r in indoor_rooms(m):

@@ -656,8 +656,13 @@ TYPES.update({
         # Westwood's shrines (curated: Con07D, Wiz02B, Wiz11A's three) set the holy thing in the middle ringed by
         # obelisks (room lab, tuneB): the altar there where the room has the floor for it, else on the wall across from
         # the door with the ring of obelisks in the middle
-        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue", where="any"),
-        must={"altar": 1, "statue": 2}, never=("bed", "desk", "table", "stove", "smithy", "lab", "counter_bar",
+        # (the holy thing varies over a map's shrines since QA round 3: "stop using that same altar so often", Q3R-2;
+        # kit/works.py SHRINE_HOLY, DARK_HOLY: the stone altar, a fire, the saint's or the wolf's statue, the font, a tomb; the lich
+        # god, the ark, the scales, a bier, the burning skulls)
+        focal=dict(fam="altar", types=r"^DunMirAltar|^Brazier$|^LOTDLichGodStatue|^HorrendousStatue|^DunMirWolfStatue$|"
+                                      r"^OrbPoolWithOrb$|^Crypt[13]$|^LOTDArk|^LOTDJudgementBalance|^LOTDFlamingSkullsStatic$",
+                   where="any"),
+        must={"statue": 2}, never=("bed", "desk", "table", "stove", "smithy", "lab", "counter_bar",
                                                "counter_shop", "shop_rack", "straw", "shelves", "fireplace"),
         never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
         walls=dict(back="the altar (or the relic) across from the door, in line with it, statues flanking it, "

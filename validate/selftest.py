@@ -1116,6 +1116,18 @@ def same_altars(m):
     for u, v in ((220.4, 0), (220.4, -28), (244.4, -28)): m.obj("DunMirAltar1", u, v)
 
 
+def same_shrine_altars(m):
+    # Q3R-2: three shrines, each round Dun Mir's square stone altar ("stop using that same altar so often")
+    m.room(204, 222, -36, -20, wall="StuccoLightWood", floor="WoodLight2")
+    m.room(228, 246, -36, -20, wall="StuccoLightWood", floor="WoodLight2")
+    m.door("WoodenDoor", (88, 116), "/"); m.door("WoodenDoor", (100, 128), "/")
+    extra = [dict(number=k + 2, building=f"shrine {k}", kind="shrine", purpose="", tiles=0, box=[0, 0, 0, 0],
+                  floor=[list(t) for t in rect_tiles(u0, u0 + 18, -36, -20)]) for k, u0 in enumerate((204, 228))]
+    _declare(m, "shrine", extra)
+    m.d["objects"] = [o for o in m.d["objects"] if o.get("type") not in ("WoodBed2", "Table1", "Wolf")]
+    for u, v in ((211, 0), (213, -28), (237, -28)): m.obj("DunMirAltar1", u, v)
+
+
 def bare_chapel(m):
     _chapel(m)
     m.obj("DunMirAltar1", 220.4, 0)                             # Q1C-19: an altar and one pair of pews, nothing else
@@ -1308,6 +1320,8 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STsSym", pews_one_side, "sacred", "warning", "a chapel's pews on one side of the aisle only - Q1C-1", "no twin"),
     ("STsCarp", carpet_one_side, "sacred", "warning", "a chapel's carpet off its middle line - Q1C-3", "carpet squares"),
     ("STsAltr", same_altars, "sacred", "warning", "three chapels ending in the same altar - Q1C-4", "same altar"),
+    ("STsShrA", same_shrine_altars, "sacred", "warning", "three shrines round the same stone altar - Q3R-2",
+     "shrine rooms end in the same altar"),
     ("STcAxis", runner_unit_off, "sacred", "warning", "a runner a unit off the door's line as drawn - Q2T-2",
      "the carpet's middle stands"),
     ("STcOn", ring_off_carpet, "sacred", "warning", "a ring of obelisks a unit off its carpet as drawn - Q2T-2",

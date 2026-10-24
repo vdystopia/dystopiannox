@@ -105,8 +105,11 @@ ALLOW = {
                       storage=r"^CryptChest[1-4]$"),
     "ossuary": dict(statue=r"^Obelisk$", tomb=r"^Coffin(Breaking)?[1-4]$|^Tombstone\d+$",
                     storage=r"^(Open)?CryptChest[1-4]$"),
-    "shrine": dict(statue=r"^Obelisk$|^Statue2[aceg]$", bench=r"^Bench[1-4]$|^LightBench[12]$", storage=r"^Chest1$"),
-    "dark_shrine": dict(statue=r"^LOTDManaObelisk$", tomb=r"^Coffin(Breaking)?[1-4]$"),
+    "shrine": dict(statue=r"^Obelisk$|^Statue2[aceg]$|^HorrendousStatue[12]$|^DunMirWolfStatue$",
+                   bench=r"^Bench[1-4]$|^LightBench[12]$", storage=r"^Chest1$", relic=r"^OrbPoolWithOrb$",
+                   tomb=r"^Crypt(1|3)$"),                    # (the holy things of QA round 3: SHRINE_HOLY)
+    "dark_shrine": dict(statue=r"^LOTDManaObelisk$|^LOTDArk[12]$|^LOTDJudgementBalance[12]$",
+                        tomb=r"^Coffin(Breaking)?[1-4]$|^Crypt(1|3)$", relic=r"^LOTDFlamingSkullsStatic$"),
     "treasury": dict(storage=r"^Chest[1-4]$|^SackChest(Large|Medium|Small)[12]$|^LargeBarrel[12]$",
                      table=r"^SquareTable[12]$", statue=r"^Statue2[aceg]$"),
     "torture_chamber": dict(storage=r"^Chest[1-4]$|^Barrel2?$|^WaterBarrel$|^DarkCrate[12]$|^BarrelWithTools[12]$"),
@@ -337,9 +340,31 @@ _spec(("observatory",), statue_most=3, least=(0.12, 9), extra=["FairyJar", "Sack
                   most={"telescope": 2, "curio": 1, "book_stack": 10, "chart_table": 2}),
       hang=dict(pat=r"^StarChart[1-4][a-d]$|^Zodiac[12][a-d]$", most=4))
 
+# QA round 3 (Q3R-2..5), the shrine set: "Good, but stop using that same altar so often, as I've said before in other
+# sets. Use alternate objects instead of that altar in every single [one]" (round 2's chapels had it in the same words,
+# Q2S-1): every light shrine had stood Dun Mir's square stone altar (DunMirAltar1) as its holy thing, in the middle of its
+# square of obelisks or on the far wall (shrine_square and step_altar_wall took the same first type), every dark shrine
+# the lich god's statue. The holy thing is now one of these, a map's shrines taking each in turn before any twice
+# (kit/sacred.py _spread, strict), checked by sacred.altar_kind: the stone altar; a sacred fire (a brazier, as
+# Westwood's shrines without the floor for an altar keep a basin of fire); the warrior saint's great statue
+# facing the door (HorrendousStatue, kit/sacred.py SAINT); Dun Mir's golden wolf on its plinth, looking SE at a SE door;
+# the holy font (the orb pool); a saint's tomb along the axis, its foot to the door. A dark shrine's: the lich god's
+# statue; the Land of the Dead's ark; the scales of judgement; a bier (a sarcophagus along the axis); the burning heap
+# of skulls. The obelisks, candles, basins and runner stay as they were.
+SHRINE_HOLY = (("altar", 1.0), ("fire", 1.0), ("saint", 1.0), ("wolf", 1.0), ("font", 1.0), ("tomb", 1.0))
+DARK_HOLY = (("lich", 1.0), ("ark", 1.0), ("balance", 1.0), ("bier", 1.0), ("pyre", 1.0))
+HOLY_TYPES = {"altar": ("DunMirAltar1",), "fire": ("Brazier",), "saint": ("HorrendousStatue1", "HorrendousStatue2"),
+              "wolf": ("DunMirWolfStatue",),
+              "font": ("OrbPoolWithOrb",), "tomb": ("Crypt1", "Crypt3"), "lich": ("LOTDLichGodStatue1", "LOTDLichGodStatue2"),
+              "ark": ("LOTDArk1", "LOTDArk2"), "balance": ("LOTDJudgementBalance1", "LOTDJudgementBalance2"),
+              "bier": ("Crypt1", "Crypt3"), "pyre": ("LOTDFlamingSkullsStatic",)}
+HOLY_RE = re.compile(r"^(DunMirAltar\d|Brazier|LOTDLichGodStatue\d|HorrendousStatue\d|DunMirWolfStatue|OrbPoolWithOrb|"
+                     r"Crypt(1|3)|"
+                     r"LOTDArk\d|LOTDJudgementBalance\d|LOTDFlamingSkullsStatic)$")
+
 _spec(("shrine",), least=(0.17, 5), extra=["Chest1"],
       goal=0.5, cover=0.22, mirror=True, relight=True, keep=r"^$",
-      program=[("altar_wall", dict(types=["DunMirAltar1", "DunMirAltar2"], flank=["Obelisk"])),
+      program=[("altar_wall", dict(types=["DunMirAltar1", "DunMirAltar2"], flank=["Obelisk"], holy="light")),
                ("must_statues", dict(types=["Obelisk"])),
                ("axis", dict(runner=False, benches=["Bench1", "Bench2", "LightBench1"], flank=[],
                              avenue=[], pairs=["DunMirFlameBasinLit"], hang=TAPESTRY))],
@@ -349,7 +374,8 @@ _spec(("shrine",), least=(0.17, 5), extra=["Chest1"],
       hang=dict(pat=TAPESTRY, most=2))
 _spec(("dark_shrine",), least=(0.17, 5), extra=["CoffinBreaking2", "Skull", "ArmBone"],
       goal=0.55, cover=0.22, mirror=True, keep=r"^(LOTDLichGodStatue\d|LOTDManaObelisk|LOTDIncenseBasinLit|LOTDTapestry\d)$",
-      program=[("altar_wall", dict(types=["LOTDLichGodStatue1", "LOTDLichGodStatue2"], flank=["LOTDManaObelisk"])),
+      program=[("altar_wall", dict(types=["LOTDLichGodStatue1", "LOTDLichGodStatue2"], flank=["LOTDManaObelisk"],
+                                   holy="dark")),
                ("axis", dict(runner=False, benches=[], flank=["LOTDManaObelisk"], avenue=[],
                              pairs=["LOTDIncenseBasinLit"], hang=r"^LOTDTapestry[12]$|^LOTDBanner[12]$", coffins=True)),
                ("must_statues", dict(types=["LOTDManaObelisk"]))],
@@ -1127,12 +1153,73 @@ class Finish:
                 self.log["desk"] += 1
                 return
 
-    def step_altar_wall(self, types, flank):
+    def holy_types(self, name, far):
+        """The pieces of holy-thing option `name` (SHRINE_HOLY, DARK_HOLY) for this shrine, turned for `far`, the wall
+        across from its main door: what faces the way in faces the door, what lies along lies along the axis (a tomb, a
+        bier: its foot to the door) or along the far wall (an ark, the scales)."""
+        side = far["side"] if far else None
+        line_u = bool(far) and far["line"] == "/"             # the axis runs along u to a "/" far wall
+        if name == "altar": return ["DunMirAltar1", "DunMirAltar2"]
+        if name == "fire": return ["Brazier"]
+        if name == "saint":                                    # (it faces out of a back wall: kit/sacred.py SAINT)
+            from kit.sacred import SAINT
+            return [SAINT[side]] if side in SAINT else []
+        if name == "wolf": return ["DunMirWolfStatue"] if side == "/|BR" else []    # (drawn looking SE, at a SE door)
+        if name == "font": return ["OrbPoolWithOrb"]
+        if name in ("tomb", "bier"): return ["Crypt3" if line_u else "Crypt1"]
+        if name == "lich":
+            lich = {"/|BR": "LOTDLichGodStatue1", "\\|BL": "LOTDLichGodStatue2"}       # (back walls: kit/furnish.py)
+            return [lich[side]] if side in lich else []
+        if name == "ark": return ["LOTDArk1" if line_u else "LOTDArk2"]
+        if name == "balance": return ["LOTDJudgementBalance1" if line_u else "LOTDJudgementBalance2"]
+        if name == "pyre": return ["LOTDFlamingSkullsStatic"]
+        return []
+
+    def holy_order(self, dark, far):
+        """[(option, type)]: the shrine's holy things to try, the map's rotation's pick first (kit/sacred.py _spread,
+        strict: no option twice while another that fits is unused), then the options the map's shrines used least."""
+        from kit.sacred import _spread
+        key, opts = ("dark_shrine_holy", DARK_HOLY) if dark else ("shrine_holy", SHRINE_HOLY)
+        fits = {n: [t for t in self.holy_types(n, far) if self.ok(t)] for n, _ in opts}
+        # (the draw is the room's once, whatever wall asks: an option is in it when the style has its pieces)
+        pick = _spread(self.f, key, opts, ok=lambda n: any(self.ok(t) for t in HOLY_TYPES[n]), strict=True)
+        if pick is None: return []
+        used = getattr(self.f.spec, "_sacred_spread", {}).get("used", {}).get(key, Counter())
+        names = [n for n, _ in opts]
+        rest = sorted((n for n in names if n != pick and fits[n]), key=lambda n: (used[n], names.index(n)))
+        return [(n, t) for n in [pick] + rest for t in fits[n]]
+
+    def holy_placed(self, dark, name):
+        """The rotation's count kept true when the shrine's holy thing is another option than its draw."""
+        from kit.sacred import _respread
+        key = "dark_shrine_holy" if dark else "shrine_holy"
+        memo = getattr(self.f.spec, "_sacred_spread", None)
+        old = (memo or {}).get("rooms", {}).get((key, getattr(self.f.room, "id", None)))
+        if old and old != name: _respread(self.f, key, old, name)
+        self._holy_done = True
+        self.log["holy " + name] += 1
+
+    def put_far(self, t, r, a, gap=0.4):
+        """Piece t as it is turned (no variant swapped in), its back `gap` units off wall run r, centred at `a`."""
+        for g in ((gap,) if self.name_of(r) in BACK else (gap, gap + 0.25, gap + 0.5)):
+            o = self.put(t, *self.uv(r, self.depth(t, r) + g, a), snug=True)
+            if o: return o
+        return None
+
+    def step_altar_wall(self, types, flank, holy=None):
         """The holy thing on the wall across from the main door, on its axis, a pair flanking it: when the middle's square
-        found no room (a narrow shrine)."""
+        found no room (a narrow shrine). holy ("light", "dark"): the shrine's holy thing in the map's rotation
+        (holy_order; QA round 3, Q3R-2), else the first of `types`."""
         pool = self.oks(types)
         if not pool: return
-        have = next((o for o in self.f.objects if re.match(r"^(DunMirAltar|LOTDLichGodStatue)", o["type"])), None)
+        rx = HOLY_RE if holy else re.compile(r"^(DunMirAltar|LOTDLichGodStatue)")
+        have = next((o for o in self.f.objects if rx.match(o["type"])), None)
+        if holy and have is not None and not getattr(self, "_holy_done", False):
+            # the recipe's own (a dark shrine keeps its lich god's statue through strip): taken up, so the holy thing
+            # is the rotation's (Q3R-2); the brazier a square took when its holy thing would not fit it stays, and the
+            # holy thing goes on the far wall
+            if have["type"] != "Brazier": self.f._remove(have)
+            have = None
         if have is not None:
             # the recipe's on the far wall off the room's axis: set on it again (Q2T-1)
             rec = self.f._placed_of.get(id(have))
@@ -1152,8 +1239,26 @@ class Finish:
             if o is None: return
         else:
             far = self.axis_back_run()
-            o = self.put_wall(pool[0], far, self.axis_along(), gap=0.4) if far is not None else None
-        if not o:                                   # else centred on a back wall's longest bare stretch
+            o = None
+            if holy:
+                # the rotation's holy thing on the far wall in line with the door when that is a back wall (the camera
+                # sees its front), else centred on a back wall's longest bare stretch, turned for the wall it stands on
+                spots = [(far, self.axis_along())] if far is not None and self.name_of(far) in BACK else []
+                for w in ("back_long", "back_short"):
+                    r = self.wall_by(w)
+                    st = self.longest(r, pad=0.5, least=2.0) if r else None
+                    if st and all(r is not q for q, _ in spots): spots.append((r, (st[0] + st[1]) / 2))
+                if os.environ.get("NOX_HOLY_DEBUG"):
+                    print("holy spots", self.f.room.id, [(self.name_of(r), round(a, 1)) for r, a in spots],
+                          self.holy_order(holy == "dark", spots[0][0]) if spots else None)
+                for r, a in spots:
+                    for hname, t in self.holy_order(holy == "dark", r):
+                        o = self.put_far(t, r, a)
+                        if o: self.holy_placed(holy == "dark", hname); far = r; break
+                    if o: break
+            elif far is not None:
+                o = self.put_wall(pool[0], far, self.axis_along(), gap=0.4)
+        if not o and not holy:                      # else centred on a back wall's longest bare stretch
             for w in ("back_long", "back_short"):
                 r = self.wall_by(w)
                 st = self.longest(r, pad=0.5, least=2.0) if r else None
@@ -1162,6 +1267,8 @@ class Finish:
         if have is None: self.log["altar on the wall"] += 1
         fl = self.oks(flank)
         rec = self.f._placed_of.get(id(o))
+        # (beyond a square of obelisks in the middle the holy thing stands alone: no more obelisks, Q3R-2)
+        if holy and sum(1 for t, _ in self.f._typed if t in ("Obelisk", "LOTDManaObelisk")) >= 4: fl = []
         if fl and rec:                              # a pair flanking it along its wall
             a = rec[1] if far["line"] == "/" else rec[0]
             ah = rec[3] if far["line"] == "/" else rec[2]
@@ -2384,9 +2491,20 @@ class Finish:
             # clear of the door's line (no pillar in line with a door: GW-7)
             dark = name == "dark_square"
             pil = self.oks(["LOTDManaObelisk"] if dark else ["Obelisk"])
-            mid = self.oks(["LOTDIncenseBasinLit"] if dark else ["DunMirAltar1", "DunMirAltar2"])
+            # (the holy thing in the middle: the map's rotation's pick first, then those used least; Q3R-2)
+            # (the holy thing in the middle when it fits there: the rotation's pick, else an option no shrine of the
+            # map has used yet; where neither fits, a brazier's fire in the middle of the square and the pick on the
+            # far wall, in line with it beyond the square, step_altar_wall; Q3R-2)
+            if dark: mids = [("incense", "LOTDIncenseBasinLit")]
+            else:
+                order = self.holy_order(False, self.axis_back_run())
+                used = getattr(f.spec, "_sacred_spread", {}).get("used", {}).get("shrine_holy", Counter())
+                pick = order[0][0] if order else None
+                mids = [(n_, t_) for n_, t_ in order if n_ == pick or not used[n_]] + \
+                       [(None, t_) for t_ in self.oks(["Brazier"])]
+            mids = [(n_, t_) for n_, t_ in mids if self.ok(t_)]
             op = f.main_door()
-            if not pil or not mid or not op: return []
+            if not pil or not mids or not op: return []
             line_u = op["line"] == "/"                 # the axis runs along u from a "/" door wall
             a0 = self.axis_along()
             # the square on the axis (the room's middle across it), its depth a whole unit near the spot: the carpet under
@@ -2405,30 +2523,33 @@ class Finish:
             if dark: tries = tries[:3]
             # (a carpet whole and bordered where the room has room for it, else the square alone: RM-SHRINE-04)
             tries = [x + (not dark,) for x in tries] + ([x + (False,) for x in tries] if not dark else [])
-            for cu, cv, nu, nv, rug in tries:
-                for inset in ((1.25, 0.85) if not dark else (None,)):
-                    if dark: Ru = Rv = 2.2
-                    else: Ru, Rv = nu - inset, nv - inset          # the pillars `inset` in from the carpet's edges
-                    if min(Ru, Rv) < 1.7: continue
-                    n1 = len(f.objects)
-                    f.placing_light = dark
-                    try:
-                        c = self.put(mid[0], cu, cv)
-                    finally:
-                        f.placing_light = False
-                    ok = bool(c)
-                    f._pairing = True
-                    try:
-                        for su in (-1, 1):
-                            for sv in (-1, 1):
-                                if not ok: break
-                                ok = bool(self.put(pil[0], cu + su * Ru, cv + sv * Rv))
-                    finally:
-                        f._pairing = False
-                    if ok and rug:
-                        ok = bool(f.carpet_boxes) or bool(self.carpet(cu, cv, nu, nv))
-                    if ok: return done(True)
-                    self.remove(list(f.objects[n1:]))
+            for hname, mid_t in mids:
+                for cu, cv, nu, nv, rug in tries:
+                    for inset in ((1.25, 0.85) if not dark else (None,)):
+                        if dark: Ru = Rv = 2.2
+                        else: Ru, Rv = nu - inset, nv - inset      # the pillars `inset` in from the carpet's edges
+                        if min(Ru, Rv) < 1.7: continue
+                        n1 = len(f.objects)
+                        f.placing_light = dark
+                        try:
+                            c = self.put(mid_t, cu, cv)
+                        finally:
+                            f.placing_light = False
+                        ok = bool(c)
+                        f._pairing = True
+                        try:
+                            for su in (-1, 1):
+                                for sv in (-1, 1):
+                                    if not ok: break
+                                    ok = bool(self.put(pil[0], cu + su * Ru, cv + sv * Rv))
+                        finally:
+                            f._pairing = False
+                        if ok and rug:
+                            ok = bool(f.carpet_boxes) or bool(self.carpet(cu, cv, nu, nv))
+                        if ok:
+                            if not dark and hname: self.holy_placed(False, hname)
+                            return done(True)
+                        self.remove(list(f.objects[n1:]))
             return []
         if name == "tomb":                          # the great tomb, its length along the room's long axis
             tt = self.oks(["Crypt1", "Crypt3", "Crypt5", "Crypt7", "Crypt9", "Crypt11"])
