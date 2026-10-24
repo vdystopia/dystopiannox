@@ -213,3 +213,17 @@ def free_spot(M, rid, a, b, clear=1.1, step=0.5, reach=6.0, strict=False):
             break
         r += step
     return best if strict else (best or (a, b))
+
+
+def thin(M, rid, pattern, keep=0.35):
+    """Keep only a share of the loose pieces matching `pattern` in room `rid` (a torture chamber's bones strewn over
+    its whole floor read as clutter): every n-th one by position, so what stays is spread evenly. Returns how many
+    went."""
+    rx = re.compile(pattern)
+    mine = [o for o in M.m.d["objects"] if rx.match(o.get("type", "")) and (room_of(M, o["x"], o["y"], 0.0) or ("",))[0] == rid]
+    mine.sort(key=lambda o: (o["x"] + o["y"], o["x"] - o["y"]))
+    step = 1.0 / max(keep, 1e-3)
+    stay = {id(mine[int(k * step)]) for k in range(int(len(mine) * keep + 0.5)) if int(k * step) < len(mine)}
+    gone = {id(o) for o in mine if id(o) not in stay}
+    M.m.d["objects"] = [o for o in M.m.d["objects"] if id(o) not in gone]
+    return len(gone)
