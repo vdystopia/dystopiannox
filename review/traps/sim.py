@@ -29,16 +29,20 @@ import argparse, json, math, os, sys
 import numpy as np
 
 SQ = 32.5
-FPT = 3                        # frames a tick
-CELL = 0.5                     # squares a grid cell
+FPT = 2                        # frames a tick
+CELL = 0.4                     # squares a grid cell: a step of one cell a tick is a run (6.5 units a frame)
 WALK, RUN = 3.3, 6.9           # units a frame
 JUMP_FRAMES, JUMP_COOL = 18, 30
+JT = JUMP_FRAMES // 2          # ticks airborne (set from FPT below)
 PLAYER_R = 10.0
 LETHAL = 1000.0
 SHOVE = 30.0                   # the planner's price for being touched by a moving block (it shoves: into pits too)
 PLATE_PENALTY = 15.0
 JUMP_COST = 2.0                # a jump is free in HP but costs stamina: the planner jumps only when it helps
-H_TICKS = 420                  # 42 s
+H_TICKS = 630                  # 42 s
+JT = JUMP_FRAMES // FPT        # a jump: ticks airborne, cells covered straight / diagonally (~124 units at run speed)
+JD = int(round(124 / (SQ * CELL)))
+JDD = int(round(JD / 1.414))
 PLAN_MARGIN = 5.0              # px: the planner keeps this much farther from contact than the replay needs
 WALL_GAP = 0.35                # squares: a player's centre stays this far from a wall line
 
@@ -239,7 +243,7 @@ class StationModel:
         sx, sy = st["start"]
         self.O = (sx - 0.5 * SQ * self.U[0] - self.W / 2 * SQ * self.V[0],
                   sy - 0.5 * SQ * self.U[1] - self.W / 2 * SQ * self.V[1])
-        self.NA = int(round((self.L + 1.0) / CELL))
+        self.NA = int(math.ceil((self.L + 1.1) / CELL))       # to half a square past the way out
         self.NB = int(round(self.W / CELL))
         self.objs = {k: v for k, v in data["objects"].items() if self.inside(v["x"], v["y"], 1.0)}
         movers = [m for m in data["movers"] if any(o in self.objs for o in m["objs"]) or
@@ -307,7 +311,7 @@ class StationModel:
     def fields(self, offset=0, events=(), ticks=H_TICKS):
         """ground[t], air[t]: damage a player standing in each cell takes over tick t (3 frames) on foot / in a jump."""
         w = World(self.data, offset, events)
-        G = np.zeros((ticks + 8, self.NA, self.NB), np.float32)
+        G = np.zeros((ticks + JT + 2, self.NA, self.NB), np.float32)
         A = np.zeros_like(G)
         static = {}                                     # object -> (cells, ground per frame, air per frame)
         for o, v in self.objs.items():
@@ -346,7 +350,7 @@ class StationModel:
                 base_g[i, j] += sign * LETHAL / FPT
                 base_a[i, j] += sign * LETHAL / FPT
         for wc in w.closed: wall(wc, +1)
-        for t in range(ticks + 8):
+        for t in range(ticks + JT + 2):
             vol = np.zeros_like(base_g)
             for k in range(FPT):
                 w.tick()
@@ -369,9 +373,14 @@ class StationModel:
             for o, v in sentries.items():
                 if sentry_on[o] > 0:
                     x = v.get("xfer") or {}
-                    ang = x.get("BasePosRadian", 0.0) + x.get("RotateSpeed", 0.0) * sentry_on[o]
-                    for i, j in self.beam(w.pos[o], ang):
-                        G[t, i, j] += LETHAL; A[t, i, j] += LETHAL
+                    rot = x.get("RotateSpeed", 0.0)
+                    for df in range(-FPT, FPT + 1):            # the beam over the tick and a tick either side: it
+                        ang = x.get("BasePosRadian", 0.0) + rot * max(1, sentry_on[o] + df)   # kills in one frame
+                        for i, j in self.beam(w.pos[o], ang, pad=PLAN_MARGIN + 6):
+                            for tt in (t - 1, t, t + 1):
+                                if 0 <= tt < G.shape[0] and G[tt, i, j] < LETHAL:
+                                    G[tt, i, j] += LETHAL; A[tt, i, j] += LETHAL
+                        if not rot: break
             for o in dyn:
                 tp = self.objs[o]["type"]
                 a, b = self.ab(*w.pos[o])
@@ -401,7 +410,7 @@ class StationModel:
                 out |= set(self.cells_near(a, b, 14 / SQ))
         return out
 
-    def beam(self, p, ang):
+    def beam(self, p, ang, pad=4.0):
         out = set()
         dx, dy = math.cos(ang), math.sin(ang)
         for k in range(1, 76):
@@ -410,21 +419,21 @@ class StationModel:
             if not (-0.5 <= a <= self.L + 0.5 and 0 <= b <= self.W): break
             i, j = self.cell_of(a, b)
             if 0 <= i < self.NA and 0 <= j < self.NB and self.blocked[i, j]: break
-            out |= set(self.cells_near(a, b, (PLAYER_R + 4) / SQ))
+            out |= set(self.cells_near(a, b, (PLAYER_R + pad) / SQ))
         return out
 
     # ---- the plan --------------------------------------------------------------------------------------------
     MOVES = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
-    JUMPS = [(7, 0), (-7, 0), (0, 7), (0, -7), (5, 5), (5, -5), (-5, 5), (-5, -5)]
+    JUMPS = [(JD, 0), (-JD, 0), (0, JD), (0, -JD), (JDD, JDD), (JDD, -JDD), (-JDD, JDD), (-JDD, -JDD)]
 
     def plan(self, G, A, start_cells=None, t0=0, d0=0.0, goal=None, avoid_plates=True):
         """Least damage from start_cells at tick t0 to the goal (default: the way out). Returns
         (damage, arrival tick, path [(t, i, j, airborne)]) or None."""
-        NA, NB, T = self.NA, self.NB, G.shape[0] - 8
+        NA, NB, T = self.NA, self.NB, G.shape[0] - (JT + 2)
         INF = np.float32(1e9)
         C = JUMP_COOL // FPT + 1                      # cooldown states (0 = a jump is ready)
-        best = np.full((T + 8, C, NA, NB), INF, np.float32)
-        par = np.zeros((T + 8, C, NA, NB), np.int16)   # how the state was reached (move or jump index, from cooldown)
+        best = np.full((T + JT + 2, C, NA, NB), INF, np.float32)
+        par = np.zeros((T + JT + 2, C, NA, NB), np.int16)   # how the state was reached (move or jump index, from cooldown)
         ground_pen = np.zeros((NA, NB), np.float32)
         if avoid_plates:
             for z in self.zones:
@@ -451,11 +460,10 @@ class StationModel:
         found = None
         for t in range(t0, T):
             cur = best[t]
-            if found is None:
-                hits = np.where(goal_mask[None], cur, INF).min()
-                if hits < INF:
-                    found = (t, float(hits))
-            if found is not None and t > found[0] + 40: break
+            hits = float(np.where(goal_mask[None], cur, INF).min())
+            if hits < INF and (found is None or hits < found[1] - 1):
+                found = (t, hits)                      # the best arrival so far (a later one may hurt less)
+            if found is not None and found[1] <= 30 and t > found[0] + 40: break
             g = G[t + 1] + ground_pen
             for c in range(C):
                 src = cur[c]
@@ -481,22 +489,22 @@ class StationModel:
                         if si1 <= si0 or sj1 <= sj0: continue
                         acc = src[si0:si1, sj0:sj1].copy()
                         ok = np.ones_like(acc, bool)
-                        for s in range(1, 7):
-                            oi, oj = round(di * s / 6), round(dj * s / 6)
+                        for s in range(1, JT + 1):
+                            oi, oj = round(di * s / JT), round(dj * s / JT)
                             acc = acc + A[t + s][si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
                             ok &= ~block[si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
-                        acc = acc + G[t + 6][si0 + di:si1 + di, sj0 + dj:sj1 + dj] - A[t + 6][si0 + di:si1 + di, sj0 + dj:sj1 + dj] + JUMP_COST
+                        acc = acc + G[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj] - A[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj] + JUMP_COST
                         land[si0 + di:si1 + di, sj0 + dj:sj1 + dj] = np.where(ok, acc, INF)
                         land = np.where(block, INF, land)
-                        lc = C - 1 - 6 if C - 1 - 6 > 0 else 0
-                        better = land < best[t + 6, lc]
-                        best[t + 6, lc] = np.where(better, land, best[t + 6, lc])
-                        par[t + 6, lc] = np.where(better, 1000 + k, par[t + 6, lc])
+                        lc = max(C - 1 - JT, 0)
+                        better = land < best[t + JT, lc]
+                        best[t + JT, lc] = np.where(better, land, best[t + JT, lc])
+                        par[t + JT, lc] = np.where(better, 1000 + k, par[t + JT, lc])
         if found is None:
             return None
         # the best arrival within 40 ticks of the first: least damage, then earliest
         cand = []
-        for t in range(found[0], min(found[0] + 41, T)):
+        for t in range(found[0], min(found[0] + 41, T)):    # from the best arrival: least damage, then earliest
             v = np.where(goal_mask[None], best[t], INF)
             m = float(v.min())
             if m < INF: cand.append((round(m, 1), t))
@@ -508,9 +516,9 @@ class StationModel:
             p = int(par[t, c, i, j])
             if p >= 1000:
                 di, dj = self.JUMPS[p - 1000]
-                for s in range(6, 0, -1):
-                    path.append((t - 6 + s, i - di + round(di * s / 6), j - dj + round(dj * s / 6), True))
-                i, j, t, c = i - di, j - dj, t - 6, 0
+                for s in range(JT, 0, -1):
+                    path.append((t - JT + s, i - di + round(di * s / JT), j - dj + round(dj * s / JT), True))
+                i, j, t, c = i - di, j - dj, t - JT, 0
             else:
                 k, pc = divmod(p, 16)
                 di, dj = self.MOVES[k]
@@ -697,7 +705,20 @@ def analyse(map_dir, only=None, trace=False):
             d_, o_, _ = sm.replay(sm.straight(WALK if nm == "walk" else RUN), offset=0)
             row[f"careless_{nm}_0"] = [round(d_, 1), o_]
         row["slack"] = round(slack, 2)
+        # what this station does that the simulator does not model: its verdict is the game's (the tour)
+        known = {"on", "off", "toggle", "pulse", "arm", "disarm", "restart", "reset", "walls_open", "walls_close",
+                 "log", "sound", "say", "wake"}
+        pre = st.get("prefix") or ""
+        acts = [a for z in data["zones"] if z["name"].startswith(pre) or sm.inside(*z["c"]) for a in z["acts"] + z["release"]]
+        acts += [a for w in data.get("watches", []) if w["name"].startswith(pre) for a in w["acts"]]
+        blind = sorted({a["kind"] for a in acts if a["kind"] not in known})
+        blind += sorted({t for t in (v["type"] for v in sm.objs.values()) if t in ("Glyph", "PoisonGasTrap", "BearTrap")})
+        if any(m["name"].startswith(pre) for m in data["movers"]) and any(k.startswith("push") for k in blind):
+            pass
+        row["sim_blind"] = blind
         row["verdict"] = verdict(row)
+        if blind and row["verdict"] in ("TOO EASY", "TIER (easier than hard)", "PASS"):
+            row["verdict"] += f" [sim blind to {', '.join(blind)}: judged in the game]"
         rows.append(row)
         print(f"{row['label']:14s} {tier:8s} plan {row.get('plan')} t={row.get('time')}s jumps={row.get('jumps')} "
               f"lever={row.get('lever')} replay={row.get('replay')}/{row.get('replay_outcome')} "
@@ -722,7 +743,9 @@ def verdict(r):
     hard = r["tier"] == "hard"
     if r.get("plan") is None:
         return "IMPOSSIBLE"
-    best = min(r["plan"], r["replay"] if r.get("replay_outcome") == "passed" else 1e9)
+    if r.get("replay_outcome") != "passed":         # the exact replay is the judge: a plan that dies there is no plan
+        return f"IMPOSSIBLE (the best plan {r.get('replay_outcome')} in the replay)"
+    best = r["replay"]
     if best >= (90 if hard else 60):
         return "IMPOSSIBLE"
     walk_bad = r["careless_walk_outcome"] != "passed" or r["careless_walk"] >= 35
