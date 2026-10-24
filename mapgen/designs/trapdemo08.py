@@ -22,6 +22,7 @@ import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from kit.trapdemo import Mission
 from kit.quests import A
+from kit.trapdemo_dress import camp, clear_mouths, start_spot, free_spot, extra
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 NAME = "TrapDem08"
@@ -46,38 +47,28 @@ M.link("powder", "greathall", trap=("blade", 6))             # find the gap (har
 M.link("greathall", "forge", trap=("flame", 7))              # skulls and fire (hard): into Dravik's forge-hall
 M.link("forge", "vault", length=5)
 M.layout()
+n0 = len(M.m.d["objects"])
 M.dress()
+clear_mouths(M, M.m.d["objects"][n0:])     # nothing of the dressing in a passage's mouth
 
 
-def camp(rid, extra=()):
-    """The expedition's camp lived in (Q1K-3: 16 pieces of 8 kinds at the least) round the room's default dressing
-    (tent in the north corner, fire and stools, stores in the south corner, a chest in the east): beds along the
-    north-west wall, sacks and barrels in the west corner, a pelt and a third seat at the fire, the setting's own
-    pieces (`extra`); the sign beside the way on and the start between it and the fire. Pieces stay 3.6 squares off
-    the doorway's middle (a passage's mouth is 4-8 squares wide)."""
+def sign_spot(rid):
+    """A room point for the camp's sign: beside the way on (the first passage's mouth), a square into the room and
+    four along the wall from the mouth's middle, off every piece."""
     w, h = M.rooms[rid]["size"]
-    C = 3.6
-    for b in (4.4, 6.6):
-        M.put(rid, "Cot2", 1.25, b, clear=C)
-    for t, (a, b) in zip(("SackChestLarge1", "SackChestMedium2", "Barrel", "WaterBarrel"),
-                         ((1.2, 1.2), (2.5, 1.0), (1.0, 2.5), (3.8, 1.0))):
-        M.put(rid, t, a, b, clear=C)
-    M.put(rid, "WolfPelt2", w / 2 + 0.2, h / 2 - 1.7, clear=C)
-    M.put(rid, "Stool", w / 2 - 0.2, h / 2 + 1.6, clear=C)
-    for t, a, b in extra:
-        M.put(rid, t, a, b, clear=C)
     da, db = M.doors[rid][0]
     n = (0, 1) if db < 1 else (0, -1) if db > h - 1 else (1, 0) if da < 1 else (-1, 0)     # into the room
     t = (n[1], n[0])
     along = da if n[0] == 0 else db
-    side = -1 if along - 3.9 > 1.2 else 1
-    return (da + n[0] * 1.1 + t[0] * 3.9 * side, db + n[1] * 1.1 + t[1] * 3.9 * side),            (da + n[0] * 3.0 - t[0] * 1.4 * side, db + n[1] * 3.0 - t[1] * 1.4 * side)
+    side = -1 if along - 4.2 > 1.2 else 1
+    return free_spot(M, rid, da + n[0] * 1.1 + t[0] * 4.2 * side, db + n[1] * 1.1 + t[1] * 4.2 * side, clear=0.9)
 
 
-sign_at, start_at = camp("camp", extra=[("Anvil1", 7.0, 11.0), ("BarrelWithTools1", 9.0, 11.1),
-                                        ("TraderAppleCrate", 5.2, 11.0), ("SmallTable2", 11.0, 4.6),
-                                        ("Stool", 10.0, 3.9), ("BarrelWithTools2", 12.4, 6.0)])
-M.start_at("camp", *start_at)
+camp(M, "camp")                                  # the lived-in camp (kit/trapdemo_dress.py)
+# the lad's own corner of the forge camp: his anvil, tools and a crate of apples by the north-east wall
+extra(M, "camp", [("Anvil1", 7.0, 10.8), ("BarrelWithTools1", 9.2, 10.9), ("TraderAppleCrate", 5.0, 10.9)])
+sign_at = sign_spot("camp")
+M.start_at("camp", *start_spot(M, "camp"))
 
 # ---- life -------------------------------------------------------------------------------------------------------
 M.monsters("gate", {"Imp": 3})
@@ -88,11 +79,14 @@ M.monsters("powder", {"EmberDemon": 2})
 M.monsters("greathall", {"MeleeDemon": 1, "EmberDemon": 2, "FireSprite": 1})
 M.monsters("forge", {"FireSprite": 2})
 boss = M.boss("forge", "B7")
-M.put("vault", "Anvil1", 6.0, 7.4, clear=0)
-heart = M.item("vault", "BlueOrb", 6.0, 6.0)
-bag = M.item("slag", "TreasureBag", 4.0, 4.0)
-M.m.obj_px("RedPotion", *M.at("slag", 7.5, 2.0))
-M.m.obj_px("RedPotion", *M.at("powder", 2.0, 2.0))
+extra(M, "vault", [("Anvil1", 6.0, 7.4)], reach=1.5)            # the storm anvil's own stand, the heart before it
+heart = M.item("vault", "BlueOrb", *free_spot(M, "vault", 6.0, 6.0, clear=0.8))
+bag = M.item("slag", "TreasureBag", *free_spot(M, "slag", 4.0, 4.0))
+# potions where a player stops between stages: the slag store's dead end, the powder store before the hard halls
+for rid, n in (("slag", 1), ("powder", 2), ("greathall", 1)):
+    pa, pb = free_spot(M, rid, 2.0, 2.0, clear=1.2)
+    for k in range(n):
+        M.put(rid, "RedPotion", pa + 0.45 * k, pb, clear=2.4)
 dudley = M.person("camp", "Con03B", "Dudley", "Dudley", pic="WoundedApprenticePic", title="Dudley")
 
 # ---- the story --------------------------------------------------------------------------------------------------

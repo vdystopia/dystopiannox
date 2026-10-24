@@ -11,11 +11,14 @@ The story
   in the trophy hall, behind a passage of pits off the great hall. Evelyn gives haste potions for it (against
   Garrick's charge). The champion's banner hangs there too, but a banner is no thing to carry: the amulet is.
 - The trial, in the order a player meets it (standard first, the hard ones after the middle, a rest at the garden
-  court's well between): a spike field on a clock at the gate; plates and lanes to the barracks; the click and the
-  pause, arrows, to the great hall; the snapping jaws to the chapel past the garden court; then the hard halls: find
-  the gap (blades) to the throne room and the gliding beam into the arena. Off the trial: the fire wave to the
-  kitchen, the pushers on the beat to the question room, leap the trenches to the trophy hall (the side quest) and
-  the glyphs and the warden to Garrick's war room.
+  court's healing well off the great hall): a spike field on a clock at the gate; race the gate to the barracks;
+  the click and the pause, arrows, to the great hall; then the hard halls: find the gap (blades) to the throne room
+  and the gliding beam into the arena. Off the trial, each a dead end with its own reward: the fire wave to the
+  kitchen, the belts to the question room, look before you leap (pits) to the trophy hall (the side quest), the
+  snapping jaws from the garden court to the chapel's offering, and the glyphs and the warden to Garrick's war room.
+  Every kind of trap once: spike, trigger, flame, arrow, push, blade, pit, block, sentry, spell.
+- The layout: thirteen rooms and twelve passages are more than kit/trapdemo.py's greedy tree fits in the map, so
+  Trial backtracks (the same geometry and spacing).
 
     py mapgen/designs/trapdemo10.py [out_dir|-]
 """
@@ -23,6 +26,7 @@ import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from kit.trapdemo import Mission, DIRS
 from kit.quests import A
+from kit.trapdemo_dress import camp, clear_mouths, start_spot, free_spot, extra
 
 
 class Trial(Mission):
@@ -134,7 +138,9 @@ M.link("throne", "arena", trap=("sentry", 6))                # the gliding beam 
 M.link("throne", "warroom", trap=("spell", 5))               # glyphs and the warden (hard, off the trial)
 M.link("arena", "vault", length=5)
 M.layout(tries=40)
+n0 = len(M.m.d["objects"])
 M.dress()
+clear_mouths(M, M.m.d["objects"][n0:])     # nothing of the dressing in a passage's mouth
 # the garden court's well, where a challenger drinks and rests between the trial's halls (kit/wells.py: every well
 # heals); the barracks' arms by its back walls; the chapel's offerings for whoever braves the jaws
 M.put("court", "WishingWell", 3.0, 8.8, clear=3.0)
@@ -143,37 +149,23 @@ for t, a, b in (("TraderArmorRack1", 1.0, 4.0), ("TraderArmorRack2", 1.0, 9.0), 
     M.put("barracks", t, a, b, clear=3.0)
 
 
-def camp(rid, extra=()):
-    """The expedition's camp lived in (Q1K-3: 16 pieces of 8 kinds at the least) round the room's default dressing
-    (tent in the north corner, fire and stools, stores in the south corner, a chest in the east): beds along the
-    north-west wall, sacks and barrels in the west corner, a pelt and a third seat at the fire, the setting's own
-    pieces (`extra`); the sign beside the way on and the start between it and the fire. Pieces stay 3.6 squares off
-    the doorway's middle (a passage's mouth is 4-8 squares wide)."""
+def sign_spot(rid):
+    """A room point for the camp's sign: beside the way on (the first passage's mouth), a square into the room and
+    four along the wall from the mouth's middle, off every piece."""
     w, h = M.rooms[rid]["size"]
-    C = 3.6
-    for b in (4.4, 6.6):
-        M.put(rid, "Cot2", 1.25, b, clear=C)
-    for t, (a, b) in zip(("SackChestLarge1", "SackChestMedium2", "Barrel", "WaterBarrel"),
-                         ((1.2, 1.2), (2.5, 1.0), (1.0, 2.5), (3.8, 1.0))):
-        M.put(rid, t, a, b, clear=C)
-    M.put(rid, "WolfPelt2", w / 2 + 0.2, h / 2 - 1.7, clear=C)
-    M.put(rid, "Stool", w / 2 - 0.2, h / 2 + 1.6, clear=C)
-    for t, a, b in extra:
-        M.put(rid, t, a, b, clear=C)
     da, db = M.doors[rid][0]
     n = (0, 1) if db < 1 else (0, -1) if db > h - 1 else (1, 0) if da < 1 else (-1, 0)     # into the room
     t = (n[1], n[0])
     along = da if n[0] == 0 else db
-    side = -1 if along - 3.9 > 1.2 else 1
-    return (da + n[0] * 1.1 + t[0] * 3.9 * side, db + n[1] * 1.1 + t[1] * 3.9 * side), \
-           (da + n[0] * 3.0 - t[0] * 1.4 * side, db + n[1] * 3.0 - t[1] * 1.4 * side)
+    side = -1 if along - 4.2 > 1.2 else 1
+    return free_spot(M, rid, da + n[0] * 1.1 + t[0] * 4.2 * side, db + n[1] * 1.1 + t[1] * 4.2 * side, clear=0.9)
 
 
-# the herald's camp at the trial's lists: an arms rack and a practice barrel by the north-east wall, her writing table
-sign_at, start_at = camp("camp", extra=[("OutdoorTraderArmorRack1", 7.0, 11.0), ("TargetBarrel1", 9.2, 11.0),
-                                        ("TraderAppleCrate", 5.0, 11.0), ("SmallTable2", 11.0, 4.6),
-                                        ("Stool", 10.0, 3.9), ("BarrelWithTools2", 12.4, 6.0)])
-M.start_at("camp", *start_at)
+camp(M, "camp")                                  # the lived-in camp (kit/trapdemo_dress.py)
+# the herald's camp at the trial's lists: an arms rack and a practice barrel by the north-east wall
+extra(M, "camp", [("TargetBarrel1", 9.2, 10.9), ("BarrelWithTools2", 5.0, 10.9)])
+sign_at = sign_spot("camp")
+M.start_at("camp", *start_spot(M, "camp"))
 
 # ---- life -------------------------------------------------------------------------------------------------------
 M.monsters("gatehouse", {"GruntAxe": 2})
@@ -186,13 +178,13 @@ M.monsters("chapel", {"Swordsman": 2, "OgreBrute": 1})
 M.monsters("throne", {"OgreBrute": 1, "Archer": 2, "Swordsman": 1})
 M.monsters("warroom", {"Troll": 1, "Archer": 1})
 boss = M.boss("arena", "B2")
-key = M.item("vault", "GoldKey", 6.0, 6.0)
-amulet = M.item("trophy", "AmuletofCombat", 7.0, 9.6)
+key = M.item("vault", "GoldKey", *free_spot(M, "vault", 6.0, 6.0))
+amulet = M.item("trophy", "AmuletofCombat", *free_spot(M, "trophy", 7.0, 9.6))
 for rid, t, a, b in (("kitchen", "RedPotion", 6.0, 2.0), ("kitchen", "RedPotion", 6.8, 2.0), ("court", "RedPotion", 2.0, 6.0),
                      ("question", "CurePoisonPotion", 2.0, 2.0), ("warroom", "BluePotion", 2.0, 2.0)):
-    M.m.obj_px(t, *M.at(rid, a, b))
-M.put("chapel", "Gold", 10.0, 11.0, clear=0, xfer={"Amount": 150})
-M.put("chapel", "RedPotion", 11.0, 10.4, clear=0)
+    M.put(rid, t, *free_spot(M, rid, a, b, clear=1.0), clear=2.4)
+M.put("chapel", "Gold", *free_spot(M, "chapel", 10.0, 11.0, clear=1.0), clear=2.4, xfer={"Amount": 150})
+M.put("chapel", "RedPotion", *free_spot(M, "chapel", 11.0, 10.4, clear=1.0), clear=2.4)
 evelyn = M.person("camp", "War01A", "Evelyn", "HeraldEvelyn", pic="IngridPic", title="Herald Evelyn")
 
 # ---- the story --------------------------------------------------------------------------------------------------
@@ -233,6 +225,9 @@ q.on_death(boss, [A.stage(MAIN, 2), q.journal("Take the Gold Key from Garrick's 
 q.start([q.journal("Speak to Herald Evelyn at the camp by the castle gate.")])
 M.sign("camp", "THE WARLORD'S TRIAL. Challengers enter here.", *sign_at)
 
+# the healing wells named for the healing script (kit/setpieces HEAL_PREFIX; kit/wells.py heals them all)
+for k, o in enumerate(o for o in M.m.d["objects"] if o.get("type") == "WishingWell"):
+    o.setdefault("scr", f"HealWell{k + 1}")
 m = M.m                                   # tests/server_smoke.py reads the spec as m
 out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "out", "trapdemo", NAME)
 M.finish(None if out == "-" else out)

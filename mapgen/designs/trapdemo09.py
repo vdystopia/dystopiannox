@@ -23,6 +23,7 @@ import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from kit.trapdemo import Mission
 from kit.quests import A
+from kit.trapdemo_dress import camp, clear_mouths, start_spot, free_spot, extra
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 NAME = "TrapDem09"
@@ -48,7 +49,9 @@ M.link("sunroom", "tombs", trap=("sentry", 5))               # crossing beams (h
 M.link("tombs", "sanctum", trap=("arrow", 5))                # the lane hall (hard): into the sanctum
 M.link("sanctum", "vault", length=5)
 M.layout()
+n0 = len(M.m.d["objects"])
 M.dress()
+clear_mouths(M, M.m.d["objects"][n0:])     # nothing of the dressing in a passage's mouth
 # the sun shrine: round the furnisher's altar on the north-east wall, the sun's court (its ways in cross the room from
 # the north-west wall to the south-east one, along its middle)
 for t, a, b in (("Statue2g", 4.4, 12.6), ("Statue2g", 9.6, 12.6), ("Brazier", 5.6, 10.8), ("Brazier", 8.4, 10.8),
@@ -58,37 +61,23 @@ for t, a, b in (("Statue2g", 4.4, 12.6), ("Statue2g", 9.6, 12.6), ("Brazier", 5.
     M.put("sunroom", t, a, b, clear=3.2)
 
 
-def camp(rid, extra=()):
-    """The expedition's camp lived in (Q1K-3: 16 pieces of 8 kinds at the least) round the room's default dressing
-    (tent in the north corner, fire and stools, stores in the south corner, a chest in the east): beds along the
-    north-west wall, sacks and barrels in the west corner, a pelt and a third seat at the fire, the setting's own
-    pieces (`extra`); the sign beside the way on and the start between it and the fire. Pieces stay 3.6 squares off
-    the doorway's middle (a passage's mouth is 4-8 squares wide)."""
+def sign_spot(rid):
+    """A room point for the camp's sign: beside the way on (the first passage's mouth), a square into the room and
+    four along the wall from the mouth's middle, off every piece."""
     w, h = M.rooms[rid]["size"]
-    C = 3.6
-    for b in (4.4, 6.6):
-        M.put(rid, "Cot2", 1.25, b, clear=C)
-    for t, (a, b) in zip(("SackChestLarge1", "SackChestMedium2", "Barrel", "WaterBarrel"),
-                         ((1.2, 1.2), (2.5, 1.0), (1.0, 2.5), (3.8, 1.0))):
-        M.put(rid, t, a, b, clear=C)
-    M.put(rid, "WolfPelt2", w / 2 + 0.2, h / 2 - 1.7, clear=C)
-    M.put(rid, "Stool", w / 2 - 0.2, h / 2 + 1.6, clear=C)
-    for t, a, b in extra:
-        M.put(rid, t, a, b, clear=C)
     da, db = M.doors[rid][0]
     n = (0, 1) if db < 1 else (0, -1) if db > h - 1 else (1, 0) if da < 1 else (-1, 0)     # into the room
     t = (n[1], n[0])
     along = da if n[0] == 0 else db
-    side = -1 if along - 3.9 > 1.2 else 1
-    return (da + n[0] * 1.1 + t[0] * 3.9 * side, db + n[1] * 1.1 + t[1] * 3.9 * side), \
-           (da + n[0] * 3.0 - t[0] * 1.4 * side, db + n[1] * 3.0 - t[1] * 1.4 * side)
+    side = -1 if along - 4.2 > 1.2 else 1
+    return free_spot(M, rid, da + n[0] * 1.1 + t[0] * 4.2 * side, db + n[1] * 1.1 + t[1] * 4.2 * side, clear=0.9)
 
 
-# the pilgrims' camp: a little altar of candles by the north-east wall, the priest's table and a water cask
-sign_at, start_at = camp("camp", extra=[("Candleabra2", 7.0, 11.0), ("TraderAppleCrate", 5.2, 11.0),
-                                        ("WaterBarrel", 9.0, 11.1), ("SmallTable2", 11.0, 4.6),
-                                        ("Stool", 10.0, 3.9), ("Barrel2", 12.4, 6.0)])
-M.start_at("camp", *start_at)
+camp(M, "camp")                                  # the lived-in camp (kit/trapdemo_dress.py)
+# the pilgrims' camp: a little altar of candles by the north-east wall, a crate of offerings and a water cask
+extra(M, "camp", [("Candleabra2", 7.0, 10.9), ("TraderAppleCrate", 5.0, 10.9), ("WaterBarrel", 9.2, 10.9)])
+sign_at = sign_spot("camp")
+M.start_at("camp", *start_spot(M, "camp"))
 
 # ---- life -------------------------------------------------------------------------------------------------------
 M.monsters("narthex", {"Spider": 2, "Urchin": 2})
@@ -99,10 +88,14 @@ M.monsters("sunroom", {"Scorpion": 2, "BlackWidow": 1})
 M.monsters("tombs", {"Scorpion": 2, "BlackWidow": 1, "SpittingSpider": 1})
 M.monsters("sanctum", {"Scorpion": 2})
 boss = M.boss("sanctum", "B8")
-disk = M.item("vault", "RedOrb", 6.0, 6.0)
-book = M.item("cistern", "BlackBook1", 4.0, 4.0)
-M.m.obj_px("RedPotion", *M.at("cistern", 7.5, 2.0))
-M.m.obj_px("CurePoisonPotion", *M.at("library", 2.0, 2.0))
+disk = M.item("vault", "RedOrb", *free_spot(M, "vault", 6.0, 6.0))
+book = M.item("cistern", "BlackBook1", *free_spot(M, "cistern", 4.0, 4.0))
+# potions where a player stops between stages: the cistern's dead end, the library (the spiders' poison), the tombs
+for rid, t, n in (("cistern", "RedPotion", 1), ("library", "CurePoisonPotion", 1), ("sunroom", "RedPotion", 2),
+                  ("tombs", "RedPotion", 1)):
+    pa, pb = free_spot(M, rid, 2.0, 2.0, clear=1.2)
+    for k in range(n):
+        M.put(rid, t, pa + 0.45 * k, pb, clear=2.4)
 morgan = M.person("camp", "Con02a", "Morgan", "FatherMorgan", pic="MorganPic", title="Father Morgan")
 
 # ---- the story --------------------------------------------------------------------------------------------------
@@ -142,6 +135,9 @@ q.on_death(boss, [A.stage(MAIN, 2), q.journal("Take the sun disk from the vault 
 q.start([q.journal("Speak to Father Morgan at the camp on the temple steps.")])
 M.sign("camp", "THE SUNKEN SANCTUM. Pilgrims, beware the lower halls.", *sign_at)
 
+# the healing wells named for the healing script (kit/setpieces HEAL_PREFIX; kit/wells.py heals them all)
+for k, o in enumerate(o for o in M.m.d["objects"] if o.get("type") == "WishingWell"):
+    o.setdefault("scr", f"HealWell{k + 1}")
 m = M.m                                   # tests/server_smoke.py reads the spec as m
 out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "out", "trapdemo", NAME)
 M.finish(None if out == "-" else out)
