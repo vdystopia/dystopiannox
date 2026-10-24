@@ -139,3 +139,16 @@ apple crate is too close to the rectangular crate in the northeast" (-04, -05). 
 - **Never a crate against the apple crate:** the E corner heaps a crate, a barrel and a sack; apples stay with the sacks
   in the S corner; heap pieces a hand's width apart.
 - More work tables where the floor is still bare; trophies first on the back walls.
+
+## QA round 3 (2026-10-23; review/qa3/ledger-civic.md Q3N-1)
+
+The user: "The brick hearth floor around the oven is not properly tiled or centered" (RM-KITCHEN-05, a small square
+kitchen of 42 tiles: the wall fireplace and the iron stove 3.4 units apart on the NE wall, one patch of five squares by
+two under both).
+
+- **The hearth's patch bordered on every side** (Q3C-5): its NE row, along the wall, had drawn no curb toward the room
+  (`nox.py` TW-12, fixed for every room; reaches this kitchen when it is built again).
+- **The patch centred on the hearth:** a patch of three squares along the wall by two deep centred on the fireplace (as
+  drawn); a stove beside the hearth stands either on that patch, within its three squares, or a square clear of it on
+  its own patch, never half on it so the two run together into one patch off the hearth's middle. Rule written; the
+  kitchen composer still sets the stove `hearth ha + 1.9 + its half` off the hearth (`civic.kitchen`), not re-rendered.

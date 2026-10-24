@@ -72,6 +72,7 @@ class Ctx:
         self.hang_pat = None            # the room's hangings (finish hangs its bare walls with them)
         self.wall_pat = None            # a floor piece for a back wall the hangings could not dress
         self.s_makers = None            # what the S corner takes when the composition left it bare
+        self.carpet_inset = False       # carpets keep their trim off the room's outer ring (a band goes there)
         self.log = []
 
     # ---- geometry ------------------------------------------------------------------------------------------------
@@ -450,6 +451,11 @@ class Ctx:
         sq = {((x + y) // 2, (x - y) // 2) for (x, y) in f.room.tiles}
         nb8 = [(a, b) for a in (-1, 0, 1) for b in (-1, 0, 1) if a or b]
         inner = {s for s in sq if all((s[0] + a, s[1] + b) in sq for a, b in nb8)}
+        if self.carpet_inset:
+            # a room bordered by a band (great_hall): the carpet's trim stays inside the band's ring, so the band runs
+            # unbroken past it (QA round 3, RM-GREATHALL-01: the band along the NE wall had stopped where the carpet's
+            # trim lay on its squares)
+            inner = {s for s in inner if all((s[0] + a, s[1] + b) in inner for a, b in nb8)}
         tile = lambda s: (s[0] + s[1], s[0] - s[1])
         best = None
         i_c = (cu - nu - 1) / 2; j_c = (cv - nv + 1) / 2
@@ -1855,13 +1861,21 @@ def bar_floor(c):
     blend past it, as a room's floor ends at its walls (QA round 2, Q2C-6, the tavern set: "Make the floor behind the
     bars solid brick consistent with no blending. The whole area behind the bar should be bricks, and the border
     should be the bar ... Terminate the bricks at the bar"). kit/shells.py lay_zones leaves it alone (room.bar_floor).
-    Returns the tiles laid."""
+    Returns the tiles laid.
+
+    QA round 3 (Q3C-2, the tavern set): "All taverns need to have the floor properly transitioned between the bar floor
+    and the main tavern floor where the bar entrance / gap is. This is because the transition there is visible.
+    Meanwhile, the transition on the rest of it is obscured by the bar." Where no counter stands over the seam (the
+    flap the barkeep walks through, an arm stopping short), the brick is bordered as a hearth's patch is (bar_gap_border).
+    """
     from kit import shells as SH
     f = c.f
     room, spec = f.room, f.spec
     for t in getattr(room, "bar_floor", None) or ():      # a furnishing tried before this one (originality re-roll)
         spec.tile(*t, room.floor)
-    room.bar_floor = set()
+    for n, pair in getattr(room, "bar_edges", None) or ():
+        spec.pattern_tiles.get(n, set()).discard(pair)
+    room.bar_floor, room.bar_edges = set(), []
     fr = getattr(f, "bar_frame", None)
     if not fr: return set()
     ru, rv, U, V, su, sv = fr["ru"], fr["rv"], fr["U"], fr["V"], fr["su"], fr["sv"]
@@ -1876,7 +1890,54 @@ def bar_floor(c):
     if any((spec.floor.get(t) or main) != main for t in tiles): return set()     # (a carpet or a patch already there)
     for t in tiles: spec.tile(*t, mat)
     room.bar_floor = tiles
+    bar_gap_border(c, tiles, mat)
     return tiles
+
+
+BAR_COUNTER = re.compile(r"^Bar(Piece|Corner)")      # the counter's solid pieces (the flap, BarHingedTop, is the gap)
+BAR_COVER = 0.35                                     # a seam this near a counter piece's footprint lies under it
+
+
+def bar_open_seams(tiles, room_tiles, floor, counters, main):
+    """The seams between the brick behind a bar and the room's floor that no counter piece stands over: [(brick tile,
+    floor tile)]. tiles: the brick's; counters: [(u, v, hu, hv)] of the solid pieces; a seam's middle as drawn (tile
+    (x, y) at uv (x + y + 2, x - y - 1)). Shared with validate/checks.py (qa3.bar_gap)."""
+    out = []
+    for t in sorted(tiles):
+        for dx, dy in ((1, -1), (-1, -1), (1, 1), (-1, 1)):
+            n = (t[0] + dx, t[1] + dy)
+            if n in tiles or n not in room_tiles or (floor.get(n) or main) != main: continue
+            mu = (t[0] + t[1] + n[0] + n[1]) / 2 + 2
+            mv = (t[0] - t[1] + n[0] - n[1]) / 2 - 1
+            if any(abs(mu - u) <= hu + BAR_COVER and abs(mv - v) <= hv + BAR_COVER for u, v, hu, hv in counters):
+                continue
+            out.append((t, n))
+    return out
+
+
+def bar_gap_border(c, tiles, mat):
+    """The brick behind the bar bordered where its seam with the room's floor shows, at the flap the barkeep walks
+    through and wherever no counter stands over it (Q3C-2): its edge drawn onto the room's floor there, as a hearth's
+    patch is bordered (kit/shells.py lay_patch, PATCH_EDGE); under the counter it ends at the bar's line unbordered
+    (Q2C-6: "Terminate the bricks at the bar")."""
+    from kit import shells as SH
+    f = c.f
+    room, spec = f.room, f.spec
+    main = room.floor
+    counters = [(rec[0], rec[1], rec[2], rec[3]) for t, rec in f._typed if BAR_COUNTER.match(t) and rec[4]]
+    if mat not in spec.blend: spec.blending(mat, -50, edge=SH.PATCH_EDGE)
+    open_ = bar_open_seams(tiles, set(room.tiles), spec.floor, counters, main)
+    # and the seam either side of each, under the counter's ends, so the border runs across the whole gap and on under
+    # the counter rather than stopping where the gap's first tile does
+    mid = lambda t, n: ((t[0] + t[1] + n[0] + n[1]) / 2, (t[0] - t[1] + n[0] - n[1]) / 2)
+    gaps = [mid(t, n) for t, n in open_]
+    near = [(t, n) for t, n in bar_open_seams(tiles, set(room.tiles), spec.floor, [], main)
+            if (t, n) not in open_ and any(math.hypot(mid(t, n)[0] - a, mid(t, n)[1] - b) <= 2.1 for a, b in gaps)]
+    for t, n in open_ + near:
+        spec.edge_over[(mat, main)] = SH.PATCH_EDGE
+        spec.pattern_tiles.setdefault(n, set()).add((mat, main))
+        room.bar_edges.append((n, (mat, main)))
+    if DEBUG: c.log.append(f"   bar floor {len(tiles)} tiles, {len(room.bar_edges)} open seams bordered")
 
 
 def bar_front(c, depth=3.4):
@@ -2173,6 +2234,11 @@ def great_hall(c, plan):
     ax = axis(c)
     if not ax: return dining_hall(c, plan)
     r = ax["run"]
+    # the perimeter band drawn first, so the carpets keep their trim inside it (laid last: band_with_hearth)
+    from kit import finish as FIN
+    brng = random.Random(zlib.crc32(f"band:{f.spec.d.get('name')}:{f.room.id}".encode()))
+    band = brng.random() < FIN.BAND_RATE
+    c.carpet_inset = band
     # the hearth: on a back wall other than the far wall, else on the far wall behind the high table
     hearth = None
     for w in BACK:
@@ -2291,9 +2357,7 @@ def great_hall(c, plan):
     col = c.set_type.setdefault("tapestry colour", c.rng.choice(("Blue", "Red", "Green", "White")))
     c.hangings(rf"^{col}Tapestry\d$|^WallTrophy(Bear|Moose|MountainLion)[12]$", step=3.4, most=7)
     # the perimeter band of brick or cobble (RM-GREATHALL-07), from the rated-rooms pass (kit/finish.py lay_band)
-    from kit import finish as FIN
-    brng = random.Random(zlib.crc32(f"band:{f.spec.d.get('name')}:{f.room.id}".encode()))
-    if brng.random() < FIN.BAND_RATE: band_with_hearth(f, brng, hearth)
+    if band: band_with_hearth(f, brng, hearth)
 
 
 def band_with_hearth(f, rng, hearth=None):
@@ -2567,6 +2631,10 @@ def gallery(c, plan):
     c.hangings(r"^Painting[12]$|^BlueTapestry[24]$", step=3.2, most=7, first=r"^Painting")
 
 
+HALL_WIDE = 9.5       # a hall this many units or more from its axis to a side wall (inside the pieces' reach) is wide
+HALL_NAVE = 0.45      # a wide hall's colonnade stands this share of the way out to its side walls (Q3C-7)
+
+
 def hall(c, plan):
     """A colonnade in mirrored pairs either side of the aisle from the door, statues and braziers between the columns,
     benches and urns mirrored by the side walls, a statue pair flanking the middle of the far wall, lights in matching
@@ -2592,13 +2660,22 @@ def hall(c, plan):
             if res:
                 c.flank_lights(anchor_of(c, res, r), gap=0.4, before=0.4)
                 break
-        mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", 2.6, 3.2)
         # a colonnade down the aisle, statues and braziers between its columns (RM-HALL-05, a small square hall: "This
         # does not look like a hall at all": a column at every other station, at every size)
+        # QA round 3 (Q3C-7): RM-HALL-01/03, square halls 24 and 34 units across: "Incoherent, random, cluttered with
+        # too many pillars and statues", where the long halls 02 and 04 (5 of 5) have one colonnade a side and benches
+        # by the walls. The square halls had filled their width with a third rank of urns and statues between the
+        # colonnade and the benches, and urns among the benches: three ranks of statue-like pieces a side. Every hall
+        # now has the long halls' plan: one colonnade a side, set out to a wide hall's width (the nave as wide as the
+        # hall is), benches alone by the side walls, urns flanking the way in only in a narrow hall.
+        side = min(ax["mid"] - (c.vW if r["line"] == "/" else c.uN), (c.vE if r["line"] == "/" else c.uS) - ax["mid"])
+        wide = side - 1 >= HALL_WIDE
+        io = round(HALL_NAVE * (side - 1), 1) if wide else None
+        mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", 2.6, (io - 0.4) if wide else 3.2)
         stations(c, ax, [r"^Column[5-8]$", r"^Statue2[a-h]$", r"^Column[5-8]$", r"^Brazier$"],
-                 [r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$", VASE],
-                 first=5.4, step=4.0 if c.tiles >= 130 else 3.4, light_inner=True, middle=[VASE, r"^Statue2[a-h]$"])
-        way_in_urns(c, ax)
+                 [r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$"] + ([] if wide else [VASE]),
+                 first=5.4, step=4.0 if c.tiles >= 130 else 3.4, light_inner=True, inner_off=io)
+        if not wide: way_in_urns(c, ax)
         # plants in the far corners (rules/rooms/hall.md: "plants in the corners")
         pl = c.pick_once(r"^(Plant1|Plant3|Plant4|Plant5)$")
         reach = min(ax["mid"] - (c.vW if r["line"] == "/" else c.uN), (c.vE if r["line"] == "/" else c.uS) - ax["mid"])
@@ -2614,10 +2691,84 @@ def hall(c, plan):
                step=3.6, most=6)
 
 
+# QA round 3 (Q3C-6), the throne room set: "Individually, they are all very good. But as a whole, they are very
+# repetitive and all too similar. Add some variance and more object diversity." All five had been one plan (a runner
+# lined with braziers and columns, statues and benches by the walls, the same throne setting). A batch now draws its
+# layouts in strict rotation (as the chapels' altars, Q2S-1: no layout twice while another that fits is unused), each
+# a different treatment of the throne, the floor, the side walls and the pieces, after Westwood's four throne rooms
+# (rules/rooms/throne_room.md archetypes) and a court of the kit's own:
+# - processional: round 3's room, kept as it was rated (5 of 5): the runner lined with braziers between pairs of
+#   columns, statues flanking the throne, chests, benches, statues and urns by the side walls;
+# - colonnade (Westwood's dressed walls): a broad carpet down the middle of a bare floor, cathedral or marble columns
+#   standing against the side walls with statues of another kind between them, flame basins flanking the throne;
+# - ringed seat: the throne a step out from its wall ringed by four candelabras, a square of obelisks before it,
+#   chests in pairs on the side walls, braziers flanking the way in, plants in the front corners;
+# - audience hall: rows of benches facing the throne either side of the runner, flame basins before the dais, a
+#   statue pair flanking the throne, candelabras at the ends of the front rows;
+# - garden court: the runner between a pair of orb pools, plants and ferns in pairs down the side walls, statues
+#   between them, benches by the pools, plants flanking the throne.
+THRONE_LAYOUTS = (("processional", 1.0), ("colonnade", 1.0), ("ringed", 1.0), ("audience", 1.0), ("garden", 1.0))
+STATUE1 = r"^Statue1[a-h]$"
+STATUE2 = r"^Statue2[a-h]$"
+BENCH = r"^Bench[1-4]$|^CushionedBench\d$"
+CHESTS = r"^DunMirChest\d$|^Chest\d$"
+PLANTS = r"^(Plant1|Plant3|Plant4|Plant5|PlantFern[1-4])$"
+
+
+def throne_layout(c):
+    """This room's layout from THRONE_LAYOUTS, in strict rotation over the map's throne rooms (Q3C-6), among those its
+    floor fits."""
+    from kit.sacred import _spread
+    f = c.f
+    nw = c.wall("NW")
+    depth = f._depth_of(nw) if nw else 0
+    width = c.vE - c.vW
+    fits = dict(processional=True, colonnade=width >= 14, ringed=depth >= 16, audience=depth >= 16 and width >= 13,
+                garden=width >= 15 and depth >= 14)
+    if DEBUG: c.log.append(f"   throne room {depth:.0f} deep, {width:.0f} wide: fits {[k for k, v in fits.items() if v]}")
+    return _spread(f, "throne_layout", THRONE_LAYOUTS, ok=lambda n: fits[n], strict=True) or "processional"
+
+
+def throne_reach(c, ax):
+    """How far the floor runs from the axis to the nearer side wall (the stations' reach)."""
+    r = ax["run"]
+    a_, b_ = (c.vW, c.vE) if r["line"] == "/" else (c.uN, c.uS)
+    return min(ax["mid"] - a_, b_ - ax["mid"]) - 1
+
+
+def broad_carpet(c, ax, near, far, half):
+    """A carpet down the middle of the room, `half` units either side of the axis from `near` to `far` units off the axis
+    wall, centred on the axis as drawn (carpet_rect). Nothing stands on it. Returns True when laid."""
+    f = c.f
+    r = ax["run"]
+    for h_, n_, f_ in ((half, near, far), (half - 1, near, far), (half, near + 2, far - 2), (half - 2, near, far)):
+        if h_ < 2.5 or f_ - n_ < 6: continue
+        (u0, v0), (u1, v1) = on_axis(c, ax, n_, -h_), on_axis(c, ax, f_, h_)
+        cu, cv = (u0 + u1) / 2, (v0 + v1) / 2
+        nu, nv = max(2, int(abs(u1 - u0) / 2)), max(2, int(abs(v1 - v0) / 2))
+        cr = c.carpet_rect(cu, cv, nu, nv)
+        if not cr: continue
+        cen = cr[0][1] if r["line"] == "/" else cr[0][0]
+        if abs(cen - ax["mid"]) > 0.26: continue
+        if c.lay(cr[1], nu, nv):
+            b = f.carpet_boxes[-1]
+            f.runner_boxes.append((b[0], b[1], b[2] - SQUARE_V, b[3] - SQUARE_V))
+            return True
+    return False
+
+
+def facing_throne(c, ax, t):
+    """The variant of a seat with its back to the wall across from the throne (it faces the throne), else t."""
+    f = c.f
+    r = ax["run"]
+    op = next((rr for rr in f.g.runs if rr["line"] == r["line"] and rr["sign"] == -r["sign"]), None)
+    return (f.side_variant(t, op, F._family_of(t)) if op else None) or t
+
+
 def throne_room(c, plan):
-    """The throne across from the door on the NW wall facing it down a runner; statues and braziers flanking it;
-    columns and braziers in mirrored pairs down the aisle; benches and statues mirrored by the side walls; lights in
-    matching corners; urns flanking the way in; tapestries of one colour at even steps."""
+    """The throne across from the door on the NW wall facing it, the room composed in one of THRONE_LAYOUTS (Q3C-6):
+    each its own treatment of the throne, the floor and the side walls; lights in matching corners; hangings of one
+    colour at even steps on the back walls."""
     f = c.f
     c.wall_pat = VASE
     c.s_makers = [lambda c_, uv: c_.put_all([(c_.pick_once(VASE), *c_.corner_uv("S", 1.2)), (c_.pick_once(VASE), *c_.corner_uv("E", 1.2))]) and 2,
@@ -2626,23 +2777,131 @@ def throne_room(c, plan):
     # QA round 2 (Q2C-3): the throne on the room's own middle (RM-THRONEROOM-02/05: "The room is not centered"), the
     # runner centred under its aisle, the benches facing the aisle, and a third pair of statues and urns between the
     # aisle and the side walls in a wide room (-03: "Fill the southwestern side of the room. It's too empty")
+    layout = throne_layout(c)
+    c.log.append(f"throne room layout {layout}")
     nw = c.wall("NW")
-    th = f.place_throne(depth=2.9, runner=False, at=room_mid(c, nw) if nw else None)
-    if th:
-        c.flank(th, r"^Statue2[a-h]$", gap=0.8, fam="statue")
-        c.flank(th, r"^DunMirChest\d$|^Chest\d$", gap=3.4, fam="storage")
+    th = f.place_throne(depth=4.6 if layout == "ringed" else 2.9, runner=False, at=room_mid(c, nw) if nw else None)
+    if not th and layout == "ringed":
+        layout = "processional"
+        th = f.place_throne(depth=2.9, runner=False, at=room_mid(c, nw) if nw else None)
+    if not th:
+        f.colonnade(gap=5.0, aisle=3.0)
+        c.lights_balanced(4)
+        return
+    ax = dict(run=th["run"], mid=th["along"], depth=f._depth_of(th["run"]))
+    reach = throne_reach(c, ax)
+    first = th["hp"] + 5.0
+    hang = None
+    if layout == "processional":
+        c.flank(th, STATUE2, gap=0.8, fam="statue")
+        c.flank(th, CHESTS, gap=3.4, fam="storage")
         f.flank_lights(th, 0.9)
-        ax = dict(run=th["run"], mid=th["along"], depth=f._depth_of(th["run"]))
         runner(c, ax, 2.9 + 1.0, ax["depth"])
         door_walk(c, ax)
-        stations(c, ax, [r"^Column[5-8]$", r"^Brazier$"], [r"^Bench[1-4]$|^CushionedBench\d$", r"^Statue2[a-h]$", VASE],
-                 first=th["hp"] + 5.0, step=4.2, light_inner=True, middle=[r"^Statue2[a-h]$", VASE])
+        stations(c, ax, [r"^Column[5-8]$", r"^Brazier$"], [BENCH, STATUE2, VASE],
+                 first=first, step=4.2, light_inner=True, middle=[STATUE2, VASE])
         way_in_urns(c, ax)
-    else:
-        f.colonnade(gap=5.0, aisle=3.0)
+    elif layout == "colonnade":
+        # flame basins either side of the throne, then a pair of statues; a broad carpet the width of the nave; the
+        # columns standing against the side walls at even steps with statues between them; the floor bare
+        c.flank(th, r"^DunMirFlameBasinLit$", gap=0.6)
+        c.flank(th, STATUE1, gap=2.8, fam="statue") or c.flank(th, STATUE2, gap=2.8, fam="statue")
+        half = min(reach - 3.6, 4.5)
+        broad_carpet(c, ax, 2.9 + 1.0, ax["depth"] - 1.0, half)
+        door_walk(c, ax)
+        col = r"^CathedralColumn[1-3]$" if c.types(r"^CathedralColumn[1-3]$") else r"^MarbleColumn$|^Column[5-8]$"
+        stations(c, ax, [], [col, STATUE1 if c.types(STATUE1) else STATUE2], first=first - 0.6, step=3.6,
+                 wall_gap=0.5)
+        for d_ in (ax["depth"] - 2.0, ax["depth"] - 2.8):          # candelabras flanking the way in
+            if mirrored(c, ax, f.light_type(), d_, half + 1.2, light=True): break
+        hang = r"^DunMirHangingShield\d+$"
+    elif layout == "ringed":
+        # the throne out from its wall, a candelabra at each corner of it; a square of obelisks before it; chests on
+        # the side walls; braziers by the way in; plants in the front corners
+        r = th["run"]
+        dt = abs((th["uv"][0] if r["line"] == "/" else th["uv"][1]) - r["coord"])
+        lt = f.light_type()
+        for o_ in (th["ha"] + 1.0, th["ha"] + 1.6):
+            if mirrored(c, ax, lt, dt - th["hp"] - 0.6, o_, light=True) and \
+                    mirrored(c, ax, lt, dt + th["hp"] + 0.9, o_, light=True): break
+        runner(c, ax, dt + th["hp"] + 2.6, ax["depth"])
+        door_walk(c, ax)
+        ob = c.pick(r"^Obelisk$") or c.pick_once(STATUE2)
+        half = (f.aisle or {}).get("half", 1.5)
+        for d0 in (dt + th["hp"] + 3.2, dt + th["hp"] + 4.0):
+            if mirrored(c, ax, ob, d0, half + 1.8) and mirrored(c, ax, ob, d0 + 4.2, half + 1.8): break
+        stations(c, ax, [], [STATUE2], first=first + 6.0, step=5.0, wall_gap=0.5)
+        lo_w, hi_w = side_walls(c, ax)                      # a pair of chests on each side wall, mirrored across
+        if lo_w and hi_w:
+            sides = [n for n in ("NE", "NW", "SE", "SW") if c.wall(n) in (lo_w, hi_w)]
+            for fr_ in (0.3, 0.22, 0.38):
+                if len(sides) == 2 and wall_pair(c, sides[0], CHESTS, fr_, "storage"):
+                    if wall_pair(c, sides[1], CHESTS, fr_, "storage"): break
+                    for o in [x for x in f.objects[-2:] if re.match(CHESTS, x["type"])]: f._remove(o)
+        for d_ in (ax["depth"] - 1.6, ax["depth"] - 2.4):
+            if mirrored(c, ax, "Brazier", d_, half + 2.0, light=True): break
+        pl = c.pick_once(PLANTS)
+        if pl: c.put_all([(pl, *c.corner_uv("S", 1.2)), (pl, *c.corner_uv("E", 1.2))], pairing=True)
+    elif layout == "audience":
+        # benches in rows facing the throne either side of the runner, the dais between flame basins and statues
+        c.flank(th, STATUE2, gap=0.8, fam="statue")
+        mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", th["hp"] + 3.4, 2.8)
+        runner(c, ax, 2.9 + 1.0, ax["depth"])
+        door_walk(c, ax)
+        half = (f.aisle or {}).get("half", 1.5)
+        b0 = c.pick_once(BENCH)
+        rows = 0
+        if b0:
+            bt = facing_throne(c, ax, b0)
+            hu, hv = f.half(bt)
+            ha = hv if ax["run"]["line"] == "/" else hu           # its half length across the room
+            d, last = first + 3.0, None
+            while d <= ax["depth"] - 5.0 and rows < 5:
+                n_side = 0
+                for k in range(3):
+                    o_ = half + 1.0 + ha + k * (2 * ha + 0.3)
+                    if o_ + ha > reach - 1.5: break
+                    if not mirrored(c, ax, bt, d, o_): break
+                    n_side += 1
+                if n_side:
+                    rows += 1
+                    if last is None: last = (d, n_side)
+                d += 3.2
+            if last:
+                o_ = half + 1.0 + (2 * ha + 0.3) * last[1] + 0.6
+                mirrored(c, ax, f.light_type(), last[0], o_, light=True)
+        stations(c, ax, [], [STATUE1 if c.types(STATUE1) else VASE], first=first, step=6.4, wall_gap=0.5)
+        way_in_urns(c, ax)
+    else:   # garden
+        pl = c.pick_once(PLANTS)
+        if pl: c.flank(th, "^" + re.escape(pl) + "$", gap=0.8)
+        c.flank(th, STATUE1 if c.types(STATUE1) else STATUE2, gap=2.4, fam="statue")
+        runner(c, ax, 2.9 + 1.0, ax["depth"])
+        door_walk(c, ax)
+        half = (f.aisle or {}).get("half", 1.5)
+        mid_d = (first + ax["depth"] - 2.0) / 2
+        pool = "OrbPoolWithOrb" if f.ok_type("OrbPoolWithOrb") else None
+        if pool:
+            done = False
+            for dd in (mid_d, mid_d - 1.5, mid_d + 1.5):
+                for o_ in (half + 4.0, half + 4.8, half + 3.4):
+                    if mirrored(c, ax, pool, dd, o_):
+                        done = True
+                        b = c.pick_once(BENCH)
+                        if b:
+                            for dd2 in (dd + 3.6, dd - 3.6):
+                                if mirrored(c, ax, b, dd2, o_, face=True): break
+                        break
+                if done: break
+        stations(c, ax, [r"^HandBrazier$|^Brazier$"], [PLANTS, STATUE1 if c.types(STATUE1) else STATUE2],
+                 first=first, step=4.6, light_inner=True)
+        hang = r"^(Blue|Green)Tapestry\d$"
     c.lights_balanced(4)
-    col = c.rng.choice(("Blue", "Red", "White", "Green"))
-    c.hangings(rf"^{col}Tapestry\d$", step=3.4, most=6)
+    if hang and c.types(hang):
+        c.hangings(hang, step=3.4, most=6)
+    else:
+        col = c.rng.choice(("Blue", "Red", "White", "Green"))
+        c.hangings(rf"^{col}Tapestry\d$", step=3.4, most=6)
 
 
 COMPOSERS = {"living_room": living_room, "dwelling": living_room, "kitchen": kitchen, "shop": shop, "tavern": tavern,

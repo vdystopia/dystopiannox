@@ -1145,6 +1145,73 @@ def q2_keeper_space(m):
     m.obj("TraderDesk1", 211, 7.0); m.obj("Barrel", 211, 9.0)
 
 
+# ---- QA round 3's floor and batch rules (review/qa3/ledger-civic.md; validate/checks.py check_qa3) -------------------
+def _drawn_tile(u, v):
+    """The floor tile drawn centred at uv (u, v) (u even, v odd: tile (x, y) at (x + y + 2, x - y - 1))."""
+    return (u + v - 1) // 2, (u - v - 3) // 2
+
+
+def q3_carpet_blended(m):
+    # Q3C-1 (the tavern set: "The other carpets are all blended into the floor ... A carpet doesn't blend into the floor
+    # underneath. It has solid, distinct edges"): a declared tavern's carpet of three by three squares spilling a
+    # BlendEdge onto the boards round it
+    _declare(m, "tavern")
+    m.raw_floors = True
+    rect = {_drawn_tile(u, v) for u in (208, 210, 212) for v in (-3, -1, 1)}
+    for t in rect: m.tile(*t, "RugRed")
+    m.blending("RugRed", 40, "BlendEdge")
+    for t in rect:
+        for a, b in ((1, -1), (-1, -1), (1, 1), (-1, 1), (0, 2), (0, -2), (2, 0), (-2, 0)):
+            n = (t[0] + a, t[1] + b)
+            if n not in rect: m.local_blend[n] = -60; m.local_from.setdefault(n, set()).add("RugRed")
+
+
+def q3_patch_unbordered(m):
+    # Q3C-4 (RM-GREATHALL-01..03: "The brick tiling along the exterior of this room is not properly bordered"): a declared
+    # great hall's band of brick along its NE wall laid with hard edges
+    _declare(m, "great_hall")
+    m.raw_floors = True
+    for u in range(204, 220, 2): m.tile(*_drawn_tile(u, 9), "RedBrick")
+
+
+def q3_bar_opening(m):
+    # Q3C-2 (the tavern set: "All taverns need to have the floor properly transitioned between the bar floor and the
+    # main tavern floor where the bar entrance / gap is"): a bar in the house's E corner, brick behind it, the counter's
+    # opening at v = 7 with the brick meeting the boards there unbordered
+    _declare(m, "tavern")
+    m.raw_floors = True
+    for u in (218, 220, 222):
+        for v in (5, 7, 9): m.tile(*_drawn_tile(u, v), "RedBrick")
+    m.obj("BarCorner1C", 216, 3)
+    for u in (218, 220): m.obj("BarPiece2A", u, 3)
+    for v in (5, 9): m.obj("BarPiece1A", 216, v)
+    m.obj("BarHingedTop", 216, 7)
+
+
+def q3_same_throne_rooms(m):
+    # Q3C-6 (the throne room set: "Individually, they are all very good. But as a whole, they are very repetitive and
+    # all too similar"): three declared throne rooms of the same pieces
+    rooms = [(182, 196, -36, -22), (230, 252, -36, -22)]
+    for k, (u0, u1, v0, v1) in enumerate(rooms):
+        m.room(u0, u1, v0, v1, wall="StuccoLightWood", floor="WoodLight2")
+    _declare(m, "throne_room", [dict(number=2 + k, building=f"test hall {k}", kind="throne_room", purpose="", tiles=0,
+                                     box=[0, 0, 0, 0], floor=[list(t) for t in rect_tiles(*r)])
+                                for k, r in enumerate(rooms)])
+    m.d["objects"] = [o for o in m.d["objects"] if o.get("type") not in ("WoodBed2", "Table1", "Wolf")]
+    for cu, cv in ((211, 0), (189, -29), (241, -29)):
+        for t, du, dv in (("Statue2a", -3, -3), ("Statue2a", -3, 3), ("Column5", 2, -3), ("Column5", 2, 3),
+                          ("Brazier", 4, -2), ("Brazier", 4, 2)):
+            m.obj(t, cu + du, cv + dv)
+
+
+def q3_hall_ranks(m):
+    # Q3C-7 (RM-HALL-01/03: "Incoherent, random , cluttered with too many pillars and statues"): a declared hall whose
+    # columns and statues stand in four ranks across its width
+    _declare(m, "hall")
+    for v in (-6, -2, 2, 6):
+        for u in (205, 211, 217): m.obj("Column5" if v in (-2, 2) else "Statue2c", u, v)
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -1360,6 +1427,16 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
      "past its cap of"),
     ("STq2kpr", q2_keeper_space, "composition", "warning", "a barrel behind a smithy's counter - Q2V-3",
      "where the keeper stands"),
+    ("STq3Blnd", q3_carpet_blended, "qa3", "warning", "a tavern's carpet blended into its boards - Q3C-1",
+     "blend into the floor"),
+    ("STq3Brd", q3_patch_unbordered, "qa3", "warning", "a great hall's brick band with hard edges - Q3C-4",
+     "with no border"),
+    ("STq3Bar", q3_bar_opening, "qa3", "warning", "a bar's brick unbordered at the counter's opening - Q3C-2",
+     "at the bar's opening"),
+    ("STq3Rep", q3_same_throne_rooms, "qa3", "warning", "three throne rooms of the same pieces - Q3C-6",
+     "s repeat one another"),
+    ("STq3Rnk", q3_hall_ranks, "qa3", "warning", "a hall of four ranks of columns and statues - Q3C-7",
+     "stand in 4 ranks"),
 ]
 
 

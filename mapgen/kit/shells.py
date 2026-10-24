@@ -413,7 +413,13 @@ def blend_pattern(spec, tiles, doors=()):
     """Edges between a room's two floors where Westwood blends the pair (rules/out/floors.json: dirt worn into
     brick, marble panels in a steel or brick trim): the overlay spills onto the tiles beside it, the room's own and those
     under its walls, and nothing else spills there (nox.Spec.pattern_tiles); never within 3 cells of a door, where the
-    doorway's floor is the room's own. tiles: {tile: material} of one room; doors: the door gaps."""
+    doorway's floor is the room's own. tiles: {tile: material} of one room; doors: the door gaps.
+
+    Never a carpet (QA round 3, Q3C-1: "A carpet doesn't blend into the floor underneath. It has solid, distinct
+    edges"): a carpet keeps the trim kit/furnish.py lay_carpet gave it; never a patch lay_patch bordered (Q3C-4: a
+    floor patch ends at a hard, bordered edge), whose border this would have turned into a blend."""
+    patched = getattr(spec, "patch_tiles", {})
+    tiles = {t: m for t, m in tiles.items() if not (m or "").startswith("Rug") and patched.get(t) != m}
     mats = set(tiles.values())
     if len(mats) < 2 or not hasattr(spec, "pattern_tiles"): return
     count = collections.Counter(tiles.values())
@@ -675,7 +681,9 @@ def lay_patch(spec, room, tiles, mat, edge=PATCH_EDGE, base=None):
     rt = set(getattr(room, "tiles", ()) or ())
     for t in tiles: spec.tile(*t, mat)
     if mat not in spec.blend: spec.blending(mat, -50, edge=edge)
+    if not hasattr(spec, "patch_tiles"): spec.patch_tiles = {}
     for t in tiles:
+        if edge != "BlendEdge": spec.patch_tiles[t] = mat    # (a bordered patch: blend_pattern keeps off it, Q3C-4)
         for a, b in SIDES_TIPS:
             n = (t[0] + a, t[1] + b)
             if n in tiles or n not in rt: continue

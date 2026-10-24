@@ -136,3 +136,16 @@ Composed as the armoury (rated 4.8): no axis, no display down the walk (the chap
   stretch; the back walls hung with the trade.
 - **Wares on show** in rows standing free, each row one kind, mirrored about the room's middle line, clear of the walk
   (`civic.display_rows`).
+
+## QA round 3 (2026-10-23; review/qa3/ledger-civic.md Q3N-2)
+
+The user: "The shop is simply too big, and there's not enough stuff to fill it. Make it smaller. Improve the object
+diversity. Add a few rows of something other than lamps and apple crates" (RM-SHOP-03, a large square shop of 168
+tiles; 01, 02, 04, 05, of 54-78 tiles, 5 of 5).
+
+- **A shop is a small room:** 50-110 tiles (Westwood's shops are under 100); a large shell is given to a store room or
+  split, never furnished as one shop with its middle empty.
+- **Rows of more than one kind:** the wares standing free come in rows of different kinds (racks of clothes or arms,
+  barrels, sacks, crates, shelves of goods), one kind to a row, never lamps or apple crates in every row; a big shop
+  takes more kinds, not more of the same.
+- Rule written; not re-rendered (a single note).
