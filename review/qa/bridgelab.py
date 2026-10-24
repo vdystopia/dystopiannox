@@ -6,7 +6,7 @@ the crossing laid by the kit's Waterworks: a rope bridge (Westwood's stream brid
 The plots vary on a fixed schedule: the crossing kind, the road's axis on screen, the stream's width and water, the
 road's surface and the forest.
 
-    py review/qa/bridgelab.py [--n 20] [--seed 1] [--out DIR]
+    py review/qa/bridgelab.py [--n 20] [--seed 1] [--out DIR] [--render] [--only BR-01,BR-06]
 
 Writes DIR/map/BridgeLab.map, DIR/variants.json (each crossing's label, kind, axis, width, water, forest and its centre
 in world px) and, with --render, DIR/renders/BR-NN.png (the editor's full render cropped round each crossing, labelled).
@@ -160,8 +160,14 @@ def main():
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--out", default=os.path.join(REPO, "review", "out", "qa", "bridges"))
     ap.add_argument("--render", action="store_true")
+    ap.add_argument("--only", default="", help="labels to picture and list (e.g. BR-01,BR-06,BR-11): a round that "
+                    "re-renders only the crossings rated for a fix; the map is the whole lab, so they keep their layout")
     a = ap.parse_args()
     res = generate(a.n, a.seed, os.path.join(a.out, "map"))
+    if a.only:
+        keep = set(a.only.split(","))
+        res["lab_variants"] = res["variants"]
+        res["variants"] = [v for v in res["variants"] if v["label"] in keep]
     with open(os.path.join(a.out, "variants.json"), "w", encoding="utf-8") as f:
         json.dump(res, f, indent=1)
     print(f"{len(res['variants'])} crossings: {res['map']}")
