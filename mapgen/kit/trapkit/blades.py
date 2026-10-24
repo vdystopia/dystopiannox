@@ -418,6 +418,10 @@ def long_run(st):
     st.rest.append((42.0, W / 2))
     return Meta(tier="hard", tells="a row of pendulums, a ledge over a pit with stabbing blades, two rows of blades "
                                    "with gaps",
-                answer="run with the pendulum wave; rest; take the ledge blade by blade as each pulls back; rest; "
-                       "stand in each row's gap as it passes (by the NW wall, then in the middle-SE)",
-                careless="the pit, or a hundred HP or more of blades: no class walks it")
+                answer="watch the pendulum wave and run in behind its crest; rest; take the ledge blade by blade as "
+                       "each pulls back into the wall; rest; stand in each row's gap as it passes (one by the NW wall, "
+                       "one in the middle-SE) and cross between them near the ends, not where they meet (a 34)",
+                careless="the pit, or a hundred HP or more of blades: no class walks it",
+                timing="pendulums: period 60, 7 frames apart (the wave runs at 7 px a frame); ledge: blades out 6, "
+                       "held 16, back 6, in 16 (period 44), alternate blades half a period off; rows: 4.5 px a frame "
+                       "over 10 squares, 15 frames at each end (period 174), half a period apart")

@@ -275,8 +275,8 @@ def lighthouse(st):
                  answer="watch one turn: cross while the beam sweeps the inside of its niche (~18 s of 22); caught "
                         "in the open as it swings out, step behind a stone stub (its shadow is safe) or out of the fan",
                  careless="crossing the fan at a walk without looking: about one walker in three meets the swing",
-                 timing=f"a turn {lap} frames (22 s); out of the niche ~{out / spin:.0f} frames a turn; the fan's "
-                        "edge moves ~2 px a frame near the niche, ~8 at the far wall")
+                 timing=f"a turn {lap} frames (22 s); out of the niche ~{out / spin:.0f} frames a turn; the beam "
+                        "moves ~1 px a frame three squares out, ~3-4 at the far wall")
 
 
 # ---- 04 standard: the walking gap ----------------------------------------------------------------------------------
@@ -380,25 +380,33 @@ def gliding(st):
     park, stop = (21.5, IN), (0.4, IN)
     g, base = _globe(st, *park, 0, 1, kind="SentryGlobeMovable")
     st.group("G", [g])
-    speed, wait = 8.0, 30
+    speed, wait = 9.0, 20
     st.T.mover(f"{st.label}M", [g], [st.at(*park), st.at(*stop)], speed, mode="once", armed=False)
     _carried(st, g, [park, stop], 0, 1)
     arrive = wait + int(math.ceil((park[0] - stop[0]) * SQ / speed))
-    gold = st.T.obj("Gold", *st.at(18.5, 4.5), name=st.nm("Gold"), xfer={"Amount": 150})
+    ga, gb = 19.5, 4.5
+    gold = st.T.obj("Gold", *st.at(ga, gb), name=st.nm("Gold"), xfer={"Amount": 150})
     st.T.watch(f"{st.label}W", gold, acts=[
-        st.act("walls_close", walls=mouth, delay=3), _sound(st, "BigGong", 18.5, 4.5),
+        st.act("walls_close", walls=mouth, delay=3), _sound(st, "BigGong", ga, gb),
         _sound(st, "SpikeBlockMove", *park, delay=wait - 6), st.act("arm", "M", delay=wait),
         st.act("off", "G", delay=arrive + 2), st.act("walls_open", walls=mouth, delay=arrive + 5)])
     st.rest += [(5.0, 3.6), (10.0, 3.6), (15.0, 3.6)]
+    # the race to the nearest shadow (a <= 15.6 behind the stub at a 14 .. 16): the beam (behind you) closes at
+    # speed - your pace; caught when it reaches your back (0.35 squares)
+    v = speed / SQ
+    walk_t = (ga - 15.6) / (3.3 / SQ)
+    run_t = (ga - 15.6) / (6.9 / SQ)
+    caught = lambda pace: (park[0] - ga - 0.35 + v * wait) / (v - pace / SQ)
     return _meta(st, tier="hard", tells="a beam across the far end of the hall, gold before it, three short stone "
                                         "walls along the NW side",
-                 answer="before taking the gold, pick your stub; take it and walk straight behind the nearest stub "
-                        "(the shadow on its far side from the NW wall): the way out slams, and 1 s later the beam "
-                        "glides the length of the hall in under 3 s and stops at the door",
-                 careless="taking the gold and running for the door: it is shut and the beam arrives: death",
+                 answer="before taking the gold, look at the nearest stub; take it and run straight back along the "
+                        "SE side into the stub's shadow (the side away from the NW wall): the way out slams, and "
+                        "two thirds of a second later the beam glides the length of the hall faster than a run and "
+                        "stops at the door",
+                 careless="taking the gold and making for the door: it is shut and the beam arrives: death",
                  timing=f"the beam starts {wait} frames after the gold is lifted, {speed} px a frame (a run is 6.9); "
-                        f"it reaches the nearest stub (a 15) ~{wait + int(6.5 * SQ / speed)} frames after; the gold "
-                        "to that stub's shadow is ~3.5 squares, ~35 frames at a walk")
+                        f"from the gold to the shadow ({ga - 15.6:.1f} squares) a walk takes {walk_t:.0f} frames and "
+                        f"is caught at {caught(3.3):.0f}, a run takes {run_t:.0f}")
 
 
 # ---- 08 hard: run the gates ----------------------------------------------------------------------------------------
@@ -522,4 +530,7 @@ def long_run(st):
                                         "the far stretch past three stone stubs",
                  answer="walk the gap through the fence; plate and run the gate; shelter behind each stub as the "
                         "sliding beam passes (it turns at each end after 0.7 s), move on as it goes away",
-                 careless="death at the first fence")
+                 careless="death at the first fence",
+                 timing="fence: a step every 36 frames, cycle 180; gate: dark 6-51 frames after the plate, 5 squares: "
+                        "a run (25 frames), not a walk (54); rail: 5 px a frame over 14 squares, 20 frames at each "
+                        "end (period 222); shadows 4 squares apart (40 frames at a walk)")
