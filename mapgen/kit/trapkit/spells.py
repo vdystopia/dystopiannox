@@ -268,8 +268,8 @@ def skull_gallery(st):
     across, back = st.across(), neg(st.along())
     side_gun = shooter(st, SKULL, across)
     end_gun = shooter(st, SKULL, back)
-    guns = [st.obj(side_gun, 6.0 + 1.5 * k, 0.25, enabled=False) for k in range(9)]
-    guns += [st.obj(end_gun, st.L - 0.3, b, enabled=False) for b in (1.5, st.W - 1.5)]
+    guns = [st.obj(side_gun, 6.0 + 1.5 * k, 0.4, enabled=False) for k in range(9)]
+    guns += [st.obj(end_gun, st.L - 0.4, b, enabled=False) for b in (1.5, st.W - 1.5)]
     st.group("G", guns)
     bs = (0.75, 2.25, 3.75, 5.25)
     gaps = (2, 0, 3, 1, 2)
@@ -297,7 +297,7 @@ def sealed_room(st):
     v = _lanes(st, [(7.0, 0), (10.0, 11), (13.0, 22), (16.0, 33)], period=45, gaps=(0, 7), s="F", sides=(0, 1, 0, 1))
     across, down = st.across(), neg(st.along())
     guns = [st.obj(shooter(st, SKULL, down), 18.6, b, enabled=False) for b in (1.0, st.W / 2, st.W - 1.0)]
-    guns += [st.obj(shooter(st, SKULL, across), a, 0.25, enabled=False) for a in (4.6, 8.5, 12.5)]
+    guns += [st.obj(shooter(st, SKULL, across), a, 0.4, enabled=False) for a in (4.6, 8.5, 12.5)]
     st.group("G", guns)
     wires = [f"W{j}" for j in range(4)]
     count = f"{st.label}C"

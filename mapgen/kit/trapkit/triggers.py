@@ -22,9 +22,9 @@ def _arrows_across(st, a, offs=(-0.6, 0.0, 0.6)):
     """Arrow traps in a side wall shooting across the hall along a + off (the lines 0.6 apart leave no gap): in
     the left wall if a trap faces that way, else in the right."""
     t = shooter(st, ARROW, st.across())
-    b = 0.2
+    b = 0.4
     if t is None:
-        t, b = shooter(st, ARROW, neg(st.across())), st.W - 0.2
+        t, b = shooter(st, ARROW, neg(st.across())), st.W - 0.4
     return [st.obj(t, a + o, b, enabled=False) for o in offs]
 
 
