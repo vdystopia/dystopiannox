@@ -87,7 +87,15 @@ def focus(im, box, corners, pad=26):
     return Image.composite(c, dim, m)
 
 
-def caption(st, sim, tour):
+def real(rw):
+    """A real-input careless walk's result (tests/traps_e2e/realwalk.py), as words."""
+    if not rw: return ""
+    out = rw["outcome"]
+    out = {"fell": "shoved or dropped into the pit", "passed": "got through"}.get(out, out.replace("stuck at", "held back at a ="))
+    return f"walked straight in with real input (the game's own physics): {rw['lost']} HP, {out}"
+
+
+def caption(st, sim, tour, rw=None):
     m = st.get("meta") or {}
     s = f"{st['title']} ({st.get('tier', '')}). {m.get('tells', '')}. The answer: {m.get('answer', '')}."
     if sim:
@@ -100,6 +108,8 @@ def caption(st, sim, tour):
             s += f" In the game: plan {g['plan'][0]} HP {g['plan'][1]}"
             if g.get("walk"): s += f", careless walk {g['walk'][0]} HP {g['walk'][1]}"
             s += "."
+    if rw:
+        s += " Careless and " + real(rw) + "."
     return s
 
 
@@ -117,6 +127,8 @@ def main(rnd, dirs):
         bb = im.convert("L").point(lambda v: 255 if v > 8 else 0).getbbox()
         sims = {r["label"]: r for r in json.load(open(os.path.join(bdir, name + ".sim.json")))} \
             if os.path.exists(os.path.join(bdir, name + ".sim.json")) else {}
+        rwf = os.path.join(bdir, name + ".realwalk.json")
+        rws = json.load(open(rwf)).get("walk", {}) if os.path.exists(rwf) else {}
         tours = {r["label"]: r for r in json.load(open(os.path.join(bdir, name + ".tour.json")))} \
             if os.path.exists(os.path.join(bdir, name + ".tour.json")) else {}
         if name.startswith("TL"):
@@ -127,7 +139,7 @@ def main(rnd, dirs):
                 box = crop_box(corners)
                 cells.append((f"{st['label']}  {st['title']}", focus(im, box, corners)))
                 items.append(dict(id=st["label"], cat="traplab", type=kind,
-                                  caption=caption(st, sims.get(st["label"]), tours.get(st["label"])),
+                                  caption=caption(st, sims.get(st["label"]), tours.get(st["label"]), rws.get(st["label"])),
                                   sheet=f"sheets/TL-{kind}.jpg"))
             sheet(cells, f"TrapLab {name}: {kind}", os.path.join(base, "sheets", f"TL-{kind}.jpg"), SCALE["TL"])
         else:
@@ -139,6 +151,8 @@ def main(rnd, dirs):
                 if g.get("plan"):
                     out += f"; in the game a careful pass cost {g['plan'][0]} HP ({g['plan'][1]})"
                     if g.get("walk"): out += f", a careless walk {g['walk'][0]} HP ({g['walk'][1]})"
+                if rws.get(s["label"]):
+                    out += "; careless and " + real(rws[s["label"]])
                 out += ")"
                 return out
             stages = "; ".join(stage(s) for s in info["stations"])
