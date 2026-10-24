@@ -321,12 +321,12 @@ class StationModel:
                 r, dmg, jump = SMALL[t]
                 static[o] = (self.cells_near(a, b, (r + PLAYER_R + PLAN_MARGIN) / SQ), dmg, 0.0 if jump else dmg)
             elif t in PITS:
-                static[o] = (self.cells_square(a, b, 0.49), LETHAL / FPT, 0.0)
+                static[o] = (self.cells_square(a, b, 0.62), LETHAL / FPT, 0.0)        # a margin: the replay falls at the edge
         crumble = [o for o, v in self.objs.items() if v["type"] in CRUMBLE]
         self.crumble_cells = set()
         for o in crumble:
             a, b = self.ab(self.objs[o]["x"], self.objs[o]["y"])
-            self.crumble_cells |= set(self.cells_square(a, b, 0.49))
+            self.crumble_cells |= set(self.cells_square(a, b, 0.62))
         shooters = {o: v for o, v in self.objs.items() if v["type"] in SHOOTERS}
         lanes = {o: self.lane(v) for o, v in shooters.items()}
         sentries = {o: v for o, v in self.objs.items() if v["type"] in SENTRIES}
