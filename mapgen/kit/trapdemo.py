@@ -392,6 +392,8 @@ class Mission:
         if drop:
             self.m.d["objects"] = [o for o in self.m.d["objects"] if id(o) not in drop]
             objs = [o for o in objs if id(o) not in drop]
+        for o in objs:                  # no open torches indoors: the room kit's torches are the setting's light
+            if o.get("type") in ("Torch", "TorchPole"): o["type"] = self.decor["light"]
         self.rooms[rid]["furnished"] = kind
         return objs
 

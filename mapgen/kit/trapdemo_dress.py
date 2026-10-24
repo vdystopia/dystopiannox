@@ -285,8 +285,12 @@ def kit_camp(M, rid, trade="bandit", sleepers=3, tents=1, loot=()):
     centre = camps._sq(*part.centre)
     da, db = M.doors[rid][0]
     toward = camps._sq(*M.at(rid, da, db))
-    return camps.bandit_camp(M.m, M.rng, land, centre, toward, loot=list(loot), sleepers=sleepers, tents=tents,
-                             trade=trade, hideout=False)
+    n0 = len(M.m.d["objects"])
+    spots = camps.bandit_camp(M.m, M.rng, land, centre, toward, loot=list(loot), sleepers=sleepers, tents=tents,
+                              trade=trade, hideout=False)
+    for o in M.m.d["objects"][n0:]:                      # no open torches indoors: the camp's poles are the setting's lights
+        if o.get("type") == "TorchPole": o["type"] = M.decor["light"]
+    return spots
 
 
 def open_spot(M, rid, a, b, clear=0.9, wall=1.0, reach=6.0):
