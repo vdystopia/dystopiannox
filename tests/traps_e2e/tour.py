@@ -51,7 +51,9 @@ def probe_source(name, bdir):
         grouped = {o for g in data["groups"].values() for o in g}
         on = sorted(o for o in names & grouped if data["objects"][o].get("enabled", True))
         off = sorted(o for o in names if not data["objects"][o].get("enabled", True))
-        sentries = sorted(o for o in names if data["objects"][o]["type"].startswith("SentryGlobe")
+        # off while the hero waits, on as the run starts: a globe's beam back at its base angle, a gun's timer
+        # cleared (it fires at once when it sees him, then once a second: the simulator's phase)
+        sentries = sorted(o for o in names if data["objects"][o]["type"].startswith(("SentryGlobe", "Skull", "ArrowTrap"))
                           and data["objects"][o].get("enabled", True))
         clocks = [c for c in data["clocks"] if c["name"].startswith(pre)]
         movers = [m for m in data["movers"] if m["name"].startswith(pre)]
