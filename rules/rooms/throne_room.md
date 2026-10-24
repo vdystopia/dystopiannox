@@ -161,24 +161,26 @@ The user: "The room is not centered" (RM-THRONEROOM-02, -05); "Fill the southwes
 The user, of the whole set (all five 5 of 5): "Individually, they are all very good. But as a whole, they are very
 repetitive and all too similar. Add some variance and more object diversity."
 
-- **A batch's throne rooms differ in plan, not only in size:** each room draws one of five layouts in strict rotation
-  over the map's throne rooms (`civic.THRONE_LAYOUTS`, `throne_layout`, as the chapels' altars, Q2S-1: no layout twice
-  while another that fits is unused), each its own treatment of the throne, the floor, the side walls and the pieces:
+- **A batch's throne rooms differ in plan, not only in size or pieces:** each room draws one of five plans in strict
+  rotation over the map's throne rooms (`civic.THRONE_LAYOUTS`, `throne_layout`, as the chapels' altars, Q2S-1: no plan
+  twice while another that fits is unused). The plans differ in where the throne stands, what the floor holds and how
+  the room is crossed (a first pass that varied only the pieces still ran a runner from the door to a throne against
+  its wall in all five):
   - **processional** (round 3's room, kept as rated): the runner lined with braziers between pairs of columns, statues
     and candelabras flanking the throne, benches, statues and urns by the side walls, urns at the way in;
-  - **colonnade** (Westwood's dressed walls): flame basins and statues of the other series (Statue1) flanking the
-    throne, a broad carpet four or five squares wide, cathedral columns standing against the side walls with statues
-    between them, candelabras in pairs along the carpet's edges, paintings on the back walls; no braziers, benches or
-    urns;
-  - **ringed seat** (Westwood's Con11a): the throne a step out from its wall, a candelabra at each corner of it, a pair
-    of columns framing it, a square of four obelisks before it, statues by the side walls, braziers at the way in,
-    plants in the front corners;
-  - **audience hall**: rows of benches, two a side, facing the throne either side of the runner (an audience's seats,
-    as a chapel's pews, so the type's cap of two benches a side wall does not apply), flame basins before the dais,
-    statues by the side walls, candelabras at the front row, columns framing the way in;
-  - **garden court**: plants and statues flanking the throne, a pair of orb pools either side of the runner with a
-    bench by each, plants in pairs lining the runner, statues and ferns by the side walls, columns framing the way in,
-    green tapestries.
+  - **dais court**: the throne out in the room on a carpeted dais, columns at the dais's back corners, candelabras at
+    its front ones, benches round it on three sides facing it (two a side beside it, rows before it), statues and hand
+    braziers against the wall behind it, urns in the far corners; no runner;
+  - **apse court**: the throne in an apse of four columns against its wall, statues beyond it; galleries of cathedral
+    columns down both sides with benches and urns behind them against the walls; the court between them a pair of orb
+    pools on the bare floor, or carpeted wall to wall where too narrow for them; plants in the corners; no runner;
+  - **twin thrones**: two thrones side by side on the back wall, a flame basin between them, candelabras and statues
+    outside them, a broad carpet before both lined with candelabras, the side walls dressed with cathedral columns,
+    statues and benches, paintings, plants in the corners;
+  - **petition hall**: the throne between obelisks and statues, flame basins before it, the petitioners' benches in rows
+    across the room facing it either side of a bare walk, statues between the rows by the side walls, columns framing
+    the way in; no runner.
+  A plan whose seats or columns are its structure lifts the type's cap on them for that room (`civic.allow`).
 - **The throne's dais bordered** like a hearth's patch (`shells.BORDERED_ZONES`), never blended.
 - **Every column in a pair placed with a purpose** (`civic.way_in_columns`), never a lone column left by the finishing
   pass against a wall.

@@ -129,3 +129,8 @@ one, 4.
   statue, column, brazier); a station a door's way crosses stays empty rather than shifting out of line or taking
   another kind (01's second door had pushed its first pairs two units out; 03's side doors had put braziers in the
   columns' places). Checked: `qa3.hall_ranks` (more than one rank a side of columns, statues and urns).
+- **A wide hall as full as the long halls** (the coordinator's look at the first qa4: 01 and 03 had gone sparse): a
+  focal piece on the axis before the far wall (`civic.hall_focal`: a fountain, an orb pool, an orrery or a great
+  statue), the nave between the colonnades carpeted, the side walls lined with benches, urns and plants in turn (two
+  urns a side at most, so they never read as another rank), urns flanking the way in, plants in all four corners, six
+  lights in a hall of 240 tiles. Still one straight colonnade a side.

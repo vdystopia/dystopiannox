@@ -2767,38 +2767,41 @@ def hall(c, plan):
 
 # QA round 3 (Q3C-6), the throne room set: "Individually, they are all very good. But as a whole, they are very
 # repetitive and all too similar. Add some variance and more object diversity." All five had been one plan (a runner
-# lined with braziers and columns, statues and benches by the walls, the same throne setting). A batch now draws its
-# layouts in strict rotation (as the chapels' altars, Q2S-1: no layout twice while another that fits is unused), each
-# a different treatment of the throne, the floor, the side walls and the pieces, after Westwood's four throne rooms
-# (rules/rooms/throne_room.md archetypes) and a court of the kit's own:
+# from the door to the throne on its dais, lined with braziers and columns, statues and benches by the walls). A batch
+# now draws its plans in strict rotation (as the chapels' altars, Q2S-1: no plan twice while another that fits is
+# unused). The plans differ in where the throne stands, what the floor holds and how the room is crossed, not only in
+# their pieces (the coordinator's look at the first qa4: five rooms of new pieces still all ran a runner from the door to
+# a throne against its wall):
 # - processional: round 3's room, kept as it was rated (5 of 5): the runner lined with braziers between pairs of
-#   columns, statues flanking the throne, chests, benches, statues and urns by the side walls;
-# - colonnade (Westwood's dressed walls): a broad carpet down the middle of a bare floor, cathedral or marble columns
-#   standing against the side walls with statues of another kind between them, flame basins flanking the throne;
-# - ringed seat: the throne a step out from its wall ringed by four candelabras and framed by a pair of columns, a
-#   square of obelisks before it, statues by the side walls, braziers flanking the way in, plants in the front corners;
-# - audience hall: rows of benches facing the throne either side of the runner, flame basins before the dais, a
-#   statue pair flanking the throne, candelabras at the ends of the front rows;
-# - garden court: the runner between a pair of orb pools, plants and ferns in pairs down the side walls, statues
-#   between them, benches by the pools, plants flanking the throne.
-THRONE_LAYOUTS = (("processional", 1.0), ("colonnade", 1.0), ("ringed", 1.0), ("audience", 1.0), ("garden", 1.0))
+#   columns, statues flanking the throne, benches, statues and urns by the side walls;
+# - dais court: the throne out on a carpeted dais in the room's middle, benches round it on three sides facing it,
+#   columns at the dais's back corners, candelabras at its front ones, statues against the wall behind it; no runner;
+# - apse court: the throne in an apse of four columns against its wall, flame basins and statues within it; galleries
+#   of cathedral columns down both sides with benches and urns behind them against the walls; the court between them
+#   carpeted wall to wall with orb pools; no runner;
+# - twin thrones: two thrones side by side on the back wall, a flame basin between them, a broad carpet before both,
+#   candelabras lining it, the side walls dressed with columns and statues of the other series, paintings;
+# - petition hall: the throne between obelisks, flame basins before it, rows of petitioners' benches across the room
+#   facing it either side of a bare walk, statues between the rows by the side walls, columns at the way in; no runner.
+THRONE_LAYOUTS = (("processional", 1.0), ("dais", 1.0), ("apse", 1.0), ("twin", 1.0), ("petition", 1.0))
 STATUE1 = r"^Statue1[a-h]$"
 STATUE2 = r"^Statue2[a-h]$"
 BENCH = r"^Bench[1-4]$|^CushionedBench\d$"
 CHESTS = r"^DunMirChest\d$|^Chest\d$"
 PLANTS = r"^(Plant1|Plant3|Plant4|Plant5|PlantFern[1-4])$"
+BASIN = r"^DunMirFlameBasinLit$"
 
 
 def throne_layout(c):
-    """This room's layout from THRONE_LAYOUTS, in strict rotation over the map's throne rooms (Q3C-6), among those its
+    """This room's plan from THRONE_LAYOUTS, in strict rotation over the map's throne rooms (Q3C-6), among those its
     floor fits."""
     from kit.sacred import _spread
     f = c.f
     nw = c.wall("NW")
     depth = f._depth_of(nw) if nw else 0
     width = c.vE - c.vW
-    fits = dict(processional=True, colonnade=width >= 14, ringed=depth >= 16, audience=depth >= 16 and width >= 13,
-                garden=width >= 15 and depth >= 14)
+    fits = dict(processional=True, dais=depth >= 22 and width >= 17, apse=width >= 21 and depth >= 20,
+                twin=width >= 17, petition=depth >= 20 and width >= 15)
     if DEBUG: c.log.append(f"   throne room {depth:.0f} deep, {width:.0f} wide: fits {[k for k, v in fits.items() if v]}")
     return _spread(f, "throne_layout", THRONE_LAYOUTS, ok=lambda n: fits[n], strict=True) or "processional"
 
@@ -2820,14 +2823,19 @@ def broad_carpet(c, ax, near, far, half):
         (u0, v0), (u1, v1) = on_axis(c, ax, n_, -h_), on_axis(c, ax, f_, h_)
         cu, cv = (u0 + u1) / 2, (v0 + v1) / 2
         nu, nv = max(2, int(abs(u1 - u0) / 2)), max(2, int(abs(v1 - v0) / 2))
-        cr = c.carpet_rect(cu, cv, nu, nv)
-        if not cr: continue
-        cen = cr[0][1] if r["line"] == "/" else cr[0][0]
-        if abs(cen - ax["mid"]) > 0.26: continue
-        if c.lay(cr[1], nu, nv):
-            b = f.carpet_boxes[-1]
-            f.runner_boxes.append((b[0], b[1], b[2] - SQUARE_V, b[3] - SQUARE_V))
-            return True
+        # the count of squares across the axis matched to it (an odd count on a square's middle, an even one on a seam)
+        for du, dv in ((0, 0), (0, -1), (-1, 0), (-1, -1), (0, 1)) if r["line"] == "/" else ((0, 0), (-1, 0), (0, -1), (-1, -1), (1, 0)):
+            a_, b_ = nu + du, nv + dv
+            if a_ < 2 or b_ < 2: continue
+            cr = c.carpet_rect(cu, cv, a_, b_)
+            if DEBUG: c.log.append(f"   broad carpet {a_}x{b_} at {cu:.1f},{cv:.1f} (half {h_:.1f}): {cr}")
+            if not cr: continue
+            cen = cr[0][1] if r["line"] == "/" else cr[0][0]
+            if abs(cen - ax["mid"]) > 0.26: continue
+            if c.lay(cr[1], a_, b_):
+                b = f.carpet_boxes[-1]
+                f.runner_boxes.append((b[0], b[1], b[2] - SQUARE_V, b[3] - SQUARE_V))
+                return True
     return False
 
 
@@ -2849,9 +2857,65 @@ def facing_throne(c, ax, t):
     return (f.side_variant(t, op, F._family_of(t)) if op else None) or t
 
 
+def allow(f, fam, n):
+    """The type's cap on a family lifted to `n` for this room (kit/identity.py repeat): a plan whose seats or columns are
+    its structure (a court's or a petition hall's benches, as a chapel's pews; an apse's and its galleries' columns)."""
+    rp = dict(f.ident.get("repeat", {}))
+    rp[fam] = (8, n)
+    f.ident = dict(f.ident, repeat=rp)
+
+
+def seats_allowed(f, n):
+    allow(f, "bench", n)
+
+
+def bench_rows(c, ax, depths, inner, reach, per_side=3, gap=0.3):
+    """Rows of benches facing the throne across the room at each depth, mirrored either side of a walk `inner` units
+    wide each side of the axis, up to `per_side` a side. Returns (rows, the outer end's offset of the first row)."""
+    f = c.f
+    b0 = c.pick_once(BENCH)
+    if not b0: return 0, None
+    bt = facing_throne(c, ax, b0)
+    hu, hv = f.half(bt)
+    ha = hv if ax["run"]["line"] == "/" else hu           # its half length across the room
+    rows, end = 0, None
+    for d in depths:
+        n_side = 0
+        for k in range(per_side):
+            o_ = inner + ha + k * (2 * ha + gap)
+            if o_ + ha > reach - 1.2: break
+            if not mirrored(c, ax, bt, d, o_): break
+            n_side += 1
+        if n_side:
+            rows += 1
+            if end is None: end = inner + (2 * ha + gap) * n_side
+    return rows, end
+
+
+def corner_pairs(c, ax, pat, near=True, far=True):
+    """A mirrored pair of `pat` in the far corners (by the throne's wall) and one in the near corners. Returns the pieces
+    placed."""
+    t = c.pick_once(pat)
+    if not t: return 0
+    reach = throne_reach(c, ax) + 1
+    got = 0
+    for want, ds in ((far, (1.3, 1.8, 2.4)), (near, (ax["depth"] - 1.3, ax["depth"] - 1.8, ax["depth"] - 2.4))):
+        if not want: continue
+        for k, d_ in enumerate(ds):
+            n = mirrored(c, ax, t, d_, reach - 1.3 - 0.5 * k)
+            if n: got += n; break
+    return got
+
+
+def wall_anchor(c, ax, d=0.5):
+    """An anchor on the axis wall at the axis (for pieces flanking its middle)."""
+    r = ax["run"]
+    return dict(obj=None, run=r, uv=c.f._uv_on(r, d, ax["mid"]), along=ax["mid"], ha=2.0, hp=0.4)
+
+
 def throne_room(c, plan):
-    """The throne across from the door on the NW wall facing it, the room composed in one of THRONE_LAYOUTS (Q3C-6):
-    each its own treatment of the throne, the floor and the side walls; lights in matching corners; hangings of one
+    """The throne on the NW wall's middle facing the door across the room, the room composed in one of THRONE_LAYOUTS
+    (Q3C-6): each its own plan of the throne, the floor and the walk; lights in matching corners; hangings of one
     colour at even steps on the back walls."""
     f = c.f
     c.wall_pat = VASE
@@ -2864,17 +2928,35 @@ def throne_room(c, plan):
     layout = throne_layout(c)
     c.log.append(f"throne room layout {layout}")
     nw = c.wall("NW")
-    th = f.place_throne(depth=4.6 if layout == "ringed" else 2.9, runner=False, at=room_mid(c, nw) if nw else None)
-    if not th and layout == "ringed":
-        layout = "processional"
-        th = f.place_throne(depth=2.9, runner=False, at=room_mid(c, nw) if nw else None)
+    mid0 = room_mid(c, nw) if nw else None
+    depth0 = f._depth_of(nw) if nw else 0
+    th, th2 = None, None
+    if layout == "dais":
+        dt = max(7.0, min(12.0, round(0.38 * depth0)))
+        th = f.place_throne(depth=dt, runner=False, at=mid0)
+        for o in [x for x in f.objects if x.get("type") == "DunMirThroneShadow"]:
+            f._remove(o)                                      # (cast on the floor out in the room it reads as a hole)
+    elif layout == "twin" and mid0 is not None:
+        for s_ in (3.2, 3.6, 4.0):
+            th = f.place_throne(depth=2.9, runner=False, at=mid0 - s_)
+            th2 = th and f.place_throne(depth=2.9, runner=False, at=mid0 + s_)
+            if th and th2 and abs((th["along"] + th2["along"]) / 2 - mid0) < 0.1: break
+            for o in [x for x in list(f.objects) if x.get("type", "").startswith("DunMirThrone")]: f._remove(o)
+            th = th2 = None
+    if not th:
+        if layout in ("dais", "twin"): layout = "petition"
+        th = f.place_throne(depth=2.9, runner=False, at=mid0)
     if not th:
         f.colonnade(gap=5.0, aisle=3.0)
         c.lights_balanced(4)
         return
-    ax = dict(run=th["run"], mid=th["along"], depth=f._depth_of(th["run"]))
+    mid = (th["along"] + th2["along"]) / 2 if th2 else th["along"]
+    ax = dict(run=th["run"], mid=mid, depth=f._depth_of(th["run"]))
     reach = throne_reach(c, ax)
     first = th["hp"] + 5.0
+    half = (f.aisle or {}).get("half", 1.5)
+    r = th["run"]
+    dt = abs((th["uv"][0] if r["line"] == "/" else th["uv"][1]) - r["coord"])
     hang = None
     if layout == "processional":
         c.flank(th, STATUE2, gap=0.8, fam="statue")
@@ -2885,133 +2967,115 @@ def throne_room(c, plan):
         stations(c, ax, [r"^Column[5-8]$", r"^Brazier$"], [BENCH, STATUE2, VASE],
                  first=first, step=4.2, light_inner=True, middle=[STATUE2, VASE])
         way_in_urns(c, ax)
-    elif layout == "colonnade":
-        # flame basins either side of the throne, then a pair of statues; a broad carpet the width of the nave; the
-        # columns standing against the side walls at even steps with statues between them; the floor bare; candelabras
-        # flanking the way in; paintings on the back walls
-        r = th["run"]
-        dt = abs((th["uv"][0] if r["line"] == "/" else th["uv"][1]) - r["coord"])
-        basin = c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier"
-        for o_ in (th["ha"] + 1.2, th["ha"] + 1.8, th["ha"] + 2.4):
-            if mirrored(c, ax, basin, dt + 0.6, o_, light=True): break
-        c.flank(th, STATUE1, gap=2.8, fam="statue") or c.flank(th, STATUE2, gap=2.8, fam="statue")
-        half = min(reach - 3.6, 5.0)
-        broad_carpet(c, ax, 2.9 + 1.0, ax["depth"] - 1.0, half)
+    elif layout == "dais":
+        # the dais's carpet, the throne at its back; columns at its back corners, candelabras at its front ones;
+        # benches round it facing it: two a side beside it, a row before it; statues against the wall behind it
         door_walk(c, ax)
-        col = r"^CathedralColumn[1-3]$" if c.types(r"^CathedralColumn[1-3]$") else r"^MarbleColumn$|^Column[5-8]$"
-        st = max(3.6, (ax["depth"] - 2.4 - (first - 0.6)) / 6.0)
-        stations(c, ax, [], [col, STATUE1 if c.types(STATUE1) else STATUE2], first=first - 0.6, step=3.6,
-                 wall_gap=0.5)
-        # candelabras in pairs along the carpet's edges, before every other station (the colonnade lit, not lined)
+        hw = min(5.0, reach - 3.2)
+        broad_carpet(c, ax, dt - 3.6, dt + 6.4, hw)
+        col = c.pick_once(r"^Column[5-8]$") or "Column5"
+        for o_ in (hw + 0.9, hw + 1.4):
+            if mirrored(c, ax, col, dt - 3.0, o_): break
         lt = f.light_type()
-        d_ = first - 0.6
+        done = False
+        for d_ in (dt + 6.9, dt + 6.2, dt + 7.6, dt + 5.2):        # candelabras at the dais's front corners
+            for o_ in (hw + 0.9, hw + 1.4, hw - 0.6):
+                if mirrored(c, ax, lt, d_, o_, light=True): done = True; break
+            if done: break
+        seats_allowed(f, 12)
+        b = c.pick_once(BENCH)
+        if b:
+            for d_ in (dt - 0.4, dt + 2.6):                       # beside the dais, facing it
+                for o_ in (hw + 1.5, hw + 2.1):
+                    if mirrored(c, ax, b, d_, o_, face=True): break
+        bench_rows(c, ax, (dt + 8.2, dt + 11.2), half + 0.9, reach, per_side=2)
+        c.flank(wall_anchor(c, ax), STATUE2, gap=1.6, fam="statue")
+        for d_ in (dt - 3.0, dt - 2.2):                            # hand braziers behind the dais, by the wall's statues
+            if mirrored(c, ax, c.pick_once(r"^HandBrazier$") or "Brazier", d_, hw + 2.6, light=True): break
+        stations(c, ax, [], [STATUE1 if c.types(STATUE1) else VASE, PLANTS], first=dt + 7.0, step=4.4, wall_gap=0.5)
+        corner_pairs(c, ax, VASE, near=False)
+        for d_ in (ax["depth"] - 1.8, ax["depth"] - 2.6):
+            if mirrored(c, ax, "Brazier", d_, half + 2.4, light=True): break
+    elif layout == "apse":
+        # the apse: four columns round the throne, flame basins inside it, statues beyond it on the wall; galleries of
+        # columns down both sides, benches and urns behind them against the walls; the court between them a bare
+        # stone floor with a pair of orb pools and candelabras
+        col = c.pick_once(r"^Column[5-8]$") or "Column5"
+        ao = th["ha"] + 1.9
+        for o_ in (ao, ao + 0.5, ao + 1.0):
+            n_ = len(f.objects)
+            if mirrored(c, ax, col, 1.3, o_) and mirrored(c, ax, col, dt + th["hp"] + 1.4, o_): ao = o_; break
+            for x in f.objects[n_:]: f._remove(x)
+        c.flank(th, STATUE1 if c.types(STATUE1) else STATUE2, gap=ao - th["ha"] + 1.4, fam="statue")
+        allow(f, "column", 14)
+        door_walk(c, ax)
+        go = round(reach - 3.2, 1)                                # the galleries' line
+        gcol = r"^CathedralColumn[1-3]$" if c.types(r"^CathedralColumn[1-3]$") else r"^MarbleColumn$|^Column[5-8]$"
+        stations(c, ax, [gcol], [], first=dt + th["hp"] + 4.4, step=4.0, inner_off=go, exact=True)
+        seats_allowed(f, 12)
+        stations(c, ax, [], [BENCH, VASE], first=dt + th["hp"] + 6.4, step=4.0, wall_gap=0.4)
+        pool = "OrbPoolWithOrb" if f.ok_type("OrbPoolWithOrb") else None
+        done = False
+        if pool:
+            mid_d = (dt + ax["depth"]) / 2 + 1.0
+            for dd in sorted((mid_d + 0.5 * k for k in range(-6, 7)), key=lambda x: abs(x - mid_d)):
+                for o_ in (half + 2.4, half + 2.8, half + 2.0, half + 3.2):
+                    if o_ > go - 2.6: continue
+                    if mirrored(c, ax, pool, dd, o_): done = True; break
+                if done: break
+        if not done:                                              # a court too narrow for the pools: carpeted
+            broad_carpet(c, ax, dt + th["hp"] + 3.0, ax["depth"] - 2.0, go - 1.7)
+        way_in_urns(c, ax)
+        corner_pairs(c, ax, PLANTS)
+        lt = f.light_type()
+        for d_ in (dt + th["hp"] + 4.4, ax["depth"] - 3.0):
+            for o_ in (half + 1.2, half + 1.8):
+                if mirrored(c, ax, lt, d_, o_, light=True): break
+        hang = r"^GreenTapestry\d$|^BlueTapestry\d$"
+    elif layout == "twin":
+        # two thrones side by side, a flame basin between them on the wall, candelabras outside them; a broad carpet
+        # before both lined with candelabras; the side walls dressed with columns and statues; paintings
+        basin = c.pick_once(BASIN) or "Brazier"
+        c.put(basin, *on_axis(c, ax, 1.4), light=True)
+        lt = f.light_type()
+        s_ = abs(th2["along"] - th["along"]) / 2
+        for o_ in (s_ + th["ha"] + 1.0, s_ + th["ha"] + 1.6, s_ + th["ha"] + 2.2, s_ + th["ha"] + 2.8):
+            if mirrored(c, ax, lt, dt + 0.6, o_, light=True): break
+        hw = min(s_ + 2.6, reach - 3.6)
+        broad_carpet(c, ax, dt + th["hp"] + 1.2, ax["depth"] - 1.0, hw)
+        door_walk(c, ax)
+        for g_ in (2.6, 3.2, 3.8):                                 # statues beyond the thrones
+            o_ = s_ + th["ha"] + g_
+            if mirrored(c, ax, c.pick_once(STATUE2) or "Statue2a", 1.3, o_): break
+        col = r"^CathedralColumn[1-3]$" if c.types(r"^CathedralColumn[1-3]$") else r"^MarbleColumn$|^Column[5-8]$"
+        st = 3.8
+        allow(f, "bench", 8)
+        stations(c, ax, [], [col, STATUE1 if c.types(STATUE1) else STATUE2, col, BENCH], first=first, step=st,
+                 wall_gap=0.5)
+        corner_pairs(c, ax, PLANTS)
+        d_ = first + 1.9
         while d_ <= ax["depth"] - 3.0:
-            for o_ in (half + 1.0, half + 1.5):
+            for o_ in (hw + 1.0, hw + 1.5):
                 if mirrored(c, ax, lt, d_, o_, light=True): break
             d_ += 2 * st
-        for d_ in (ax["depth"] - 2.0, ax["depth"] - 2.8):          # candelabras flanking the way in
-            if mirrored(c, ax, lt, d_, half + 1.2, light=True): break
         hang = r"^Painting[12]$"
-    elif layout == "ringed":
-        # the throne out from its wall, a candelabra at each corner of it and a pair of columns framing it; a square of
-        # obelisks before it; statues by the side walls; braziers by the way in; plants in the front corners (a throne
-        # room takes no chest: the object knowledge base's cap for the type)
-        r = th["run"]
-        dt = abs((th["uv"][0] if r["line"] == "/" else th["uv"][1]) - r["coord"])
-        lt = f.light_type()
-        ring = None
-        for o_ in (th["ha"] + 1.0, th["ha"] + 1.6, th["ha"] + 2.2, th["ha"] + 2.8):
-            n_ = len(f.objects)
-            if mirrored(c, ax, lt, dt - th["hp"] - 0.4, o_, light=True) and                     mirrored(c, ax, lt, dt + th["hp"] + 0.9, o_, light=True):
-                ring = o_; break
-            for x in f.objects[n_:]:                       # the four lights or none
-                f._remove(x)
-                if c.lights: c.lights.pop()
-                if f.ring_lights: f.ring_lights.pop()
-        for o_ in ((ring or th["ha"]) + 2.4, (ring or th["ha"]) + 3.2, (ring or th["ha"]) + 4.0):
-            if mirrored(c, ax, c.pick_once(r"^Column[5-8]$") or "Column5", dt, o_): break
-        runner(c, ax, dt + th["hp"] + 2.6, ax["depth"])
+    else:   # petition
+        # the throne between obelisks, statues beyond them; flame basins before it; the petitioners' benches in rows
+        # across the room either side of a bare walk; statues between the rows by the side walls; columns at the way in
+        ob = c.pick(r"^Obelisk$")
+        if ob: c.flank(th, "^Obelisk$", gap=0.6)
+        c.flank(th, STATUE2, gap=2.6 if ob else 0.8, fam="statue")
+        for o_ in (2.8, 3.4):
+            if mirrored(c, ax, c.pick_once(BASIN) or "Brazier", th["hp"] + 3.6, o_, light=True): break
         door_walk(c, ax)
-        ob = c.pick(r"^Obelisk$") or c.pick_once(STATUE2)
-        half = (f.aisle or {}).get("half", 1.5)
-        for d0 in (dt + th["hp"] + 3.2, dt + th["hp"] + 4.0, dt + th["hp"] + 4.8):
-            n_ = len(f.objects)
-            if mirrored(c, ax, ob, d0, half + 1.8) and mirrored(c, ax, ob, d0 + 4.2, half + 1.8): break
-            for x in f.objects[n_:]: f._remove(x)
-        stations(c, ax, [], [STATUE2], first=first + 6.0, step=5.0, wall_gap=0.5)
-        for d_ in (ax["depth"] - 1.6, ax["depth"] - 2.4):
-            if mirrored(c, ax, "Brazier", d_, half + 2.0, light=True): break
-        pl = c.pick_once(PLANTS)
-        if pl: c.put_all([(pl, *c.corner_uv("S", 1.2)), (pl, *c.corner_uv("E", 1.2))], pairing=True)
-    elif layout == "audience":
-        # benches in rows facing the throne either side of the runner, the dais between flame basins and statues; a
-        # pair of columns at the way in
-        c.flank(th, STATUE2, gap=0.8, fam="statue")
-        mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", th["hp"] + 3.4, 2.8)
-        runner(c, ax, 2.9 + 1.0, ax["depth"])
-        door_walk(c, ax)
-        half = (f.aisle or {}).get("half", 1.5)
         way_in_columns(c, ax, half)
-        b0 = c.pick_once(BENCH)
-        rows = 0
-        if b0:
-            # an audience hall's pews: rows of two a side, as many rows as its floor takes (the type's two benches a
-            # side wall do not apply: these are its seats, as a chapel's pews)
-            rp = dict(f.ident.get("repeat", {}))
-            rp["bench"] = (10, 16)
-            f.ident = dict(f.ident, repeat=rp)
-            bt = facing_throne(c, ax, b0)
-            hu, hv = f.half(bt)
-            ha = hv if ax["run"]["line"] == "/" else hu           # its half length across the room
-            d, last = first + 3.0, None
-            while d <= ax["depth"] - 6.0 and rows < 5:
-                n_side = 0
-                for k in range(2):
-                    o_ = half + 1.0 + ha + k * (2 * ha + 0.3)
-                    if o_ + ha > reach - 1.5: break
-                    if not mirrored(c, ax, bt, d, o_): break
-                    n_side += 1
-                if n_side:
-                    rows += 1
-                    if last is None: last = (d, n_side)
-                d += 3.2
-            if last:
-                o_ = half + 1.0 + (2 * ha + 0.3) * last[1] + 0.6
-                mirrored(c, ax, f.light_type(), last[0], o_, light=True)
-        stations(c, ax, [], [STATUE1 if c.types(STATUE1) else VASE], first=first, step=6.4, wall_gap=0.5)
-    else:   # garden
-        # plants flanking the throne, then statues; a pair of orb pools either side of the runner with benches by
-        # them; plants in pairs lining the runner; statues of another kind and ferns by the side walls; a pair of
-        # columns at the way in
-        pl = c.pick_once(PLANTS)
-        if pl: c.flank(th, "^" + re.escape(pl) + "$", gap=0.8)
-        c.flank(th, STATUE1 if c.types(STATUE1) else STATUE2, gap=2.4, fam="statue")
-        runner(c, ax, 2.9 + 1.0, ax["depth"])
-        door_walk(c, ax)
-        half = (f.aisle or {}).get("half", 1.5)
-        way_in_columns(c, ax, half)
-        pool = "OrbPoolWithOrb" if f.ok_type("OrbPoolWithOrb") else None
-        if pool:
-            mid_d = (first + ax["depth"] - 2.0) / 2
-            depths = sorted((first + 1.0 + 0.5 * k for k in range(int(2 * (ax["depth"] - first - 8.0)))),
-                            key=lambda x: abs(x - mid_d))
-            done = False
-            for dd in depths:
-                for o_ in (half + 4.0, half + 4.8, half + 3.4, half + 5.6):
-                    if o_ > reach - 2.0: continue
-                    if mirrored(c, ax, pool, dd, o_):
-                        done = True
-                        b = c.pick_once(BENCH)
-                        if b:
-                            for dd2 in (dd + 3.4, dd - 3.4, dd + 4.2, dd - 4.2):
-                                if mirrored(c, ax, b, dd2, o_, face=True): break
-                        break
-                if done: break
-        fern = c.pick(r"^PlantFern[1-4]$") or pl
-        stations(c, ax, [r"^(Plant1|Plant3|Plant4|Plant5)$"], [STATUE1 if c.types(STATUE1) else STATUE2,
-                                                             "^" + re.escape(fern) + "$" if fern else PLANTS],
-                 first=first, step=4.6)
-        hang = r"^GreenTapestry\d$"
+        seats_allowed(f, 18)
+        d0 = th["hp"] + dt + 6.0
+        depths = [d0 + 3.0 * k for k in range(6) if d0 + 3.0 * k <= ax["depth"] - 6.0]
+        rows, end = bench_rows(c, ax, depths, half + 0.6, reach, per_side=3)
+        if end:
+            mirrored(c, ax, f.light_type(), depths[0] - 1.6, end + 0.4, light=True)
+        stations(c, ax, [], [STATUE1 if c.types(STATUE1) else VASE], first=d0 + 1.5, step=6.0, wall_gap=0.5)
     c.lights_balanced(4)
     if hang and c.types(hang):
         c.hangings(hang, step=3.4, most=6)
