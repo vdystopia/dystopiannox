@@ -136,6 +136,19 @@ class Station:
         si, sj = self.part.sq(a, b)
         return point_cell(int(round(si)), int(round(sj)))
 
+    def gate(self, a, state="closed", material=None):
+        """A row of secret walls across the station at `a` (on the square corners): a gate the script opens
+        (walls_open) or shuts (walls_close). Returns the wall cells."""
+        from kit.layout import point_cell
+        cells = []
+        for k in range(1, self.W):
+            si, sj = self.part.sq(a, k)
+            x, y = point_cell(int(round(si)), int(round(sj)))
+            mat = material or self.part.wall or "DungeonStone"
+            self.spec.wall(x, y, mat, secret=state)
+            cells.append((x, y))
+        return cells
+
     def potion(self, a, b, kind="RedPotion"):
         self.spec.obj_px(kind, *self.at(a, b))
         self.rest.append((a, b))

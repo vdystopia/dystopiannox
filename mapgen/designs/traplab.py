@@ -121,7 +121,9 @@ def build(kind, out_dir=None):
         if o["type"] in ("Pit", "PitCrumblingFloor", "ForestPit"):
             o.setdefault("xfer", {}).update(FallX=int(fall[0]), FallY=int(fall[1]))
     T.attach()
-    info = dict(name=name, kind=kind, stations=stations, hub_start=list(hub.at(3.0, HUB_W / 2)), pit=list(fall))
+    info = dict(name=name, kind=kind, stations=stations, hub_start=list(hub.at(3.0, HUB_W / 2)), pit=list(fall),
+                walls=sorted(m.wallmap),         # every wall cell: the simulator blocks the pillars inside stations
+                secret={f"{x},{y}": w["secret"] for (x, y), w in m.wallmap.items() if w.get("secret")})
     if out_dir and out_dir != "-":
         os.makedirs(out_dir, exist_ok=True)
         with open(os.path.join(out_dir, f"{name}.strings.json"), "w", encoding="utf-8") as f:

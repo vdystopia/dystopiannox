@@ -9,7 +9,8 @@ from kit.trapkit import pattern, Meta, frames
 
 
 def _edge(st):
-    return 0.35, st.W - 0.35
+    """Wall to wall (Westwood's carpets meet the walls: no lane of bare floor along them)."""
+    return 0.05, st.W - 0.05
 
 
 @pattern("spike", size=(22, 6), title="One field on a clock")
@@ -65,13 +66,16 @@ def greed(st):
     g = st.carpet("F", 6, 16, b0, b1, enabled=False)
     gold = st.T.obj("Gold", *st.at(13.5, st.W / 2), name=st.nm("Gold"), xfer={"Amount": 150})
     cloud_a, cloud_b = st.at(9.0, st.W / 2), st.at(12.0, st.W / 2)
+    gate = st.gate(st.L, "closed")                     # the way out stays shut until the gold is lifted
     st.T.watch(f"{st.label}W", gold, acts=[
+        st.act("walls_open", walls=gate),
         st.act("on", g.replace(st.label, "")),
         st.act("cast", spell="SPELL_TOXIC_CLOUD", src=cloud_a, dst=cloud_a, delay=20),
         st.act("cast", spell="SPELL_TOXIC_CLOUD", src=cloud_b, dst=cloud_b, delay=20),
         st.act("off", g.replace(st.label, ""), delay=frames(5))])
-    return Meta(tier="hard", tells="a pile of gold on a quiet floor",
-                answer="take the gold and jump straight out toward the far side (2.5 squares), before the gas",
+    return Meta(tier="hard", tells="a pile of gold on a quiet floor before a shut gate",
+                answer="take the gold (it opens the gate) and jump straight out toward the gate (2.5 squares), "
+                       "before the gas",
                 careless="taking it and walking back: every spike rises under you, then poison: 150+ HP")
 
 

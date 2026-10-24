@@ -45,8 +45,8 @@ def jets(st):
 
 @pattern("flame", size=(22, 6), title="Jump the fire")
 def jump_fire(st):
-    _field(st, "F", 10, 12)
-    return Meta(tier="standard", tells="a strip of fire that never goes out, two squares deep",
+    _field(st, "F", 10, 11.5)
+    return Meta(tier="standard", tells="a strip of fire that never goes out, a square and a half deep",
                 answer="run up and jump: a jump clears almost four squares",
                 careless="walking through: ~2 HP a frame per flame for most of a second, ~80 HP")
 
