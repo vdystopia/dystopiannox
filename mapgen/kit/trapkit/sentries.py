@@ -19,14 +19,59 @@ The station frame: a along the run, b across, squares; b = 0 the NW wall. Wall c
 at half-integer a and whole b: a wall along a lies on the squares' edges, a wall across runs through a row of squares'
 middles.
 """
-import math
-from kit.trapkit import pattern, Meta, frames, SQ
+import copy, math
+from kit.trapkit import pattern, Meta, frames, SQ, Station
 
 TAU = 2 * math.pi
 IN = 0.5                     # squares from its wall to a wall globe (16 px: Westwood sets them 5-16 px from it)
 REACH = 600.0                # beam length, px
 CLEAR = 0.6                  # squares: a rest spot keeps this far from every beam
 STRIP = "LOTDBlackMarble"    # the dark floor along a switched beam's line
+
+
+# ---- the station's real frame ---------------------------------------------------------------------------------------
+# Part.at's box is the squares' box, but walls stand on Nox's wall lattice: in a part along j (the lab's stations) its
+# side walls are at b = 0 and W and the walls across it at half-integer a; in a part along i (a gauntlet's) the side
+# walls stand at b = -0.5 and W - 0.5 and walls across at whole a. Each pattern here works in a frame moved onto the
+# real walls (measured from the map's walls, so it is (0, 0) in the lab and wherever the kit already agrees).
+
+def _offset(st):
+    """(da, db): how far this station's real walls sit from the lab frame's."""
+    best = None
+    x0, y0 = Station.at(st, st.L / 2, 0)
+    for (X, Y) in st.spec.wallmap:
+        x, y = (X + 0.5) * 23.0, (Y + 0.5) * 23.0
+        if abs(x - x0) > 60 or abs(y - y0) > 60:
+            continue
+        a, b = Station.ab(st, x, y)
+        if abs(b) <= 0.75 and (best is None or abs(b) < abs(best[1])):
+            best = (a, b)
+    if best is None:
+        return 0.0, 0.0
+    db = round(best[1] * 2) / 2
+    frac = (best[0] - 0.5) % 1.0
+    da = 0.0 if min(frac, 1 - frac) < 0.25 else -0.5
+    return da, db
+
+
+def _framed(st):
+    da, db = _offset(st)
+    if not da and not db:
+        return st
+    f = copy.copy(st)                     # shares rest, starts and the trap data; its own name counter
+    f.at = lambda a, b: Station.at(st, a + da, b + db)
+    f.ab = lambda x, y: tuple(v - o for v, o in zip(Station.ab(st, x, y), (da, db)))
+    return f
+
+
+def _pattern(kind, **kw):
+    """kit.trapkit.pattern, the pattern run in the station's real frame (_framed)."""
+    def deco(fn):
+        def run(st):
+            return fn(_framed(st))
+        run.__name__, run.__doc__ = fn.__name__, fn.__doc__
+        return pattern(kind, **kw)(run)
+    return deco
 
 
 # ---- geometry ------------------------------------------------------------------------------------------------------
@@ -218,7 +263,7 @@ def _meta(st, **kw):
 
 # ---- 01 standard: one beam on a clock ------------------------------------------------------------------------------
 
-@pattern("sentry", size=(16, 5), title="One beam on a clock")
+@_pattern("sentry", size=(16, 5), title="One beam on a clock")
 def one_beam(st):
     g = _fixed(st, 8.5, 0)
     st.clock("C", st.group("B", [g]), 150, [(0, 60)])
@@ -234,7 +279,7 @@ def one_beam(st):
 
 # ---- 02 standard: two beams in turn ----------------------------------------------------------------------------------
 
-@pattern("sentry", size=(18, 5), title="Two beams in turn")
+@_pattern("sentry", size=(18, 5), title="Two beams in turn")
 def two_beams(st):
     a = _fixed(st, 6.5, 0)
     b = _fixed(st, 11.5, 1)
@@ -254,7 +299,7 @@ def two_beams(st):
 
 # ---- 03 standard: the lighthouse -----------------------------------------------------------------------------------
 
-@pattern("sentry", size=(20, 10), title="The lighthouse")
+@_pattern("sentry", size=(20, 10), title="The lighthouse")
 def lighthouse(st):
     # a globe in a niche in the NW wall turns once in 22 s; for 4 s a turn its beam swings out across the room, the
     # rest of the time it sweeps the niche's own walls. Stone stubs in the room to hide behind.
@@ -281,7 +326,7 @@ def lighthouse(st):
 
 # ---- 04 standard: the walking gap ----------------------------------------------------------------------------------
 
-@pattern("sentry", size=(22, 5), title="The walking gap")
+@_pattern("sentry", size=(22, 5), title="The walking gap")
 def walking_gap(st):
     # a fence of five beams (Westwood's Con10d): all on but one, the dark one stepping down the fence every 1.2 s,
     # then all on for a step; floor between the strips to wait on
@@ -306,7 +351,7 @@ def walking_gap(st):
 
 # ---- 05 standard: the off switch -----------------------------------------------------------------------------------
 
-@pattern("sentry", size=(22, 6), title="The off switch")
+@_pattern("sentry", size=(22, 6), title="The off switch")
 def off_switch(st):
     # a beam that never stops bars the hall; a lever before it switches it off for 8 s (ticking); the lever lies past
     # a beam on a clock
@@ -334,7 +379,7 @@ def off_switch(st):
 
 # ---- 06 hard: crossing beams ---------------------------------------------------------------------------------------
 
-@pattern("sentry", size=(22, 7), tier="hard", title="Crossing beams")
+@_pattern("sentry", size=(22, 7), tier="hard", title="Crossing beams")
 def crossing(st):
     # two sets of three beams cross the room diagonally (one set from each wall) and cut it into diamonds; the sets
     # take turns: both on, then one off, both on, the other off. Move one diamond on each time a set goes dark.
@@ -369,7 +414,7 @@ def crossing(st):
 
 # ---- 07 hard: the gliding beam -------------------------------------------------------------------------------------
 
-@pattern("sentry", size=(24, 7), tier="hard", title="The gliding beam")
+@_pattern("sentry", size=(24, 7), tier="hard", title="The gliding beam")
 def gliding(st):
     # Westwood's "lift the key, flee the beam" (G_LOTD): a beam on a rail bars the end of the hall; take the gold
     # before it and the way back slams shut, and a second later the beam glides down the whole hall at more than a
@@ -446,7 +491,7 @@ def _gate_wave(st, gates, plates):
         _plate(st, f"P{k}", pa, pb, acts)
 
 
-@pattern("sentry", size=(26, 6), tier="hard", title="Run the gates")
+@_pattern("sentry", size=(26, 6), tier="hard", title="Run the gates")
 def run_the_gates(st):
     # three beams that never stop, a pressure plate five squares before each; a plate darkens the gates ahead of it
     # one after another at a running pace, each for 1.5 s (ticking): run from the first plate and all three are dark
@@ -472,7 +517,7 @@ def run_the_gates(st):
 
 # ---- 09 hard: the courtyard ----------------------------------------------------------------------------------------
 
-@pattern("sentry", size=(22, 12), tier="hard", title="The courtyard")
+@_pattern("sentry", size=(22, 12), tier="hard", title="The courtyard")
 def courtyard(st):
     # a walled courtyard with four beams turning about its middle like the hands of a clock (one turn in 20 s, a beam
     # past any spot every 5 s); you come in at one corner and leave at the far one. Porches behind short walls at
@@ -502,7 +547,7 @@ def courtyard(st):
 
 # ---- 10 hard: the long run -----------------------------------------------------------------------------------------
 
-@pattern("sentry", size=(44, 7), tier="hard", title="The long run")
+@_pattern("sentry", size=(44, 7), tier="hard", title="The long run")
 def long_run(st):
     # 1. a fence of four beams with a walking gap
     step, n = 36, 4

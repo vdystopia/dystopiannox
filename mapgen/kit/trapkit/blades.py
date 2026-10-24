@@ -11,10 +11,55 @@ deep; blades 1 square apart (or less) leave no gap a player (20 px across) can s
 The station frame: a along the run (0 at the way in), b across (0 .. W), in squares; b = 0 is the NW wall (the back
 wall in the lab). Walls a pattern adds stand on square corners (integer a, b).
 """
-import math
-from kit.trapkit import pattern, Meta, frames, SQ
+import copy, math
+from kit.trapkit import pattern, Meta, frames, SQ, Station
 
 REACH = 22.0 / SQ                  # squares: blade (r 12) + player (r 10)
+
+
+# ---- the station's real frame ---------------------------------------------------------------------------------------
+# Part.at's box is the squares' box, but walls stand on Nox's wall lattice: in a part along j (the lab's stations) its
+# side walls are at b = 0 and W and the walls across it at half-integer a; in a part along i (a gauntlet's) the side
+# walls stand at b = -0.5 and W - 0.5 and walls across at whole a. Each pattern here works in a frame moved onto the
+# real walls (measured from the map's walls, so it is (0, 0) in the lab and wherever the kit already agrees).
+
+def _offset(st):
+    """(da, db): how far this station's real walls sit from the lab frame's."""
+    best = None
+    x0, y0 = Station.at(st, st.L / 2, 0)
+    for (X, Y) in st.spec.wallmap:
+        x, y = (X + 0.5) * 23.0, (Y + 0.5) * 23.0
+        if abs(x - x0) > 60 or abs(y - y0) > 60:
+            continue
+        a, b = Station.ab(st, x, y)
+        if abs(b) <= 0.75 and (best is None or abs(b) < abs(best[1])):
+            best = (a, b)
+    if best is None:
+        return 0.0, 0.0
+    db = round(best[1] * 2) / 2
+    frac = (best[0] - 0.5) % 1.0
+    da = 0.0 if min(frac, 1 - frac) < 0.25 else -0.5
+    return da, db
+
+
+def _framed(st):
+    da, db = _offset(st)
+    if not da and not db:
+        return st
+    f = copy.copy(st)                     # shares rest, starts and the trap data; its own name counter
+    f.at = lambda a, b: Station.at(st, a + da, b + db)
+    f.ab = lambda x, y: tuple(v - o for v, o in zip(Station.ab(st, x, y), (da, db)))
+    return f
+
+
+def _pattern(kind, **kw):
+    """kit.trapkit.pattern, the pattern run in the station's real frame (_framed)."""
+    def deco(fn):
+        def run(st):
+            return fn(_framed(st))
+        run.__name__, run.__doc__ = fn.__name__, fn.__doc__
+        return pattern(kind, **kw)(run)
+    return deco
 
 
 # ---- helpers ------------------------------------------------------------------------------------------------------
@@ -122,7 +167,7 @@ def _phase(path, frames, speed):
 
 # ---- 01 standard: round the pillars -----------------------------------------------------------------------------
 
-@pattern("blade", size=(20, 8), title="Round the pillars")
+@_pattern("blade", size=(20, 8), title="Round the pillars")
 def round_the_pillars(st):
     # two stone blocks make three corridors 2 squares wide; blade pairs circle each block, up an outer corridor,
     # across the far end, down the shared middle corridor, across the near end: the outer corridors carry the blades
@@ -158,7 +203,7 @@ def round_the_pillars(st):
 
 # ---- 02 standard: the jaws ----------------------------------------------------------------------------------------
 
-@pattern("blade", size=(22, 6), title="The jaws")
+@_pattern("blade", size=(22, 6), title="The jaws")
 def jaws(st):
     # three lanes of jaws: two blades from the side walls close to the middle and open again; lanes alternate, so as
     # one shuts the next opens. Open: the middle is free; shut: the sides are free.
@@ -187,7 +232,7 @@ def jaws(st):
 
 # ---- 03 standard: the orbit ---------------------------------------------------------------------------------------
 
-@pattern("blade", size=(18, 8), title="The orbit")
+@_pattern("blade", size=(18, 8), title="The orbit")
 def orbit(st):
     # four bars of three blades turn round a stone pillar like the spokes of a wheel; inside them a calm ring (the
     # eye) round the pillar; the bars reach the side walls, so there is no way round
@@ -211,7 +256,7 @@ def orbit(st):
 
 # ---- 04 standard: the revolving door ------------------------------------------------------------------------------
 
-@pattern("blade", size=(20, 7), title="The revolving door")
+@_pattern("blade", size=(20, 7), title="The revolving door")
 def revolving_door(st):
     # a cross of four blade arms turning about a blade hub in the middle of the hall, its arms long enough to scrape
     # both side walls: a revolving door. Ride a quarter round from the near side to the far side.
@@ -232,7 +277,7 @@ def revolving_door(st):
 
 # ---- 05 standard: the saw -----------------------------------------------------------------------------------------
 
-@pattern("blade", size=(24, 6), title="The saw")
+@_pattern("blade", size=(24, 6), title="The saw")
 def saw(st):
     # a lane 4 squares wide, blocked by three breakable walls; bays 2 deep along its SE side between stone stubs. A
     # lever releases the saw (three blades across the lane): it grinds up the lane, bursting each wall as it reaches
@@ -267,7 +312,7 @@ def saw(st):
 
 # ---- 06 hard: the sliding doors ----------------------------------------------------------------------------------
 
-@pattern("blade", size=(22, 6), tier="hard", title="The sliding doors")
+@_pattern("blade", size=(22, 6), tier="hard", title="The sliding doors")
 def sliding_doors(st):
     # six walls of blades across the hall, 1.5 squares apart (nowhere to stand between them), each with a door two
     # blades wide; the doors line up and slide together from one side wall to the other and back, pausing at each:
@@ -305,7 +350,7 @@ def _pendulums(st, s, lanes, speed, dwell, lag):
 
 # ---- 07 hard: find the gap ----------------------------------------------------------------------------------------
 
-@pattern("blade", size=(22, 7), tier="hard", title="Find the gap")
+@_pattern("blade", size=(22, 7), tier="hard", title="Find the gap")
 def find_the_gap(st):
     # two walls of blades plough up and down the hall in counter-step (they pass through each other mid-hall), each
     # with a two-blade gap by a different wall: stand in a wall's gap and it passes over you
@@ -340,7 +385,7 @@ def _ploughs(st, a0, a1, speed, pause, gaps):
 
 # ---- 08 hard: the ledge -------------------------------------------------------------------------------------------
 
-@pattern("blade", size=(22, 5), tier="hard", title="The ledge")
+@_pattern("blade", size=(22, 5), tier="hard", title="The ledge")
 def ledge(st):
     # a ledge 1 square wide along the NW wall over a pit 4 squares across; blades punch out of the wall across the
     # ledge and back, in turn (two in step, two out of step): one in the wrong place and you go over the edge
@@ -369,7 +414,7 @@ def ledge(st):
 
 # ---- 09 hard: the zipper ------------------------------------------------------------------------------------------
 
-@pattern("blade", size=(24, 4), tier="hard", title="The zipper")
+@_pattern("blade", size=(24, 4), tier="hard", title="The zipper")
 def zipper(st):
     # a lane 2 squares wide with alcoves 2 deep along its SE side; trains of blade pairs burst from the far wall,
     # rush down the lane faster than a run and vanish into the wall at the near end (they go back up inside it)
@@ -398,7 +443,7 @@ def zipper(st):
 
 # ---- 10 hard: the long run ----------------------------------------------------------------------------------------
 
-@pattern("blade", size=(44, 6), tier="hard", title="The long run")
+@_pattern("blade", size=(44, 6), tier="hard", title="The long run")
 def long_run(st):
     W = st.W
     lo, hi = 0.45, W - 0.45
