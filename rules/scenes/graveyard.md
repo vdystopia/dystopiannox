@@ -3,6 +3,18 @@
 Kit: `kit/yards.py` (`YARDS["graveyard"]`, `plan`, `build`, `_graveyard`). Lab: `py tests/scenelab.py graveyard`.
 Westwood's evidence: 13 campaign scenes (War03b, War03c, War03d, Con04b, Con07B/War07A, Con09b).
 
+## QA round 3 (2026-10-23): the memorial on the path [Q3N-2]
+
+EX-GRAVEYARD-04 (a pen against a wall; 4, Fix): "Extend the cobblestone back towards the northwest wall a little bit
+further so that the obelisk sits entirely on it."
+
+- A piece at the path's end stands wholly on the path. Where a pen's memorial (Monument1, the obelisk between the two
+  open-air sarcophagi) closes the path, the path runs on under it: its last square is the memorial's own (the path to
+  `D - 1.4`, the memorial at `D - 1.5`), with a square of grass left before the back wall. It had stopped at `D - 2.4`,
+  half a square short of the memorial's middle, with the obelisk half on the grass (`yards._graveyard`).
+- Lab (seed 11; not re-rendered for the page): one tile changes, the one under 04's obelisk. Yards with a mausoleum
+  are as before (their path ends at the door).
+
 ## QA round 2 (2026-10-14): one straight line from the gate to the door [Q2X-2, Q2T-1]
 
 **This section overrides the rounds below.** EX-GRAVEYARD-03: "The cobblestone path is not aligned correctly with the

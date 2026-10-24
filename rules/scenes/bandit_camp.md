@@ -23,6 +23,30 @@ against the wall next to the others."
   round 2 (lab, seed 11: 27.8 pieces of 14.0 kinds before, 31.0 of 16.2 after). The scene lab's hideouts are a fifth
   roomier (recipes `cave_scale=1.2`).
 
+## QA round 3 (2026-10-23): the way in clear, no chest behind a bed, beds to the rock [Q3N-1]
+
+EX-BANDITCAMP-02 (a cave pocket; 4, Fix): "The entrance is completely blocked by objects. The treasure chest is between
+the bed and the wall, which is not correct. Move the bed back a little bit closer to the wall, and move the treasure
+chest to the side a little bit against the wall. Don't put treasure chests between a bed or cot and the wall."
+
+- **The way in stays clear.** In a pocket of the rock the way in is a passage, and nothing stands on it: every piece
+  keeps 32 px and its own radius off the line from the fire out through the mouth, beyond 50 px from the fire
+  (`camps.WAY_CLEAR`, `Camp.way`, `Camp.in_way`). Round 3's camp had its arms row run straight across the pocket's neck
+  and the watch's torch pole and quivers stand in the passage itself. The watch's torch pole now stands against the rock
+  at the side of the way in, inside the mouth, with the watch beside it. A pocket's arms row goes on the stretch of rock
+  where most of it fits, laid along that rock's own line rather than square to the ray from the fire (a row square to
+  the ray on a slanting wall stands out into the pocket).
+- **Never a chest between a bed and the wall.** A chest never stands on a bed's own line at its head (the wall's side),
+  within 78 px of the bed's middle and 30 px across it (`Camp.behind_bed`, `BED_HEAD`); it goes to the bed's side,
+  against the wall. The same goes for Westwood-style hideouts (`hideout_camp`).
+- **A pocket's beds lie close to the rock**: their middles 34-40 px off its line, their heads 4 px past their drawn
+  half-length (`WALL_BED_OFF`, `BED_WALL_MARGIN`; round 3's were 43-50 px off, leaving a chest's width behind them).
+  Westwood's hideouts lay their cots 20-48 px off the rock.
+- Lab (seed 11; not re-rendered for the page): camp 02 has its way in open, its chest beside the upper cot against the
+  NW rock, its arms in a row along the SE rock, and the torch pole on the rock beside the mouth. It holds 32 pieces
+  (35 in round 3): the bow rack, helm poles and quivers had no other place in that small pocket. Camp 04 (a cave) lost a
+  shovel and a sack that stood on its way in. Open camps 01 and 03 are unchanged, and 05 gained two logs.
+
 ## Purpose
 
 A band living rough: where they sleep, eat, keep their take and watch the way in. It must read at once as people's
