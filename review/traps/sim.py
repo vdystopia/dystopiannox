@@ -373,9 +373,14 @@ class StationModel:
             for o, v in sentries.items():
                 if sentry_on[o] > 0:
                     x = v.get("xfer") or {}
-                    ang = x.get("BasePosRadian", 0.0) + x.get("RotateSpeed", 0.0) * sentry_on[o]
-                    for i, j in self.beam(w.pos[o], ang):
-                        G[t, i, j] += LETHAL; A[t, i, j] += LETHAL
+                    rot = x.get("RotateSpeed", 0.0)
+                    for df in range(-FPT, FPT + 1):            # the beam over the tick and a tick either side: it
+                        ang = x.get("BasePosRadian", 0.0) + rot * max(1, sentry_on[o] + df)   # kills in one frame
+                        for i, j in self.beam(w.pos[o], ang, pad=PLAN_MARGIN + 6):
+                            for tt in (t - 1, t, t + 1):
+                                if 0 <= tt < G.shape[0] and G[tt, i, j] < LETHAL:
+                                    G[tt, i, j] += LETHAL; A[tt, i, j] += LETHAL
+                        if not rot: break
             for o in dyn:
                 tp = self.objs[o]["type"]
                 a, b = self.ab(*w.pos[o])
@@ -405,7 +410,7 @@ class StationModel:
                 out |= set(self.cells_near(a, b, 14 / SQ))
         return out
 
-    def beam(self, p, ang):
+    def beam(self, p, ang, pad=4.0):
         out = set()
         dx, dy = math.cos(ang), math.sin(ang)
         for k in range(1, 76):
@@ -414,7 +419,7 @@ class StationModel:
             if not (-0.5 <= a <= self.L + 0.5 and 0 <= b <= self.W): break
             i, j = self.cell_of(a, b)
             if 0 <= i < self.NA and 0 <= j < self.NB and self.blocked[i, j]: break
-            out |= set(self.cells_near(a, b, (PLAYER_R + 4) / SQ))
+            out |= set(self.cells_near(a, b, (PLAYER_R + pad) / SQ))
         return out
 
     # ---- the plan --------------------------------------------------------------------------------------------
@@ -455,11 +460,10 @@ class StationModel:
         found = None
         for t in range(t0, T):
             cur = best[t]
-            if found is None:
-                hits = np.where(goal_mask[None], cur, INF).min()
-                if hits < INF:
-                    found = (t, float(hits))
-            if found is not None and t > found[0] + 40: break
+            hits = float(np.where(goal_mask[None], cur, INF).min())
+            if hits < INF and (found is None or hits < found[1] - 1):
+                found = (t, hits)                      # the best arrival so far (a later one may hurt less)
+            if found is not None and found[1] <= 30 and t > found[0] + 40: break
             g = G[t + 1] + ground_pen
             for c in range(C):
                 src = cur[c]
@@ -500,7 +504,7 @@ class StationModel:
             return None
         # the best arrival within 40 ticks of the first: least damage, then earliest
         cand = []
-        for t in range(found[0], min(found[0] + 41, T)):
+        for t in range(found[0], min(found[0] + 41, T)):    # from the best arrival: least damage, then earliest
             v = np.where(goal_mask[None], best[t], INF)
             m = float(v.min())
             if m < INF: cand.append((round(m, 1), t))
@@ -726,7 +730,9 @@ def verdict(r):
     hard = r["tier"] == "hard"
     if r.get("plan") is None:
         return "IMPOSSIBLE"
-    best = min(r["plan"], r["replay"] if r.get("replay_outcome") == "passed" else 1e9)
+    if r.get("replay_outcome") != "passed":         # the exact replay is the judge: a plan that dies there is no plan
+        return f"IMPOSSIBLE (the best plan {r.get('replay_outcome')} in the replay)"
+    best = r["replay"]
     if best >= (90 if hard else 60):
         return "IMPOSSIBLE"
     walk_bad = r["careless_walk_outcome"] != "passed" or r["careless_walk"] >= 35
