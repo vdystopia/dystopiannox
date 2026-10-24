@@ -20,23 +20,27 @@ from kit.layout import Land, square_px, square_tile, point_cell, N4
 
 
 class Part:
-    """A box of squares: origin (i0, j0), `length` squares along `axis` ("i" or "j"), `width` across."""
+    """A box of squares: origin (i0, j0), `length` squares along `axis` ("i" or "j"), `width` across. sign -1 runs
+    the part the other way: `a` grows toward smaller i (or j) from the origin edge (squares i0 - length .. i0 - 1)."""
 
-    def __init__(self, name, i0, j0, length, width, axis="i", floor=None, wall=None, kind="room"):
+    def __init__(self, name, i0, j0, length, width, axis="i", floor=None, wall=None, kind="room", sign=1):
         self.name, self.i0, self.j0, self.length, self.width, self.axis = name, i0, j0, length, width, axis
-        self.floor, self.wall, self.kind = floor, wall, kind
+        self.floor, self.wall, self.kind, self.sign = floor, wall, kind, sign
 
     @property
     def squares(self):
+        s = self.sign
         if self.axis == "i":
-            return {(self.i0 + a, self.j0 + b) for a in range(self.length) for b in range(self.width)}
-        return {(self.i0 + b, self.j0 + a) for a in range(self.length) for b in range(self.width)}
+            return {(self.i0 + a if s > 0 else self.i0 - 1 - a, self.j0 + b)
+                    for a in range(self.length) for b in range(self.width)}
+        return {(self.i0 + b, self.j0 + a if s > 0 else self.j0 - 1 - a)
+                for a in range(self.length) for b in range(self.width)}
 
     def sq(self, a, b):
         """Square coordinates (fractional) of the point a squares along the part and b across it."""
         if self.axis == "i":
-            return self.i0 + a, self.j0 + b
-        return self.i0 + b, self.j0 + a
+            return self.i0 + self.sign * a, self.j0 + b
+        return self.i0 + b, self.j0 + self.sign * a
 
     def at(self, a, b):
         """World px of the point a along, b across (squares; the part spans a in [0, length], b in [0, width])."""
@@ -75,8 +79,8 @@ class Dungeon:
         self.parts = {}
         self.void = set()                    # squares cut out of a part after it was laid (a pit's hole, a pillar)
 
-    def box(self, name, i0, j0, length, width, axis="i", floor=None, wall=None, kind="room"):
-        p = Part(name, i0, j0, length, width, axis, floor or self.floor, wall or self.wall, kind)
+    def box(self, name, i0, j0, length, width, axis="i", floor=None, wall=None, kind="room", sign=1):
+        p = Part(name, i0, j0, length, width, axis, floor or self.floor, wall or self.wall, kind, sign)
         self.parts[name] = p
         return p
 
