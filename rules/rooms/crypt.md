@@ -158,3 +158,17 @@ RM-CRYPT-02: "The coffin in between the mana obelisks is facing the wrong way. T
 - More low funerary kinds for walls the rows leave little room by: broken coffins, a second kind of urn (skull stones where they fit).
 
 Checked by `sacred.symmetry`, `sacred.dead`, `sacred.fullness`. Pictures: review/out/qa/qa3/rooms/crypt/.
+
+## QA round 3 (2026-10-23; review/qa3/ledger-rooms.md Q3R-1)
+
+The crypt set (01-04 Fix, rated 4, 5, 4, 4; the dark crypt 05 kept at 5): "the pair of crates in each room look off.
+Remove them."
+
+- **No crates in a crypt, of any kind** (crates, dark crates, steel crates, apple crates): the pair came from the
+  dressing's "crates of burial goods" (`kit/sacred.py crypt_pieces`), stood mirrored on the front walls of every town
+  crypt; the recipe's storage had allowed crates too. A crypt's storage is its crypt chest. The dressing reaches its
+  kinds with the funerary pieces instead (urns, rubble, broken coffins, skull stones, gravestones); the crypt is no
+  emptier in kinds, and two pieces lighter.
+- Crates are in the profile's never list (`kit/roomtypes.py TYPES["crypt"] never_types`), out of the recipe's storage
+  (`kit/identity.py ROOMS["crypt"]`, `["dark_crypt"]`) and out of the dressing.
+- **Checked by** `sacred.crates` (planted STsCrat). Pictures: review/out/roomlab/crypt/qa4/renders/.

@@ -1310,8 +1310,10 @@ def _clear_spot(f, t, u, v):
 
 def crypt_pieces(f, ax, lotd, obelisks=True):
     """The crypt's dressing, visible pieces (QA round 1, third pass): statue pairs, urns, candelabras, monuments,
-    gravestones, coffins stacked against the walls, crates of burial goods, a bone heap, braziers, rubble; (name,
-    chooser, tall). obelisks=False: the statue pairs are statues or gargoyles, never more mana obelisks (a coven's: Q2S-4)."""
+    gravestones, coffins stacked against the walls, a bone heap, braziers, rubble; (name, chooser, tall). Never crates
+    (QA round 3, the crypt set: "the pair of crates in each room look off. Remove them"; Q3R-1): the low walls take
+    broken coffins, urns and skull stones. obelisks=False: the statue pairs are statues or gargoyles, never more mana
+    obelisks (a coven's: Q2S-4)."""
     rng = f.rng
     vase = rng.choice(("StatueVase1", "StatueVase2"))
     rub = rng.choice(["RuinsColumnIndoorRubble%02d" % k for k in (1, 3, 5, 7, 9, 11)])
@@ -1319,7 +1321,8 @@ def crypt_pieces(f, ax, lotd, obelisks=True):
                        ("Tombstone2", "Tombstone4", "Tombstone7"))
     statue = rng.choice(("Statue2a", "Statue2c")) if not lotd or not obelisks else "LOTDManaObelisk"
     gar = rng.choice(("Gargoyle2", "Gargoyle4", "Gargoyle5"))
-    crate = rng.choice(("DarkCrate1", "DarkCrate2", "Crate1", "Crate2"))
+    rng.choice(("DarkCrate1", "DarkCrate2", "Crate1", "Crate2"))    # (the crate's old draw: what is drawn after keeps
+    # its pick, so the covens dressed from this list stay as they were)
     coffin_along = (_oriented(f, ax, r"^Coffin[1-4]$", across=False) or [None])[0]
     broken = rng.choice(("CoffinBreaking1", "CoffinBreaking2", "CoffinBreaking3", "CoffinBreaking4"))
     lt = "LOTDCandleabra1" if lotd and f.ok_type("LOTDCandleabra1") else f.light_type()
@@ -1333,7 +1336,6 @@ def crypt_pieces(f, ax, lotd, obelisks=True):
             ("urns2", lambda sg: ("StatueVase2" if vase == "StatueVase1" else "StatueVase1") + _facing(ax, sg), False),
             ("graves", lambda sg: stone, False),
             ("coffins", lambda sg: coffin_along, False),
-            ("crates", lambda sg: crate, False),
             ("rubble", lambda sg: rub, False),
             # (low funerary kinds for the walls a full crypt's rows leave only low room by: QA round 2, never emptier)
             ("broken", lambda sg: broken, False), ("skullstones", lambda sg: "LOTDTombstoneSkulls1", False)]

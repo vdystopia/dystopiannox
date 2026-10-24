@@ -2962,6 +2962,8 @@ SACRED_DEAD_KINDS = {"crypt", "dark_crypt", "coven", "dark_chapel"}
 ALTAR_END_RE = re.compile(r"^(DunMirAltar\d|LOTDLichGodStatue\d|LOTDFlamingSkulls(Static|Animated)|OrbPoolWithOrb|"
                           r"Fountain|HorrendousStatue\d)$")
 ALTAR_RE = re.compile(r"^(DunMirAltar\d|LOTDLichGodStatue\d|LOTDFlamingSkulls(Static|Animated))$")
+SACRED_NO_CRATES = {"crypt", "dark_crypt"}                         # QA round 3, Q3R-1
+SACRED_CRATE_RE = re.compile(r"^(Crate\d|DarkCrate\d|CrateSteel\d|TraderAppleCrate)$")
 SACRED_TOMB_RE = re.compile(r"^(Coffin\d|Crypt\d+|Tombstone\d+|DunMirTombstone\d|TombstoneReadable\d+)$")
 SACRED_ALTAR_OFF = 1.0       # uv units the altar may stand off the main door's line
 SACRED_DOOR_OFF = 1.6        # uv units the main door may stand off the middle of its wall
@@ -3205,6 +3207,15 @@ def check_sacred(m, ctx, base):
                 out.append(F("sacred", "warning", f"{name} room: {len(dead)} coffins, sarcophagi or graves and {len(kinds)} "
                              f"kinds of piece: the dead lie here, in coffins or sarcophagi, with bones, statues, obelisks "
                              f"(RM-CRYPT-09, RM-CRYPT-10; Q1C-14, Q1C-17).", x, y, rule="sacred.dead"))
+        if kind in SACRED_NO_CRATES:
+            # QA round 3 (Q3R-1), the crypt set: "the pair of crates in each room look off. Remove them" (the dressing's
+            # pair of burial-goods crates on the front walls): a crypt's storage is its crypt chest, never a crate
+            crates = [o for o in r["objects"] if SACRED_CRATE_RE.match(o["type"])]
+            if crates:
+                out.append(F("sacred", "warning", f"{name} room: {len(crates)} crates "
+                             f"({', '.join(sorted({o['type'] for o in crates}))}): a crypt holds no crates, its storage is "
+                             f"the crypt chest (\"the pair of crates in each room look off. Remove them\"; Q3R-1).",
+                             crates[0]["x"], crates[0]["y"], rule="sacred.crates"))
     for kind, sigs in ends.items():
         if len(sigs) < 2: continue
         # (each altar kind counted in every room it stands on the axis of, beside another or alone)
@@ -4489,6 +4500,7 @@ RULES = [
     ("sacred.altar_kind", "sacred", r"end in the same altar", "Q1C-4"),
     ("sacred.dead", "sacred", r"the dead lie here", "Q1C-14 Q1C-17"),
     ("sacred.fullness", "sacred", r"kinds of piece and covers", "Q1C-19"),
+    ("sacred.crates", "sacred", r"a crypt holds no crates", "Q3R-1"),
     ("civic.s_corner", "civic", r"nothing stands in its S corner", "Q1A-1"),
     ("civic.bare_wall", "civic", r"wall stand bare", "Q1A-3"),
     ("civic.kinds", "civic", r"kinds of piece \(its size wants", "Q1A-2"),

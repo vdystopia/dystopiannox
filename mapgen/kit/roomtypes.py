@@ -427,7 +427,8 @@ TYPES = {
         focal=dict(fam="tomb", types=r"^Crypt\d|^Coffin|^LOTDTombstone|Sarcophag", where="rows"),
         must={"tomb": 2}, never=("bed", "desk", "table", "chair", "stove", "smithy", "lab", "counter_bar",
                                  "counter_shop", "shop_rack", "fireplace", "straw"),
-        never_types=r"Barrel|Sack|^Bookcase",
+        # (and no crates: QA round 3, the crypt set, "the pair of crates in each room look off. Remove them"; Q3R-1)
+        never_types=r"Barrel|Sack|^Bookcase|Crate\d|^TraderAppleCrate$",
         walls=dict(back="a tapestry or two; a crypt chest in a corner", other_back="statues of the dead",
                    front="bare", middle="sarcophagi and coffins side by side in rows with aisles between; columns"),
         # (open from 0.30: Q1T, the user's "too empty" theme over Westwood's open floor; the coordinator, 2026-10-13)

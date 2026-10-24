@@ -1108,6 +1108,12 @@ def crypt_without_dead(m):
     m.obj("Coffin1", 214, 0)                                   # Q1C-14, Q1C-17: one coffin and nothing else
 
 
+def crypt_crates(m):
+    _chapel(m, "crypt")                                        # Q3R-1: "the pair of crates in each room look off"
+    for v in (-4, 4): m.obj("Coffin1", 212, v)
+    for v in (-8.6, 8.6): m.obj("Crate1", 206, v)
+
+
 def wooden_door_in_lotd(m):
     for c, w in m.wallmap.items():                            # Q1C-18: the house in the Land of the Dead's walls...
         if w.get("material") == "StuccoLightWood": w["material"] = "LOTDOrnate"
@@ -1284,6 +1290,7 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
      "the middle of what stands on it"),
     ("STsFull", bare_chapel, "sacred", "warning", "a chapel of an altar and two pews - Q1C-19", "kinds of piece"),
     ("STsDead", crypt_without_dead, "sacred", "warning", "a crypt of one coffin - Q1C-14", "the dead lie here"),
+    ("STsCrat", crypt_crates, "sacred", "warning", "a crypt with a pair of crates - Q3R-1", "holds no crates"),
     ("STdLotd", wooden_door_in_lotd, "doors", "warning", "a plain door in the Land of the Dead's walls - Q1C-18",
      "Land of the Dead"),
     ("STq1Nst", q1_nightstand, "rooms", "warning", "a bed with a nightstand on one side - Q1R-3", "one side only"),
