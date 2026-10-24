@@ -173,7 +173,7 @@ class Mission:
                                       L=part.length, W=part.width, start=list(part.at(0.5, part.width / 2)),
                                       end=list(part.at(part.length, part.width / 2)), along=list(part.direction()),
                                       across=list(part.across()), clocks=st.starts, rest=st.rest,
-                                      between=[L_["a"], L_["b"]]))
+                                      between=[L_["a"], L_["b"]], prefix=st.label))
 
     def _try_layout(self, root, children, start, rng):
         taken = set()
