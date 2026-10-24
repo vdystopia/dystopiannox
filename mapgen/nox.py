@@ -471,7 +471,11 @@ class Spec:
             wd = dict(x=x, y=y, facing=facing, material=mat,
                       variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"])
             if w.get("secret"):
-                wd["secret"] = dict(flags=1, state=3 if w["secret"] == "open" else 1, wait=3)
+                # closed: scan flag 1, state 1. Open: scan flag 8 and no state, so the engine's reader
+                # (GAME1_2.c nox_server_mapRWSecretWalls_4297C0) makes it open with its slide counter at 23, as
+                # Westwood's start-open walls are; a stored state 3 kept the file's counter 0 and the wall stood
+                # shut (the closing room's door stopped a real walker, 2026-10-24)
+                wd["secret"] = dict(flags=8, state=0, wait=3) if w["secret"] == "open" else dict(flags=1, state=1, wait=3)
             if w.get("breakable"):
                 wd["breakable"] = True
             walls.append(wd)
