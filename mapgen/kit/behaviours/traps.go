@@ -110,6 +110,10 @@ type trapWatch struct {
 	found bool
 }
 
+// Actions of a kind's own (kit/behaviours/traps_<kind>.go registers them in its init): trapDo calls
+// trapExt[kind] for any kind it does not know.
+var trapExt = map[string]func(a trapAct){}
+
 type trapPending struct {
 	at  int
 	act trapAct
@@ -352,6 +356,12 @@ func trapDo(a trapAct) {
 	case "restart": // a clock starts its period again from now (a station's run begins)
 		if c := trapClocks[a.Target]; c != nil {
 			c.t0 = trapFrame
+		}
+	default:
+		if f := trapExt[a.Kind]; f != nil {
+			f(a)
+		} else {
+			println("traps: unknown action " + a.Kind)
 		}
 	case "reset":
 		if m := trapMovers[a.Target]; m != nil {

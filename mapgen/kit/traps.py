@@ -196,9 +196,15 @@ class Traps:
 
     def files(self, map_name):
         pkg = map_name.lower()
-        lib = open(os.path.join(HERE, "behaviours", "traps.go"), encoding="utf-8").read()
-        lib = lib.replace("package PKG", f"package {pkg}", 1)
-        return {"traps.go": lib, "traps_config.go": self.config_go(pkg)}
+        out = {}
+        bdir = os.path.join(HERE, "behaviours")
+        # the library and every kind's extension (traps_<kind>.go: its own actions, registered in trapExt)
+        for fn in sorted(os.listdir(bdir)):
+            if fn == "traps.go" or (fn.startswith("traps_") and fn.endswith(".go")):
+                src = open(os.path.join(bdir, fn), encoding="utf-8").read()
+                out[fn] = src.replace("package PKG", f"package {pkg}", 1)
+        out["traps_config.go"] = self.config_go(pkg)
+        return out
 
     def attach(self):
         self.spec.scripts.update(self.files(self.spec.d["name"]))
