@@ -781,15 +781,22 @@ def analyse(map_dir, only=None, trace=False):
         tier = st.get("tier", "standard")
         G, A = sm.fields(0)
         res = sm.plan(G, A)
-        levers = [(z["name"], z["c"], (z["r"] - 4) / SQ, z["acts"]) for z in sm.zones if z.get("toggle")]
+        levers = [(z["name"], z["c"], (z["r"] - 4) / SQ, z["acts"], z) for z in sm.zones if z.get("toggle")]
+        # a plate that starts something (a gate's dark wave, a wall's opening): the plan may step on it first
+        levers += [(z["name"], z["c"], max(0.2, z["r"] / SQ / 1.414), z["acts"], z) for z in sm.zones
+                   if not z.get("toggle") and z.get("armed", True) and z.get("who") != "creature"
+                   and any(a_["kind"] in ("off", "disarm", "walls_open", "blade_break") for a_ in z["acts"])]
         for wt in data.get("watches", []):             # an item to take: the plan may go and pick it up
             o = data["objects"].get(wt["obj"])
             if o and sm.inside(o["x"], o["y"]):
-                levers.append((wt["name"], (o["x"], o["y"]), 0.6, wt["acts"]))
+                levers.append((wt["name"], (o["x"], o["y"]), 0.6, wt["acts"], None))
         used = None
-        for zname, zc, zr, zacts in levers:            # try pulling each lever (taking each item) on the way
+        for zname, zc, zr, zacts, zone in levers:      # try pulling each lever (taking each item) on the way
             a, b = sm.ab(*zc)
             goal = [c for c in sm.cells_near(a, b, max(zr, 0.4)) if not sm.blocked[c]]
+            if zone is not None:                         # a cell counts only if standing on it is inside the zone
+                inner = dict(zone, r=zone["r"] - 3, h=zone.get("h", 0) - 3)
+                goal = [c for c in goal if in_zone(inner, sm.xy(*sm.cell_ab(*c)))]
             r1 = sm.plan(G, A, goal=goal) if goal else None
             if not r1: continue
             d1, t1, p1 = r1
