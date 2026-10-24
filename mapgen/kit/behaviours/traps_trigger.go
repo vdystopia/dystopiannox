@@ -142,6 +142,16 @@ func TrigHold(h trigHold) {
 	trigHolds = append(trigHolds, &hh)
 }
 
+// TrigEyesRestart starts the eyes whose name starts with prefix on their clock again (the trap tour, before each run).
+func TrigEyesRestart(prefix string) {
+	for _, e := range trigEyes {
+		if len(e.Name) >= len(prefix) && e.Name[:len(prefix)] == prefix {
+			e.t0 = trapFrame
+			e.cool = 0
+		}
+	}
+}
+
 func TrigEye(e trigEye) {
 	trigStart()
 	ee := e

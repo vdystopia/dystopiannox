@@ -73,6 +73,22 @@ var (
 )
 
 // TrapPushMover watches a mover of traps.go (call after StartTraps: traps_config.go's extra start lines).
+// PushForget makes the pushers whose mover's name starts with prefix forget their last stroke, as at the start (the
+// trap tour resets a station's movers before each run: a mover sent home must not take its home dwell at once).
+func PushForget(prefix string) {
+	for _, p := range pushMovers {
+		if len(p.Mover) >= len(prefix) && p.Mover[:len(prefix)] == prefix {
+			p.lastDir = 1
+			p.lastSeg = 0
+			p.lastDone = false
+			p.seen = false
+			p.moving = false
+			p.back = false
+			p.touch = map[int]bool{}
+		}
+	}
+}
+
 func TrapPushMover(p pushMover) {
 	pp := p
 	pp.m = trapMovers[p.Mover]

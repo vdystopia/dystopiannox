@@ -80,35 +80,15 @@ def probe_source(name, bdir):
             run_go.append(f'\t{{{json.dumps(st["label"])}, {json.dumps(kind)}, []float32{{{flat}}}}},')
     src = open(os.path.join(HERE, "probe_tour_traps.go"), encoding="utf-8").read()
     src = src.replace("\t//STATIONS", "\n".join(st_go)).replace("\t//RUNS", "\n".join(run_go))
-    if os.path.exists(os.path.join(bdir, f"{name}_scripts", "traps_trigger.go")):   # its eyes start their clock again
-        eyes = """func ptEyes(prefix string) {
-    for _, e := range trigEyes {
-        if prefix != "" && len(e.Name) >= len(prefix) && e.Name[:len(prefix)] == prefix {
-            e.t0, e.cool = trapFrame, 0
-        }
-    }
-}
-"""
-    else:
-        eyes = "func ptEyes(prefix string) {}"
-    if os.path.exists(os.path.join(bdir, f"{name}_scripts", "traps_push.go")):   # pushers forget their last stroke
-        eyes += """
-func ptPush(prefix string) {
-    for _, p := range pushMovers {
-        if prefix != "" && len(p.Mover) >= len(prefix) && p.Mover[:len(prefix)] == prefix {
-            p.lastDir = 1
-            p.lastSeg = 0
-            p.lastDone = false
-            p.seen = false
-            p.moving = false
-            p.back = false
-            p.touch = map[int]bool{}
-        }
-    }
-}
-"""
-    else:
-        eyes += "\nfunc ptPush(prefix string) {}\n"
+    # a station's eyes start their clock again and its pushers forget their last stroke, through the kit's own
+    # functions (OpenNox's interpreter panics ranging over the kit's lists from this file: reflect New(nil))
+    def has(fn, func):
+        p = os.path.join(bdir, f"{name}_scripts", fn)
+        return os.path.exists(p) and f"func {func}(" in open(p, encoding="utf-8").read()
+    eyes = ("func ptEyes(prefix string) {\n\tif prefix != \"\" {\n\t\tTrigEyesRestart(prefix)\n\t}\n}\n"
+            if has("traps_trigger.go", "TrigEyesRestart") else "func ptEyes(prefix string) {}\n")
+    eyes += ("func ptPush(prefix string) {\n\tif prefix != \"\" {\n\t\tPushForget(prefix)\n\t}\n}\n"
+             if has("traps_push.go", "PushForget") else "func ptPush(prefix string) {}\n")
     src = src.replace("//EYES", eyes)
     hx, hy = labinfo["hub_start"]
     src = src.replace("LIMBOX, LIMBOY", f"{hx}, {hy}")
