@@ -9,10 +9,11 @@ touches a player whose centre is within 22 px (0.68 squares) of its centre, so a
 deep; blades 1 square apart (or less) leave no gap a player (20 px across) can slip through.
 
 The station frame: a along the run (0 at the way in), b across (0 .. W), in squares; b = 0 is the NW wall (the back
-wall in the lab). Walls a pattern adds stand on square corners (integer a, b).
+wall in the lab). Wall cells are centred (in a lab station) at half-integer a and whole b: a wall along a lies on
+the squares' edges, a wall across runs through a row of squares' middles (so a wall across "at a = 9.5").
 """
 import copy, math
-from kit.trapkit import pattern, Meta, frames, SQ, Station
+from kit.trapkit import pattern, Meta, SQ, Station
 
 REACH = 22.0 / SQ                  # squares: blade (r 12) + player (r 10)
 

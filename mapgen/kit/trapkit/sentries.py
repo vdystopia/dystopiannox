@@ -20,7 +20,7 @@ at half-integer a and whole b: a wall along a lies on the squares' edges, a wall
 middles.
 """
 import copy, math
-from kit.trapkit import pattern, Meta, frames, SQ, Station
+from kit.trapkit import pattern, Meta, SQ, Station
 
 TAU = 2 * math.pi
 IN = 0.5                     # squares from its wall to a wall globe (16 px: Westwood sets them 5-16 px from it)
