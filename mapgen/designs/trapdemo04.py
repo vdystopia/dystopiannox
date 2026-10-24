@@ -2,11 +2,11 @@
 has taken.
 
 The story
-- The hook: Foreman Brannoc has camped at the pithead with his crew. They struck a great ruby, the heartstone, in the
+- The hook: Foreman Brannoc has camped at the pithead with his crew. They struck a great ruby, the Heartstone, in the
   deep seam; then the seam fell in, and the conjurer Oskar Thorne, the Golemwright, came down after the stone and
   raised golems out of the rock to hold it. The old workings are rotten floors, shafts and blasting gear.
-- Main quest (the heartstone): get down to the deep seam, put down Oskar Thorne (his hold on the seam breaks with
-  him) and bring the heartstone (a Ruby) back from the binding chamber beyond. Brannoc pays in gold.
+- Main quest (the Heartstone): get down to the deep seam, put down Oskar Thorne (his hold on the seam breaks with
+  him) and bring the Heartstone (a Ruby) back from the binding chamber beyond. Brannoc pays in gold.
 - Side quest (Wynn): the old miner Wynn went down for the last cart and never came up. His torch lies in the old
   drift off the winch house, beyond a rotten floor; he did not make it. Brannoc gives Wynn's last pay for it.
 - The traps, in the order a player meets them: plates that open the floor ahead in the first gallery; the ore
@@ -110,10 +110,10 @@ brannoc = M.person("pithead", "Con03A", "Rastur", "ForemanBrannoc", *M.room_ab("
 q = M.q
 MAIN, SIDE = "heartstone", "wynn"
 HOLD = "Break Oskar Thorne's hold on the deep seam."
-BRING = "Bring the heartstone from the deep seam to Brannoc."
+BRING = "Bring the Heartstone from the deep seam to Brannoc."
 WYNN = "Find what became of Wynn in the old drift."
 q.talker(brannoc, [
-    q.say("The heartstone! By all that's holy, you did it! Here's your pay -- 500 in gold. The lads will drink to "
+    q.say("The Heartstone! By all that's holy, you did it! Here's your pay -- 500 in gold. The lads will drink to "
           "you tonight.",
           when=q.when(has="Ruby", not_=f"{MAIN}done"),
           do=[A.take("Ruby"), A.gold(500), A.stage(MAIN, 3), A.flag(f"{MAIN}done"), q.done(BRING)]),
@@ -123,13 +123,13 @@ q.talker(brannoc, [
           do=[A.take("TorchInventory"), A.gold(150), A.flag(f"{SIDE}done"), q.done(WYNN)],
           mood="gruff, grieving"),
     q.say("The seam's ours again, thanks to you.", when=q.at(MAIN, 3)),
-    q.say("Thorne's dead? Ha! Then bring up the heartstone before the roof comes down on it.", when=q.at(MAIN, 2)),
+    q.say("Thorne's dead? Ha! Then bring up the Heartstone before the roof comes down on it.", when=q.at(MAIN, 2)),
     q.say("The lads are counting on you. Go on, before the whole seam comes down!", when=q.at(MAIN, 1)),
     q.say("The deep seam's caved in, and that's not the worst of it! We struck a ruby down there the size of your "
-          "fist -- the heartstone, the lads call it. Then a conjurer named Oskar Thorne came down after it. He "
+          "fist -- the Heartstone, the lads call it. Then a conjurer named Oskar Thorne came down after it. He "
           "raised golems out of the rock to keep us out.\n\nMy crew won't go back below. The old workings are all "
           "rotten floors and shafts now.\n\nGo down to the deep seam, break Thorne's hold on it, and bring me the "
-          "heartstone. Will you do it, stranger? The company pays well.",
+          "Heartstone. Will you do it, stranger? The company pays well.",
           ask=True,
           do=[A.stage(MAIN, 1), q.journal(HOLD), q.journal(WYNN)],
           else_=[q.tell(brannoc, "Then the mine's finished, and so are we.")]),
