@@ -203,7 +203,7 @@ def locked_in(st):
             st.act("sound", text="BigGong", src=st.at(4.5, m))] + [st.act("disarm", w) for w in wires] \
         + [st.act("arm", c, delay=20) for c in clocks]
     for j, b in enumerate(PLATES):
-        st.plate(wires[j], 4.2, b, who="player", visible=False, acts=list(seal))
+        st.plate(wires[j], 4.6, b, who="player", visible=False, acts=list(seal))
     done = [st.T.act("trig_cancel", count), st.act("sound", text="Chime", src=st.at(16.4, st.W - 0.6))] + end
     st.lever("L", "FloorLever1", 16.4, st.W - 0.55, acts=list(done), release=list(done))
     st.rest.append((3.8, m))

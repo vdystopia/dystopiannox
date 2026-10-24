@@ -94,16 +94,17 @@ def _vents(st, sets, period, half, s="V"):
     return _volley(st, s, period, shots)
 
 
-def _lanes(st, lanes, period, gap=8, s="F", lvl=1, sides=None):
-    """Fireball lanes across the hall from hidden points by one wall (a red glow) to the other: each lane a double
-    shot (`gap` frames apart) at its moment of the period. lanes: [(a, t0)]; sides: 0 (from b = 0) or 1 per lane."""
+def _lanes(st, lanes, period, gaps=(0, 8), s="F", lvl=1, sides=None):
+    """Fireball lanes across the hall from hidden points by one wall (a red glow) to the other: each lane a burst of
+    shots (`gaps`: frames after its moment) at its moment of the period. lanes: [(a, t0)]; sides: 0 (from b = 0) or
+    1 per lane."""
     shots = []
     for k, (a, t0) in enumerate(lanes):
         side = (sides[k] if sides else 0)
-        b0, b1 = (0.3, st.W - 0.3) if side == 0 else (st.W - 0.3, 0.3)
+        b0, b1 = (0.5, st.W - 0.5) if side == 0 else (st.W - 0.5, 0.5)
         p, q = st.at(a, b0), st.at(a, b1)
         light(st, a, b0, RED, radius=34, intensity=50)
-        for dt in (0, gap):
+        for dt in gaps:
             shots.append(_shot((t0 + dt) % period, spell="SPELL_FIREBALL", frm=p, to=q, lvl=lvl))
     return _volley(st, s, period, shots)
 
@@ -150,15 +151,15 @@ def gas_vents(st):
 @pattern("spell", size=(24, 6), title="Fireball crossing")
 def fireball_crossing(st):
     _on(st)
-    v = _lanes(st, [(6.0, 0), (9.5, 15), (13.0, 30), (16.5, 45)], period=60, gap=8)
+    v = _lanes(st, [(6.0, 0), (9.5, 12), (13.0, 24), (16.5, 36)], period=48, gaps=(0, 7, 14))
     _gate(st, "G", 1.0, st.L - 0.3, [v])
     for a in (7.75, 11.25, 14.75):
         st.rest.append((a, st.W / 2))
-    return Meta(tier="standard", tells="four red glows low on the left wall; each throws two fireballs across the hall "
-                                       "every 2 s, the lanes a quarter of a beat apart",
-                answer="stand between lanes, watch the next lane fire its pair, cross it at once (1.2 s before the "
-                       "next pair); cross near the glows: the fireballs burst on the far wall",
-                careless="walking through on no beat: about one fireball in four lanes, ~64 HP, more by the far wall",
+    return Meta(tier="standard", tells="four red glows low on the left wall; each throws three fireballs across the "
+                                       "hall every 1.6 s, the lanes a quarter of a beat apart",
+                answer="stand between lanes, watch the next lane fire its three, cross it at once (0.9 s before the "
+                       "next three); cross near the glows: the fireballs burst on the far wall",
+                careless="walking through on no beat: two lanes in five catch you, ~64 HP a fireball",
                 mistake="one fireball: ~64 HP")
 
 
@@ -166,16 +167,18 @@ def fireball_crossing(st):
 def falling_stars(st):
     _on(st)
     shots = []
-    for k, a in enumerate((6.0, 12.0, 18.0)):
-        for b in (1.6, st.W - 1.6):
+    # each row's moment: a meteor falls ~32 frames, so a walker who comes in as the gate wakes meets the first row
+    # as it bursts and the other two at their quiet
+    for a, t in ((6.0, 18), (12.0, 33), (18.0, 3)):
+        for b in (1.3, st.W - 1.3):
             lt = light(st, a, b, ORANGE, radius=52, intensity=55)
-            shots.append(_shot(30 * k, spell="SPELL_METEOR", src=lt, frm=st.at(a, b), to=st.at(a, b), lvl=1))
+            shots.append(_shot(t, spell="SPELL_METEOR", src=lt, frm=st.at(a, b), to=st.at(a, b), lvl=1))
     v = _volley(st, "M", 90, shots)
     _gate(st, "G", 1.0, st.L - 0.3, [v])
     for a in (9.0, 15.0):
         st.rest.append((a, st.W / 2))
-    return Meta(tier="standard", tells="three rows of orange-lit spots; a meteor falls on each row every 3 s, the rows "
-                                       "1 s apart, and bursts 2.5 squares around",
+    return Meta(tier="standard", tells="three rows of orange-lit spots; a meteor falls on each row every 3 s (the rows "
+                                       "out of step) and bursts 2.5 squares around",
                 answer="wait between rows; when the row ahead bursts, walk through it at once (3 s until the next)",
                 careless="walking through on no beat: a burst or two close by, 20-45 HP each",
                 mistake="caught at a burst's edge: 15-45 HP")
@@ -249,13 +252,13 @@ def statues_lead(st):
     while a <= 19.01:
         for j, b in enumerate(bs):
             st.plate(f"P{i}{j}", a, b, who="creature",
-                     acts=[st.T.act("cast_mark", turn, spell="SPELL_DEATH_RAY", frames=18, text="lead:18")])
-        a += 1.4
+                     acts=[st.T.act("cast_mark", turn, spell="SPELL_DEATH_RAY", frames=24, text="lead:24")])
+        a += 2.2
         i += 1
-    return Meta(tier="hard", tells="a floor of plates between three statues; each tread makes the next statue ray the "
-                                   "spot where you will be 0.6 s on",
-                answer="every time a plate clicks, stop dead or turn: the ray lands where you were heading; step, "
-                       "stop, step; or jump three rows and stop where you land",
+    return Meta(tier="hard", tells="seven rows of plates between three statues; each tread makes the next statue ray "
+                                   "the spot where you will be 0.8 s on",
+                answer="every time a plate clicks, stop dead or turn: the ray lands where you were heading, two "
+                       "squares on; step, stop, step; or jump a row and stop where you land",
                 careless="walking on: a 90 HP ray each tread, dead by the second plate",
                 mistake="one ray: 90 HP")
 
@@ -265,7 +268,7 @@ def skull_gallery(st):
     across, back = st.across(), neg(st.along())
     side_gun = shooter(st, SKULL, across)
     end_gun = shooter(st, SKULL, back)
-    guns = [st.obj(side_gun, a, 0.25, enabled=False) for a in (7.0, 10.0, 13.0, 16.0)]
+    guns = [st.obj(side_gun, 6.0 + 1.5 * k, 0.25, enabled=False) for k in range(9)]
     guns += [st.obj(end_gun, st.L - 0.3, b, enabled=False) for b in (1.5, st.W - 1.5)]
     st.group("G", guns)
     bs = (0.75, 2.25, 3.75, 5.25)
@@ -276,12 +279,13 @@ def skull_gallery(st):
         for j, b in enumerate(bs):
             if j != gaps[i]:
                 st.plate(f"P{i}{j}", a, b, who="creature", acts=list(wake))
-    return Meta(tier="hard", tells="skull guns along the left wall and at the end, asleep; five rows of plates, one gap "
-                                   "in each",
+    return Meta(tier="hard", tells="nine skull guns along the left wall and two at the end, asleep; five rows of "
+                                   "plates, one gap in each",
                 answer="weave through the gaps without a single tread; if a plate wakes the guns (a gong), stand still "
-                       "off their lines (the guns shoot straight: across the bare strips, and down the hall 1.5 "
-                       "squares from each side) for the 5 s they fire",
-                careless="treading a plate wakes six guns for 5 s: ~96 HP a fireball, one a second each",
+                       "between their lines (they shoot straight, all together once a second: across the hall every "
+                       "1.5 squares, and down it 1.5 squares from each side) for the 5 s they fire",
+                careless="treading a plate wakes eleven guns for 5 s: walking on meets a fireball most seconds, ~96 "
+                         "HP each",
                 mistake="one tread: 5 s of crossfire, one or two fireballs (96-190) unless you freeze off the lines")
 
 
@@ -290,7 +294,7 @@ def sealed_room(st):
     _on(st)
     back = secret_line(st, 3, state="open")
     front = secret_line(st, 19, state="open")
-    v = _lanes(st, [(7.0, 0), (10.0, 11), (13.0, 22), (16.0, 33)], period=45, gap=7, s="F", sides=(0, 1, 0, 1))
+    v = _lanes(st, [(7.0, 0), (10.0, 11), (13.0, 22), (16.0, 33)], period=45, gaps=(0, 7), s="F", sides=(0, 1, 0, 1))
     across, down = st.across(), neg(st.along())
     guns = [st.obj(shooter(st, SKULL, down), 18.6, b, enabled=False) for b in (1.0, st.W / 2, st.W - 1.0)]
     guns += [st.obj(shooter(st, SKULL, across), a, 0.25, enabled=False) for a in (4.6, 8.5, 12.5)]
@@ -306,7 +310,7 @@ def sealed_room(st):
     seal = [st.act("walls_close", walls=back + front), st.T.act("spell_arm", v), st.T.act("trig_count", count),
             st.act("sound", text="BigGong", src=st.at(5, st.W / 2))] + [st.act("disarm", w) for w in wires]
     for j, b in enumerate((0.75, 2.25, 3.75, 5.25)):
-        st.plate(wires[j], 4.2, b, who="player", visible=False, acts=list(seal))
+        st.plate(wires[j], 4.6, b, who="player", visible=False, acts=list(seal))
     done = [st.T.act("trig_cancel", count), st.T.act("spell_disarm", v), st.act("off", "G"),
             st.act("walls_open", walls=back + front), st.act("sound", text="Chime", src=st.at(17.5, st.W - 0.6))] \
         + [st.act("arm", w, delay=150) for w in wires]
@@ -336,11 +340,8 @@ def long_run(st):
     st.potion(21.3, 0.5)
     # 3. the fire-eye: a statue at the end of the stage throws a fireball at where you stand every 1.3 s
     _statue(st, 32.6, st.W / 2, neg(st.along()))
-    pillar(st, 25, 2)
-    pillar(st, 28, 4)
     _hunt(st, "E", 22.0, 31.0, "SPELL_FIREBALL", st.at(31.8, st.W / 2), period=40, delay=0, lvl=1,
           sound="FireballCast")
-    st.rest.append((25.4, 1.6))
     st.potion(33.6, 0.5)
     # 4. the statues lead
     srcs = []
@@ -350,14 +351,14 @@ def long_run(st):
         srcs.append(st.at(a, bf))
     turn = f"{st.label}T"
     start(st, f"SpellTurn(\"{turn}\", " + ", ".join(go_pt(p) for p in srcs) + ")")
-    for i, a in enumerate((35.0, 36.4, 37.8, 39.2, 40.6)):
+    for i, a in enumerate((35.0, 37.2, 39.4, 41.6)):
         for j, b in enumerate((0.75, 2.25, 3.75, 5.25)):
             st.plate(f"R{i}{j}", a, b, who="creature",
-                     acts=[st.T.act("cast_mark", turn, spell="SPELL_DEATH_RAY", frames=18, text="lead:18")])
+                     acts=[st.T.act("cast_mark", turn, spell="SPELL_DEATH_RAY", frames=24, text="lead:24")])
     return Meta(tier="hard", tells="lit fist plates, vents breathing in turn, a statue that throws fireballs, then a "
                                    "floor of plates between ray statues; red potions between the stages",
-                answer="tread and stop on the fist rows; cross the vents when they clear; strafe and hide behind the "
-                       "posts from the fire-eye (it aims where you stand: keep moving across its line); step and stop "
-                       "on the ray plates",
+                answer="tread and stop on the fist rows; cross the vents when they clear; zigzag toward the fire-eye "
+                       "(it throws at where you stand now: moving across its line, never along it, makes it miss); "
+                       "step and stop on the ray plates",
                 careless="several hundred HP: no class walks it",
                 mistake="50 (a fist), 30 (a cloud), 64 (a fireball), 90 (a ray)")

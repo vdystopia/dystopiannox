@@ -341,14 +341,15 @@ func spellDetonate(name string, who ns.Obj) {
 			}
 		}
 	}
+	// cast from the glyph's spot by the shared caster (the glyph is deleted at once: it must not own what flies)
 	for _, sp := range g.Spells {
 		switch sp {
 		case "SPELL_SLOW", "SPELL_STUN", "SPELL_CONFUSE", "SPELL_FUMBLE", "SPELL_ANCHOR":
 			if who != nil {
-				spellCast(sp, g.Lvl, o, who)
+				spellCast(sp, g.Lvl, g.pos, who)
 			}
 		default:
-			spellCast(sp, g.Lvl, o, g.pos)
+			spellCast(sp, g.Lvl, g.pos, g.pos)
 		}
 	}
 	ns.Effect(effect.BLUE_SPARKS, g.pos, g.pos)
