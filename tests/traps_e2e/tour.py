@@ -68,7 +68,7 @@ def probe_source(name, bdir):
             f'moversOff: {go_list(m["name"] for m in movers if not m["armed"])}, '
             f'zones: {go_list(z["name"] for z in zones if z["armed"])}, '
             f'zonesOff: {go_list(z["name"] for z in zones if not z["armed"])}, on: {go_list(on)}, off: {go_list(off)}, '
-            f'sentries: {go_list(sentries)}, '
+            f'sentries: {go_list(sentries)}, prefix: {json.dumps(pre)}, '
             f'closed: [][2]int{{{", ".join(f"{{{a}, {b}}}" for a, b in closed)}}}, '
             f'open: [][2]int{{{", ".join(f"{{{a}, {b}}}" for a, b in opened)}}}, watches: []ptWatch{{{ws}}}}},')
         for kind in ("plan", "walk", "run"):
@@ -78,6 +78,18 @@ def probe_source(name, bdir):
             run_go.append(f'\t{{{json.dumps(st["label"])}, {json.dumps(kind)}, []float32{{{flat}}}}},')
     src = open(os.path.join(HERE, "probe_tour_traps.go"), encoding="utf-8").read()
     src = src.replace("\t//STATIONS", "\n".join(st_go)).replace("\t//RUNS", "\n".join(run_go))
+    if os.path.exists(os.path.join(bdir, f"{name}_scripts", "traps_trigger.go")):   # its eyes start their clock again
+        eyes = """func ptEyes(prefix string) {
+    for _, e := range trigEyes {
+        if prefix != "" && len(e.Name) >= len(prefix) && e.Name[:len(prefix)] == prefix {
+            e.t0, e.cool = trapFrame, 0
+        }
+    }
+}
+"""
+    else:
+        eyes = "func ptEyes(prefix string) {}"
+    src = src.replace("//EYES", eyes)
     hx, hy = labinfo["hub_start"]
     src = src.replace("LIMBOX, LIMBOY", f"{hx}, {hy}")
     total = sum(len(runs[l][k]) for l in runs for k in runs[l]) + 30 * sum(len(runs[l]) for l in runs)

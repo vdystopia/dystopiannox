@@ -25,7 +25,7 @@ Verdicts (rules/TRAPS.md T2-T4): IMPOSSIBLE (no plan under 60 HP, 90 for hard), 
 both cost under 35 HP and neither falls), TIER (a standard station that needs more than 25 HP or has slack under
 0.5; a hard station a careless walk survives with under 60 HP), else PASS.
 """
-import argparse, json, math, os, sys
+import argparse, json, math, os, re, sys
 import numpy as np
 
 SQ = 32.5
@@ -57,6 +57,32 @@ BLADES = {"RotatingSpikes": (12, 4.0), "RotatingSpikesImmobile": (12, 4.0)}
 PITS = ("Pit", "ForestPit")
 CRUMBLE = ("PitCrumblingFloor",)
 SENTRIES = ("SentryGlobe", "SentryGlobeN", "SentryGlobeE", "SentryGlobeS", "SentryGlobeW", "SentryGlobeMovable")
+EYE_RE = re.compile(r'TrigEye\(trigEye\{Name: "([^"]+)", C: ns\.Ptf\(([-\d.]+), ([-\d.]+)\), U: ns\.Ptf\(([-\d.]+), '
+                    r'([-\d.]+)\), HU: ([\d.]+), HV: ([\d.]+), Lamps: "[^"]*", Period: (\d+), Open: (\d+), Grace: (\d+), '
+                    r'Thresh: ([\d.]+), Cool: (\d+)')
+EYE_RAY = 90.0                 # the eye's death ray (rules/TRAPS.md: a 90 HP ray, another a second later)
+
+
+def eyes_of(map_dir, name):
+    """The motion-detection eyes (kit/behaviours/traps_trigger.go TrigEye) of a built map, from its config script:
+    a box, a period whose first Open frames the lamps burn, a grace before it sees, a movement threshold."""
+    out = []
+    p = os.path.join(map_dir, name + "_scripts", "traps_config.go")
+    if not os.path.exists(p): return out
+    for m in EYE_RE.finditer(open(p, encoding="utf-8").read()):
+        n, cx, cy, ux, uy, hu, hv, per, op, gr, th, cool = m.groups()
+        out.append(dict(name=n, c=(float(cx), float(cy)), u=(float(ux), float(uy)), hu=float(hu), hv=float(hv),
+                        period=int(per), open=int(op), grace=int(gr), thresh=float(th), cool=int(cool)))
+    return out
+
+
+def in_eye(e, p, pad=0.0):
+    dx, dy = p[0] - e["c"][0], p[1] - e["c"][1]
+    a = dx * e["u"][0] + dy * e["u"][1]
+    b = -dx * e["u"][1] + dy * e["u"][0]
+    return abs(a) <= e["hu"] + pad and abs(b) <= e["hv"] + pad
+
+
 FIREBALL, BALL_R = 12.0, 18.0  # a skull gun's fireball: px a frame; it hits a player whose centre comes this close
 SHOOTERS = {"ArrowTrap1": ((1, 1), 25.0), "ArrowTrap2": ((-1, 1), 25.0), "Skull1": ((-1, -1), 90.0),
             "Skull2": ((1, -1), 90.0), "Skull3": ((-1, 1), 90.0), "Skull4": ((1, 1), 90.0)}
@@ -240,6 +266,8 @@ def seg_dist(p, a, b):
 # ---- a station's frame -----------------------------------------------------------------------------------------
 class StationModel:
     def __init__(self, data, st, walls, secret=None):
+        self.eyes = []                                   # motion-detection eyes in the station (set by the caller)
+        self.move_pen = {}                               # id(G) -> the eyes' price of moving, per tick and cell
         secret = dict(secret or {})
         for z in data["zones"]:                          # breakable walls a saw bursts: closed until the act
             for a in z["acts"] + z["release"]:
@@ -414,6 +442,16 @@ class StationModel:
                     cost = SHOVE + BLADES[tp][1] * FPT
                 for i, j in cells:
                     G[t, i, j] += cost; A[t, i, j] += cost
+        if self.eyes:                                   # moving in an eye's box while it sees: a ray
+            M = np.zeros_like(G)
+            for e in self.eyes:
+                cells = [(i, j) for i in range(self.NA) for j in range(self.NB)
+                         if in_eye(e, self.xy(*self.cell_ab(i, j)), PLAYER_R + PLAN_MARGIN)]
+                for t in range(G.shape[0]):
+                    sees = any(e["grace"] - 3 <= (t * FPT + k + offset) % e["period"] < e["open"] + 1 for k in range(FPT))
+                    if sees:
+                        for i, j in cells: M[t, i, j] += EYE_RAY
+            self.move_pen[id(G)] = M
         return G, A
 
     def lane(self, v):
@@ -525,6 +563,7 @@ class StationModel:
         crumble = np.zeros((NA, NB), bool)
         for i, j in getattr(self, "crumble_cells", ()):
             crumble[i, j] = True
+        M = self.move_pen.get(id(G))
         found = None
         for t in range(t0, T):
             cur = best[t]
@@ -545,6 +584,7 @@ class StationModel:
                     if k == 0:
                         sh = np.where(crumble, INF, sh)            # no standing still on crumbling floor
                     cost = sh + g
+                    if k and M is not None: cost = cost + M[t + 1]     # moving while an eye sees
                     cost = np.where(block, INF, cost)
                     better = cost < best[t + 1, nc]
                     best[t + 1, nc] = np.where(better, cost, best[t + 1, nc])
@@ -560,6 +600,7 @@ class StationModel:
                         for s in range(1, JT + 1):
                             oi, oj = round(di * s / JT), round(dj * s / JT)
                             acc = acc + A[t + s][si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
+                            if M is not None: acc = acc + M[t + s][si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
                             ok &= ~block[si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
                         acc = acc + G[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj] - A[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj]                             + ground_pen[si0 + di:si1 + di, sj0 + dj:sj1 + dj] + JUMP_COST     # landing on a plate presses it
                         land[si0 + di:si1 + di, sj0 + dj:sj1 + dj] = np.where(ok, acc, INF)
@@ -612,6 +653,7 @@ class StationModel:
         lanes = {o: [self.xy(*self.cell_ab(i, j)) for i, j in self.lane(v)] for o, v in shooters}
         cool = {o: 0 for o, _ in shooters}
         balls = []
+        hist, eye_cool = [], {e["name"]: 0 for e in self.eyes}
         sentries = [(o, v) for o, v in objs.items() if v["type"] in SENTRIES]
         on_for = {o: (offset if w.en.get(o, True) else 0) for o, _ in sentries}
         dyn = [(o, v) for o, v in objs.items() if v["type"] in BLOCKS or v["type"] in BLADES]
@@ -650,6 +692,14 @@ class StationModel:
                 hit = any(math.hypot(x - lx, y - ly) < 12 for lx, ly in lanes[o])
                 if hit and (o in w.volleys or cool[o] == 0):
                     dmg += SHOOTERS[v["type"]][1]; cool[o] = 30
+            hist.append(p)
+            for e in self.eyes:                          # kit/behaviours/traps_trigger.go trigTick's eyes
+                if eye_cool[e["name"]] > 0: eye_cool[e["name"]] -= 1
+                tt = (f + offset) % e["period"]
+                if tt >= e["open"] or tt < e["grace"] or eye_cool[e["name"]] > 0 or len(hist) < 4: continue
+                q = hist[-4]
+                if in_eye(e, p) and math.hypot(x - q[0], y - q[1]) > e["thresh"]:
+                    dmg += EYE_RAY; eye_cool[e["name"]] = e["cool"]
             left = []
             for o, f0 in balls:
                 bx, by = self.ball_xy(o, f - f0)
@@ -721,11 +771,13 @@ def analyse(map_dir, only=None, trace=False):
         raise SystemExit(f"no .lab.json in {map_dir}")
     lab = json.load(open(os.path.join(map_dir, names[0])))
     data = json.load(open(os.path.join(map_dir, lab["name"] + ".traps.json")))
+    eyes = eyes_of(map_dir, lab["name"])
     rows, runs = [], {}
     for st in lab["stations"]:
         if only and st["label"] != only: continue
         sm = StationModel(data, st, [tuple(w) for w in lab.get("walls", [])],
                           {tuple(map(int, k.split(","))): v for k, v in lab.get("secret", {}).items()})
+        sm.eyes = [e for e in eyes if sm.inside(*e["c"])]
         tier = st.get("tier", "standard")
         G, A = sm.fields(0)
         res = sm.plan(G, A)

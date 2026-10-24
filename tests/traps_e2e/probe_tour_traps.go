@@ -23,6 +23,7 @@ type ptStation struct {
 	clocks, clocksOff, movers, moversOff, zones, zonesOff []string
 	on, off                                                []string
 	sentries                                               []string // switched off while the hero waits: the beam back at its base angle
+	prefix                                                 string   // the station's object prefix (its eyes are <prefix>Eye)
 	closed, open                                           [][2]int
 	watches                                                []ptWatch
 }
@@ -63,6 +64,7 @@ func ptReset(label string) {
 		return
 	}
 	trapQueue = nil
+	ptEyes(st.prefix)
 	for _, c := range st.clocks {
 		if cl := trapClocks[c]; cl != nil {
 			cl.Armed = true
@@ -232,3 +234,5 @@ func ptFrame() {
 	}
 	ptF++
 }
+
+//EYES
