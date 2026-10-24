@@ -23,7 +23,7 @@ import math
 from kit.trapkit import pattern, Meta, frames, SQ
 
 TAU = 2 * math.pi
-IN = 0.25                    # squares from its wall to a wall globe (Westwood's sit 5-16 px from the wall cell)
+IN = 0.5                     # squares from its wall to a wall globe (16 px: Westwood sets them 5-16 px from it)
 REACH = 600.0                # beam length, px
 CLEAR = 0.6                  # squares: a rest spot keeps this far from every beam
 STRIP = "LOTDBlackMarble"    # the dark floor along a switched beam's line
@@ -403,28 +403,63 @@ def gliding(st):
 
 # ---- 08 hard: run the gates ----------------------------------------------------------------------------------------
 
+GATE_OFF = (6, 51)            # frames after a plate: its gate dark (1.5 s), ticking, a crackle 10 frames before it returns
+GATE_LAG = 35                 # frames between one gate's window and the next's in a plate's wave (a run's pace: 7 squares)
+
+
+def _plate(st, s, a, b, acts, rearm=60):
+    """A pressure plate the player steps on (a jump passes over it): `acts` every time, as T.plate, but written as a
+    switch zone (the same acts on each press) so the simulator's planner tries pressing it."""
+    x, y = st.at(a, b)
+    st.T.obj("PressurePlate", x, y, name=f"{st.label}Plate{s}",
+             xfer={"SizeX": 45, "SizeY": 45, "EdgeColor": [90, 90, 90], "BackColor": [10, 10, 10], "UnkInt1": 0,
+                   "ScriptOnPressed": "", "ScriptOnReleased": "", "ScriptOnCollided": "", "AllowedObjClass": 4,
+                   "IgnoredObjClass": 0, "AllowedTeamID": 0, "IgnoredTeamID": 0, "TriggerState": 0, "Unk7": 0,
+                   "UnkInt2": 0})
+    st.T.zone(f"{st.label}{s}", (x, y), 90 * 0.35355 + st.T.PLATE_PAD, shape="diamond", who="player", jump=True,
+              toggle=True, rearm=rearm, acts=acts, release=acts)
+
+
+def _gate_wave(st, gates, plates):
+    """A plate before each gate (group G<k>); a plate darkens its gate and every gate after it in turn, GATE_LAG frames
+    apart (a run takes them all in one go; a walker stops in a pocket and uses the next plate); while a wave runs every
+    plate sleeps (one wave at a time)."""
+    for k, (pa, pb) in enumerate(plates):
+        acts = []
+        for j in range(k, len(gates)):
+            a, gb = gates[j]
+            t0, t1 = GATE_OFF[0] + (j - k) * GATE_LAG, GATE_OFF[1] + (j - k) * GATE_LAG
+            acts += [st.act("off", f"G{j}", delay=t0), st.act("on", f"G{j}", delay=t1)]
+            acts += [_sound(st, "GenerateTick", a, gb, delay=d) for d in range(t0, t1 - 12, 9)]
+            acts.append(_sound(st, "DeathRayCast", a, gb, delay=t1 - 10))
+        end = GATE_OFF[1] + (len(gates) - 1 - k) * GATE_LAG
+        acts += [st.act("disarm", f"P{j}") for j in range(len(plates))]
+        acts += [st.act("arm", f"P{j}", delay=end) for j in range(len(plates))]
+        _plate(st, f"P{k}", pa, pb, acts)
+
+
 @pattern("sentry", size=(26, 6), tier="hard", title="Run the gates")
 def run_the_gates(st):
-    # three beams that never stop, each with a plate five squares before it that kills it for 1.5 s: too short for a
-    # walk, enough for a run; the gold lies past the last
-    gates = [(8.5, 0, (3.5, 2.0)), (15.5, 1, (10.5, 4.0)), (22.5, 0, (17.5, 2.0))]
-    for k, (a, side, (pa, pb)) in enumerate(gates):
+    # three beams that never stop, a pressure plate five squares before each; a plate darkens the gates ahead of it
+    # one after another at a running pace, each for 1.5 s (ticking): run from the first plate and all three are dark
+    # as you reach them; a walker is too slow for any; stop in a pocket and its own plate starts the wave again
+    gates = []
+    for k, (a, side) in enumerate(((8.5, 0), (15.5, 1), (22.5, 0))):
         g = _fixed(st, a, side, enabled=True)
         st.group(f"G{k}", [g])
-        gb = IN if side == 0 else st.W - IN
-        acts = [st.act("off", f"G{k}", delay=6), st.act("on", f"G{k}", delay=51)] \
-            + [_sound(st, "GenerateTick", a, gb, delay=d) for d in (6, 15, 24, 33)] \
-            + [_sound(st, "DeathRayCast", a, gb, delay=41)]
-        st.plate(f"P{k}", pa, pb, who="player", rearm=60, acts=acts)
+        gates.append((a, IN if side == 0 else st.W - IN))
+    _gate_wave(st, gates, [(3.5, 2.0), (10.5, 4.0), (17.5, 2.0)])
     st.T.obj("Gold", *st.at(24.5, 3.0), name=st.nm("Gold"), xfer={"Amount": 200})
-    st.rest += [(2.0, 4.5), (12.0, 2.0), (19.0, 4.0), (25.0, 4.8)]
-    return _meta(st, tier="hard", tells="three beams that never stop, each with a pressure plate five squares before "
-                                        "it; gold beyond the last",
-                 answer="step on a plate and run: the beam ahead dies 0.2 s later for 1.5 s (ticking); a run clears "
-                        "it in ~25 frames, a walk takes ~53 and is a frame or two late; three times",
-                 careless="walking from the plate: the beam returns as you reach it: death",
-                 timing="beam off frames 6-51 after the plate; plate to past the line 5.4 squares: run 25 frames, "
-                        "walk 53; a plate re-arms 2 s after you step off it")
+    st.rest += [(2.0, 4.5), (12.5, 2.0), (19.5, 4.0), (25.0, 4.8)]
+    return _meta(st, tier="hard", tells="three beams that never stop, a pressure plate five squares before each, gold "
+                                        "beyond the last",
+                 answer="step on the first plate and run without stopping: the gates go dark one after another as "
+                        "you reach them (each 1.5 s, ticking, a crackle before it returns); lose the pace and stop in "
+                        "the pocket before the next gate, then use its plate",
+                 careless="walking from a plate: you reach the gate as it comes back: death",
+                 timing=f"from a plate, gate j dark {GATE_OFF[0]}-{GATE_OFF[1]} frames + {GATE_LAG} per gate after "
+                        "it; a run reaches the gates at ~24, ~57, ~90 frames, a walk at ~49 (the line is lit again "
+                        "at 51); plates sleep while a wave runs")
 
 
 # ---- 09 hard: the courtyard ----------------------------------------------------------------------------------------
@@ -471,11 +506,8 @@ def long_run(st):
     _cue(st, "F0", "GenerateTick", 3.0, 3.5, [step * k for k in range(n + 1)])
     # 2. a gate that never stops, its plate five squares before it
     gate = _fixed(st, 21.5, 1, enabled=True)
-    st.group("G", [gate])
-    acts = [st.act("off", "G", delay=6), st.act("on", "G", delay=51)] \
-        + [_sound(st, "GenerateTick", 21.5, st.W - IN, delay=d) for d in (6, 15, 24, 33)] \
-        + [_sound(st, "DeathRayCast", 21.5, st.W - IN, delay=41)]
-    st.plate("P", 16.5, 3.5, who="player", rearm=60, acts=acts)
+    st.group("G0", [gate])
+    _gate_wave(st, [(21.5, st.W - IN)], [(16.5, 3.5)])
     # 3. a beam on a rail sweeping up and down the last stretch; stone stubs to shelter behind
     for a0 in (27.5, 31.5, 35.5):
         _wall(st, a0, 2, a0 + 1, 2)

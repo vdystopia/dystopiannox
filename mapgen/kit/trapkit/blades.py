@@ -56,9 +56,9 @@ def _wall(st, a0, b0, a1, b1, breakable=False, material=None, facing=None):
 
 def _pit(st, a, b):
     """An open pit on the square whose centre is (a, b) (a Pit's diamond covers exactly one square); the lab sets
-    FallX/FallY to its pit room."""
-    st.spec.obj_px("Pit", *st.at(a, b), xfer={"UnknownScriptHandler": "", "FallX": 0, "FallY": 0, "ScriptTime1": 0,
-                                               "ScriptTimeout": 0, "ScriptActivated": 0})
+    FallX/FallY to its pit room. A named trap object, so the simulator sees it."""
+    st.obj("Pit", a, b, xfer={"UnknownScriptHandler": "", "FallX": 0, "FallY": 0, "ScriptTime1": 0,
+                              "ScriptTimeout": 0, "ScriptActivated": 0})
 
 
 def _ring(ca, cb, r, n, start, sign=1):
