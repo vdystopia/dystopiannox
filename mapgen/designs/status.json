@@ -17,7 +17,8 @@
     "bosslab": "BossLab",
     "traptest": "TrapTest",
     "jumptest": "JumpTest",
-    "traplab": "TLSpike..TLTrigger"
+    "traplab": "TLSpike..TLTrigger",
+    "trapgaunt": "TrapGnt01..TrapGnt10"
   },
   "frozen": {
     "ambermere": "Ambermere",
