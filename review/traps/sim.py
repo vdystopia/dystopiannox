@@ -41,8 +41,8 @@ PLATE_PENALTY = 15.0
 JUMP_COST = 2.0                # a jump is free in HP but costs stamina: the planner jumps only when it helps
 H_TICKS = 630                  # 42 s
 JT = JUMP_FRAMES // FPT        # a jump: ticks airborne, cells covered straight / diagonally (~124 units at run speed)
-JD = int(round(124 / (SQ * CELL)))
-JDD = int(round(JD / 1.414))
+JD = int(124 / (SQ * CELL))     # rounded down (3.6 squares): a plan never asks for a longer jump than the game's
+JDD = int(124 / 1.414 / (SQ * CELL))
 PLAN_MARGIN = 5.0              # px: the planner keeps this much farther from contact than the replay needs
 WALL_GAP = 0.35                # squares: a player's centre stays this far from a wall line
 
