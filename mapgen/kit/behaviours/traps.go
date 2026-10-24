@@ -264,6 +264,11 @@ func trapTick() {
 			}
 			continue
 		}
+		if ns.Object(w.Obj) == nil { // picked up and gone (gold is spent into the purse) or destroyed
+			w.done = true
+			trapFire(w.Acts)
+			continue
+		}
 		if w.obj.GetHolder() != nil {
 			w.done = true
 			trapCaller = w.obj.GetHolder()
