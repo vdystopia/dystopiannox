@@ -153,3 +153,20 @@ around the oven conflicts with the brick cobblestone around the border of the ro
 - **Centred on the room** (`civic.axis`); the side stations two units off the walls (the back walls keep their
   hangings), a middle ring in halls of 300 tiles, suits of armour on a back wall, urns flanking the way in, more
   lights in a big hall. Checked: `qa2.centre`, `qa2.facing`.
+
+## QA round 3 (2026-10-23; review/qa3/ledger-civic.md Q3C-3, Q3C-4, Q3C-5)
+
+The user: "The northeast side of the carpet does not have a proper border. The brick tiling along the exterior of this
+room is not properly bordered" (RM-GREATHALL-01); "The brick tiling along the exterior of this room is not properly
+bordered" (-02, -03). -04 and -05 kept (4 and 5).
+
+- **Every carpet has its whole trim, every brick band and hearth patch its whole border, on all four sides** (Q3C-4).
+  Cause: the floor's edge pieces between the row of tiles along a NE wall and the row inside it were never drawn
+  (`nox.py` TW-12 read a floor tile as centred half a tile from where the editor draws it, so a NE or SW wall seemed to
+  run through the middle of the tiles on its line, and the seam two units in from the wall counted as "at the wall").
+  The band along the NE wall is that row: its inner edge was a hard seam the whole length of the wall; the carpet's NE
+  trim lay on that row and was missing. Now the seams across a wall are read where the editor draws the tiles
+  (`nox.TILE_CENTRE`; Q3C-5), and a carpet in a hall with a band keeps its trim inside the band's ring, so the band
+  runs unbroken past it (`Ctx.carpet_inset`). The band, the hearth's patch and the carpets are never blended
+  (`shells.blend_pattern` leaves a bordered patch and a carpet alone). Checked: `qa3.patch_border`, `qa3.carpet_blend`.
+- Kept as rated: the high table, the boards on one carpet, the hearth in the band's brick, the side stations.

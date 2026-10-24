@@ -152,3 +152,28 @@ barrels are too close to each other"; -05: "too empty, especially the east side"
 - **Fuller:** a table per 22 tiles (was 28, `kit/roomtypes.py`), kegs in all three front corners and in rows on the front
   walls, benches on a front wall, great casks on a front wall where the bar had no room for them, more light, tapestries
   besides the trophies.
+
+## QA round 3 (2026-10-23; review/qa3/ledger-civic.md Q3C-1, Q3C-2, Q3C-5)
+
+The user, of the whole set: "Huge improvement but The carpet floor is wrong in 01, 03, and 04. 02 has the proper edge
+between the carpet and the plank floor. The other carpets are all blended into the floor. Although the blend job is
+good, it's wrong to use here. Think about real life. A carpet doesn't blend into the floor underneath. It has solid,
+distinct edges. 05 is different because it uses carpet objects that require no blending since they sit on top of the
+floor. 05 looks good. All taverns need to have the floor properly transitioned between the bar floor and the main
+tavern floor where the bar entrance / gap is. This is because the transition there is visible. Meanwhile, the
+transition on the rest of it is obscured by the bar."
+
+- **A carpet of floor tiles ends at a solid trim on every side, never a blend** (Q3C-1). 02's edge was Westwood's
+  RugBrownEdge for RugRed on WoodSlatFloor2; 01, 03 and 04 had been blended (BlendEdge) because `kit/shells.py
+  blend_pattern` took the carpet for the room's second floor and blended it onto the boards. Now `blend_pattern` never
+  touches a carpet, and `furnish.lay_carpet` sets the trim for each floor round it (`furnish.carpet_trim`): Westwood's
+  solid carpet edge for the pair (RugBrownEdge, the gold RugTanLightEdge), else the gold trim. Westwood's RugTanEdge, a
+  ragged fringe, is not used. Rug objects (05's) stay as they are. Checked: `qa3.carpet_blend`.
+- **The brick behind the bar is bordered where its edge shows** (Q3C-2): at the barkeep's flap (the counter's opening)
+  and wherever no counter piece stands over the seam, its edge drawn onto the room's floor as a hearth's patch is
+  bordered (the grey curb, `shells.PATCH_EDGE`), and on one seam either side under the counter's ends, so the curb runs
+  across the whole opening (`civic.bar_gap_border`, `bar_open_seams`). Under the counter the brick still ends at the
+  bar's line unbordered (Q2C-6: "Terminate the bricks at the bar"). Checked: `qa3.bar_gap`.
+- **Every patch bordered on its NE side too** (Q3C-5): a carpet's trim or a hearth's curb on the row of tiles along a NE
+  wall had been dropped (`nox.py` TW-12 read a tile half a tile off), fixed for every room.
+- Kept as rated: the four table layouts, the hearth on its patch, 05's rug objects under its round tables.

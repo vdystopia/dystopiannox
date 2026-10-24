@@ -109,3 +109,23 @@ The user: "The benches are facing the wrong way. They are facing south, but they
   braziers between (stations a step closer in a hall under 130 tiles), benches and urns mirrored by the side walls, a
   middle ring of urns and statues in a wide hall, urns of another kind flanking the way in, plants in the far corners.
 - **Benches face the aisle** (`facing_pair`). Checked: `qa2.centre`, `qa2.facing`.
+
+## QA round 3 (2026-10-23; review/qa3/ledger-civic.md Q3C-7)
+
+The user: "Incoherent, random , cluttered with too many pillars and statues" (RM-HALL-01, a typical square Dun Mir hall
+of 156 tiles; -03, a large square one of 270 tiles: both 2 of 5); -02 and -04, long halls, 5 of 5; -05, a small square
+one, 4.
+
+- **Every hall is the long halls' plan** (02 and 04): one colonnade a side of the aisle (a column at every other station,
+  statues and braziers between them), benches alone by the side walls facing the aisle, the far end's statues, chest
+  and flame basins, plants in the far corners. Cause: a square hall is as wide as it is long, and the stations filled
+  the width with three ranks a side (the colonnade, a "middle ring" of urns and statues, then benches with urns between
+  them), a grid of statue-like pieces (01: 4 columns, 4 statues, 6 urns; urns read as statues in the picture).
+- **A wide hall widens its nave instead of adding ranks:** where the floor runs 9.5 units or more from the axis to a
+  side wall, the colonnade stands about 0.45 of the way out (`civic.HALL_WIDE`, `HALL_NAVE`), no middle ring, no urns
+  among the benches or flanking the way in (`civic.hall`). A narrow hall is laid as before (02, 04, 05 unchanged).
+- **Each colonnade one straight line:** its offset is the one the doors' ways in cross at the fewest stations
+  (`civic.hall_nave`), every station at that offset (`stations(exact=True)`), each station its own kind (column,
+  statue, column, brazier); a station a door's way crosses stays empty rather than shifting out of line or taking
+  another kind (01's second door had pushed its first pairs two units out; 03's side doors had put braziers in the
+  columns' places). Checked: `qa3.hall_ranks` (more than one rank a side of columns, statues and urns).

@@ -413,7 +413,13 @@ def blend_pattern(spec, tiles, doors=()):
     """Edges between a room's two floors where Westwood blends the pair (rules/out/floors.json: dirt worn into
     brick, marble panels in a steel or brick trim): the overlay spills onto the tiles beside it, the room's own and those
     under its walls, and nothing else spills there (nox.Spec.pattern_tiles); never within 3 cells of a door, where the
-    doorway's floor is the room's own. tiles: {tile: material} of one room; doors: the door gaps."""
+    doorway's floor is the room's own. tiles: {tile: material} of one room; doors: the door gaps.
+
+    Never a carpet (QA round 3, Q3C-1: "A carpet doesn't blend into the floor underneath. It has solid, distinct
+    edges"): a carpet keeps the trim kit/furnish.py lay_carpet gave it; never a patch lay_patch bordered (Q3C-4: a
+    floor patch ends at a hard, bordered edge), whose border this would have turned into a blend."""
+    patched = getattr(spec, "patch_tiles", {})
+    tiles = {t: m for t, m in tiles.items() if not (m or "").startswith("Rug") and patched.get(t) != m}
     mats = set(tiles.values())
     if len(mats) < 2 or not hasattr(spec, "pattern_tiles"): return
     count = collections.Counter(tiles.values())
@@ -648,7 +654,9 @@ def lay_zones(spec, room, objs, kind=None):
         out[t] = mat
     # a zone too broken by the doors and carpets to read as one is left out
     if len(out) < max(1, 0.5 * len(want)): return {}
-    hearth = {t for t, mat in out.items() if want.get(((t[0] + t[1]) // 2, (t[0] - t[1]) // 2)) == "hearth"}
+    # the hearth's patch and the throne's dais bordered all round (Q1R-19; QA round 3, Q3C-4: a floor patch ends at a
+    # hard, bordered edge, and a dais standing out from its wall shows its edge on every side)
+    hearth = {t for t, mat in out.items() if want.get(((t[0] + t[1]) // 2, (t[0] - t[1]) // 2)) in BORDERED_ZONES}
     for t, mat in out.items():
         if t not in hearth: spec.tile(*t, mat)
     for mat in sorted({out[t] for t in hearth}):          # bordered all round (Q1R-19)
@@ -666,6 +674,7 @@ def lay_zones(spec, room, objs, kind=None):
 # corner); laid over a carpet when the fire stands on one; its edges drawn (PATCH_EDGE) whatever Westwood blends.
 HEARTH_RATE = 1.0
 PATCH_EDGE = "BrickEdgeBrown"
+BORDERED_ZONES = ("hearth", "throne")      # lay_zones' patches laid bordered (lay_patch), never blended
 
 
 def lay_patch(spec, room, tiles, mat, edge=PATCH_EDGE, base=None):
@@ -675,12 +684,15 @@ def lay_patch(spec, room, tiles, mat, edge=PATCH_EDGE, base=None):
     rt = set(getattr(room, "tiles", ()) or ())
     for t in tiles: spec.tile(*t, mat)
     if mat not in spec.blend: spec.blending(mat, -50, edge=edge)
+    if not hasattr(spec, "patch_tiles"): spec.patch_tiles = {}
     for t in tiles:
+        if edge != "BlendEdge": spec.patch_tiles[t] = mat    # (a bordered patch: blend_pattern keeps off it, Q3C-4)
         for a, b in SIDES_TIPS:
             n = (t[0] + a, t[1] + b)
             if n in tiles or n not in rt: continue
             nb = spec.floor.get(n)
             if not nb or nb == mat: continue
+            if nb.startswith("Rug"): continue                 # a carpet's own trim is that seam's edge (Q3C-1)
             spec.edge_over[(mat, nb)] = edge
             spec.pattern_tiles.setdefault(n, set()).add((mat, nb))
     return set(tiles)

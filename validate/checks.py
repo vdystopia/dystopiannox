@@ -4949,3 +4949,169 @@ RULES += [("rooms.qa2_gap", "rooms", r"separate pieces never touch", "Q2T-4"),
           ("rooms.qa3_pair_gap", "rooms", r"in every gap between the pairs", "Q3R-8")]
 _RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-6:]]
 ALL.append(check_qa2_space)
+
+
+# ---- QA round 3's floor and batch rules (review/qa3/ledger-civic.md Q3C-1, Q3C-2, Q3C-4, Q3C-6) ----------------------
+# Q3C-1 (the tavern set): "A carpet doesn't blend into the floor underneath. It has solid, distinct edges." Q3C-4
+# (RM-GREATHALL-01: "The northeast side of the carpet does not have a proper border. The brick tiling along the exterior
+# of this room is not properly bordered"): every carpet and brick patch ends at a bordered edge on every side. Q3C-2
+# (the tavern set): "All taverns need to have the floor properly transitioned between the bar floor and the main tavern
+# floor where the bar entrance / gap is": the brick behind a bar is bordered wherever no counter covers its seam
+# (kit/civic.py bar_gap_border). Q3C-6 (the throne room set: "very repetitive and all too similar"): the rooms of one
+# ceremonial type in a map differ in more than their size.
+QA3_BRICK = re.compile(r"[Bb]rick")
+QA3_SIDES = ((1, -1), (-1, -1), (1, 1), (-1, 1))
+QA3_BAR = re.compile(r"^Bar(Piece|Corner)")
+QA3_BAR_ANY = re.compile(r"^Bar(Piece|Corner|Hinged)")
+QA3_REPEAT_KINDS = {"throne_room"}        # the ceremonial rooms the user found repeating (Q3C-6)
+QA3_REPEAT_SHARE = 0.8                    # past this mean share of a room's pieces of the kinds every room has
+
+
+def _qa3_room_tiles(r):
+    return {tuple(t) for t in (r.get("declared") or {}).get("floor", [])}
+
+
+def _qa3_edge_to(m, t, n, mat):
+    """The edge types drawn on tile t from its neighbour n (of material mat)."""
+    out = []
+    for ov, _var, piece, et in m.tiles[t]["edges"]:
+        if ov != mat: continue
+        if any((t[0] + EDGE_STEP[d][0], t[1] + EDGE_STEP[d][1]) == n for d in EDGE_FROM.get(piece, ())): out.append(et)
+    return out
+
+
+def qa3_floor_flags(m, r):
+    """What QA round 3's floor rules fault in one declared room: [(rule, text, tile)] (Q3C-1, Q3C-2, Q3C-4)."""
+    tiles = _qa3_room_tiles(r)
+    if not tiles: return []
+    seams = seams_at_walls(m)
+    mats = collections.Counter(m.tiles[t]["material"] for t in tiles if t in m.tiles)
+    if not mats: return []
+    main = mats.most_common(1)[0][0]
+    rug = lambda mat: mat.startswith("Rug") and "Edge" not in mat
+    patch = lambda mat: mat != main and bool(QA3_BRICK.search(mat)) and not QA3_BRICK.search(main)
+    bars = [(uv_of(o), _half_uv(o)) for o in r["objects"] if QA3_BAR.match(o["type"])]
+    bar_any = [uv_of(o) for o in r["objects"] if QA3_BAR_ANY.match(o["type"])]
+    blended, bare, gap = [], [], []
+    for t in sorted(tiles):
+        if t not in m.tiles: continue
+        mat = m.tiles[t]["material"]
+        if not (rug(mat) or patch(mat)): continue
+        for dx, dy in QA3_SIDES:
+            n = (t[0] + dx, t[1] + dy)
+            if n not in tiles or n not in m.tiles or (t, n) in seams: continue
+            nm = m.tiles[n]["material"]
+            if nm == mat or rug(nm) or (patch(mat) and patch(nm)): continue
+            ets = _qa3_edge_to(m, n, t, mat) + _qa3_edge_to(m, t, n, nm)
+            if rug(mat) and "BlendEdge" in ets:
+                blended.append(t); continue
+            if ets: continue
+            mu, mv = (tile_uv(t)[0] + tile_uv(n)[0]) / 2, (tile_uv(t)[1] + tile_uv(n)[1]) / 2
+            if patch(mat) and any(abs(mu - u) <= hu + 0.35 and abs(mv - v) <= hv + 0.35 for (u, v), (hu, hv) in bars):
+                continue                                       # under the bar's counter: the bar covers it (Q2C-6)
+            if patch(mat) and any(math.hypot(mu - u, mv - v) <= 3.0 for u, v in bar_any):
+                gap.append(t)
+            else:
+                bare.append(t)
+    out = []
+    if blended:
+        out.append(("carpet_blend", f"{len(blended)} of its carpet's sides blend into the floor (BlendEdge)", blended[0]))
+    if bare:
+        what = sorted({"carpet" if rug(m.tiles[t]["material"]) else m.tiles[t]["material"] for t in bare})
+        out.append(("patch_border", f"{len(bare)} sides of its {' and '.join(what)} meet the floor with no border",
+                    bare[0]))
+    if gap:
+        out.append(("bar_gap", f"the brick behind its bar meets the floor at the bar's opening with no border on "
+                               f"{len(gap)} sides", gap[0]))
+    return out
+
+
+QA3_TEXT = {
+    "carpet_blend": "a carpet is never blended into the floor under it: it ends at a solid trim, as RM-TAVERN-02's "
+                    "(Q3C-1)",
+    "patch_border": "a carpet, a brick band or a hearth's bricks end at a bordered edge on every side, the NE wall's "
+                    "side too (Q3C-4)",
+    "bar_gap": "the brick behind a bar is bordered where no counter covers its edge, at the barkeep's opening (Q3C-2)",
+}
+
+
+def _qa3_stem(t):
+    t = re.sub(r"^(Blue|Red|Green|White)(Tapestry)", r"\2", t)
+    return re.sub(r"(\d+[a-z]?|Shadow|Base|Back|Front|NE|NW|SE|SW|N|S|E|W)+$", "", t) or t
+
+
+def qa3_batch_repeat(m, rooms):
+    """[(kind, mean share, rooms)] for each ceremonial kind (QA3_REPEAT_KINDS) the map holds three or more declared rooms
+    of whose pieces are, past QA3_REPEAT_SHARE on average, of the kinds every one of them has (Q3C-6)."""
+    by = collections.defaultdict(list)
+    for r in rooms:
+        k = (r.get("declared") or {}).get("kind")
+        if k in QA3_REPEAT_KINDS: by[k].append(r)
+    out = []
+    for k, rs in sorted(by.items()):
+        if len(rs) < 3: continue
+        sigs = [collections.Counter(_qa3_stem(o["type"]) for o in r["objects"]
+                                    if not m.is_door(o) and "MONSTER" not in o["cls"]) for r in rs]
+        sigs = [s for s in sigs if s]
+        if len(sigs) < 3: continue
+        pres = collections.Counter(x for s in sigs for x in s)
+        core = {x for x, n in pres.items() if n >= 0.8 * len(sigs)}
+        share = sum(sum(n for x, n in s.items() if x in core) / sum(s.values()) for s in sigs) / len(sigs)
+        if share >= QA3_REPEAT_SHARE: out.append((k, share, rs))
+    return out
+
+
+QA3_STATUESQUE = re.compile(r"^(Statue|Column|CathedralColumn|MarbleColumn|DunMirColumn)")
+QA3_HALL_RANKS = 2          # a hall's columns and statues stand in one rank either side of its aisle (Q3C-7)
+
+
+def qa3_hall_ranks(m, r):
+    """The ranks of a hall's columns, statues and urns: lines of three or more along one wall's direction (a shared u or
+    v within 0.7, spread six units or more along it), the most in either direction (Q3C-7: RM-HALL-01/03, "cluttered with
+    too many pillars and statues", stood three ranks a side). Returns (ranks, pieces)."""
+    ps = [uv_of(o) for o in r["objects"] if QA3_STATUESQUE.match(o["type"])]
+    best = 0
+    for k in (0, 1):
+        ps_ = sorted(ps, key=lambda p: p[k])
+        groups, cur = [], []
+        for p in ps_:
+            if cur and p[k] - cur[-1][k] > 0.7:
+                groups.append(cur); cur = []
+            cur.append(p)
+        if cur: groups.append(cur)
+        best = max(best, sum(1 for g in groups if len(g) >= 3 and max(q[1 - k] for q in g) - min(q[1 - k] for q in g) >= 6))
+    return best, len(ps)
+
+
+def check_qa3(m, ctx, base):
+    """QA round 3's floor rules and its batch rule (review/qa3/ledger-civic.md Q3C-1, Q3C-2, Q3C-4, Q3C-6)."""
+    out = []
+    rooms = [r for r in indoor_rooms(m) if r.get("declared")]
+    for r in rooms:
+        kind = r["declared"].get("kind") or "declared"
+        for rule, text, t in qa3_floor_flags(m, r):
+            x, y = cell_px((t[0] + 1, t[1] + 1))
+            out.append(F("qa3", "warning", f"{kind.replace('_', ' ')} room: {text}: {QA3_TEXT[rule]}.", x, y,
+                         rule=f"qa3.{rule}"))
+        if kind == "hall":
+            ranks, n = qa3_hall_ranks(m, r)
+            if ranks > QA3_HALL_RANKS:
+                x, y = cell_px(next(iter(r["cells"])))
+                out.append(F("qa3", "warning", f"hall room: its {n} columns, statues and urns stand in {ranks} ranks: a "
+                             f"hall has one colonnade either side of its aisle, benches by the walls, never ranks of "
+                             f"statues across its width (Q3C-7).", x, y, rule="qa3.hall_ranks"))
+    for k, share, rs in qa3_batch_repeat(m, rooms):
+        x, y = cell_px(next(iter(rs[0]["cells"])))
+        out.append(F("qa3", "warning", f"{len(rs)} {k.replace('_', ' ')}s repeat one another: {share:.0%} of each "
+                     f"room's pieces are of the kinds they all have: the rooms of a type differ in layout and pieces, "
+                     f"not only in size (Q3C-6).", x, y, rule="qa3.batch_repeat"))
+    return out
+
+
+RULES += [("qa3.carpet_blend", "qa3", r"carpet's sides blend into the floor", "Q3C-1"),
+          ("qa3.patch_border", "qa3", r"meet the floor with no border", "Q3C-4"),
+          ("qa3.bar_gap", "qa3", r"the brick behind its bar meets the floor", "Q3C-2"),
+          ("qa3.batch_repeat", "qa3", r"s repeat one another", "Q3C-6"),
+          ("qa3.hall_ranks", "qa3", r"columns, statues and urns stand in", "Q3C-7")]
+_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-5:]]
+ALL.append(check_qa3)

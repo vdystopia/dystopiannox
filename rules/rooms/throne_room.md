@@ -155,3 +155,32 @@ The user: "The room is not centered" (RM-THRONEROOM-02, -05); "Fill the southwes
   statues and urns between the colonnade and the side walls in a wide room; urns of another kind flanking the way in.
   The SW wall is a front wall and takes no hangings, so its side is filled on the floor.
 - **Benches face the aisle** (`facing_pair`). Checked: `qa2.centre`, `qa2.facing`.
+
+## QA round 3 (2026-10-23; review/qa3/ledger-civic.md Q3C-6)
+
+The user, of the whole set (all five 5 of 5): "Individually, they are all very good. But as a whole, they are very
+repetitive and all too similar. Add some variance and more object diversity."
+
+- **A batch's throne rooms differ in plan, not only in size:** each room draws one of five layouts in strict rotation
+  over the map's throne rooms (`civic.THRONE_LAYOUTS`, `throne_layout`, as the chapels' altars, Q2S-1: no layout twice
+  while another that fits is unused), each its own treatment of the throne, the floor, the side walls and the pieces:
+  - **processional** (round 3's room, kept as rated): the runner lined with braziers between pairs of columns, statues
+    and candelabras flanking the throne, benches, statues and urns by the side walls, urns at the way in;
+  - **colonnade** (Westwood's dressed walls): flame basins and statues of the other series (Statue1) flanking the
+    throne, a broad carpet four or five squares wide, cathedral columns standing against the side walls with statues
+    between them, candelabras in pairs along the carpet's edges, paintings on the back walls; no braziers, benches or
+    urns;
+  - **ringed seat** (Westwood's Con11a): the throne a step out from its wall, a candelabra at each corner of it, a pair
+    of columns framing it, a square of four obelisks before it, statues by the side walls, braziers at the way in,
+    plants in the front corners;
+  - **audience hall**: rows of benches, two a side, facing the throne either side of the runner (an audience's seats,
+    as a chapel's pews, so the type's cap of two benches a side wall does not apply), flame basins before the dais,
+    statues by the side walls, candelabras at the front row, columns framing the way in;
+  - **garden court**: plants and statues flanking the throne, a pair of orb pools either side of the runner with a
+    bench by each, plants in pairs lining the runner, statues and ferns by the side walls, columns framing the way in,
+    green tapestries.
+- **The throne's dais bordered** like a hearth's patch (`shells.BORDERED_ZONES`), never blended.
+- **Every column in a pair placed with a purpose** (`civic.way_in_columns`), never a lone column left by the finishing
+  pass against a wall.
+- A throne room takes no chest (the object knowledge base's cap for the type). Checked: `qa3.batch_repeat` (three or
+  more throne rooms in a map whose pieces are, past 80% on average, of the kinds all of them have).

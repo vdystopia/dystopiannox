@@ -98,11 +98,17 @@ TIP_BLOCKERS = {"NE": ("E", "N"), "NW": ("N", "W"), "SE": ("E", "S"), "SW": ("S"
 # No floor blending at a wall [TW-12] (user, 2026-10-08, of Thornwick: "There does not need to be blending on a wall.
 # The wall cuts off vision from the inside out and from the outside in. It's also a natural transition point in itself.
 # Therefore, this kind of transition must never be used."). A wall piece is drawn from its cell's centre toward each
-# wall it joins (its arms; a straight piece across the whole cell). A floor tile (x, y) is centred on grid corner
-# (x+1, y+1); a tile and its neighbour (side or tip) meet *at a wall* when a visible wall piece touches the line between
-# their centres anywhere (not merely running along it): a / wall lies on the seam between two tiles, a \ wall runs
-# through the middle of the tiles on its line, half a tile from their seams with the tiles either side. No edge piece
-# is drawn across such a seam (Spec._edges); validate/checks.py check_wall_blends fails a map that has one.
+# wall it joins (its arms; a straight piece across the whole cell). A floor tile (x, y) is centred where the editor
+# draws it, at (x + 1/2, y + 3/2) in cells (MapEditor render/TileRenderer.cs: centre (x + s/2, y + 3s/2), its corners on
+# the centres of wall cells (x, y), (x - 1, y + 1), (x + 1, y + 1), (x, y + 2); the kit's uv (x + y + 2, x - y - 1),
+# kit/furnish.py square_centre); a tile and its neighbour (side or tip) meet *at a wall* when a visible wall piece
+# touches the line between their centres anywhere (not merely running along it). Both kinds of wall lie on the seams
+# between tiles. (QA round 3, Q3C-5: the template had read a tile at grid corner (x + 1, y + 1), half a tile off in v,
+# so a \ wall seemed to run through the middle of the tiles on its line: the seam between the row along a NE wall and
+# the row inside it, two units in from the wall, drew no edge, and every carpet, brick band and hearth patch lying on
+# that row lost its border there (RM-GREATHALL-01: "The northeast side of the carpet does not have a proper border. The
+# brick tiling along the exterior of this room is not properly bordered"). No edge piece is drawn across such a seam
+# (Spec._edges); validate/checks.py check_wall_blends fails a map that has one.
 WALL_ARMS = {f: arms for arms, f in FACING_BY_ARMS.items() if len(arms) >= 2}   # the arms each facing draws
 _NEIGHBOURS = list(EDGE_SIDES.values()) + list(EDGE_TIPS.values())
 
@@ -114,8 +120,7 @@ _NEIGHBOURS = list(EDGE_SIDES.values()) + list(EDGE_TIPS.values())
 # validate/checks.py floors.wall_blend fails an edge across any other wall. Westwood (rules/fences.py, 42 campaign
 # layouts): 69% of the differing seams across a / fence piece blend, 67% behind and 81% in front of a \ piece; a \ line
 # tile takes the floor in front 72% of the time, as the kit lays it. (Geometry, for the record: walls and tiles share
-# the even lattice; a / piece lies on the seam between two tiles, a \ piece runs through the middle of the tiles on its
-# line, so no cut under a \ fence can lie on the fence line.)
+# the even lattice; as the editor draws them both / and \ pieces lie on seams between tiles, TW-12 above.)
 FENCES = ("IronFence", "IronFenceDamaged")
 
 
@@ -142,13 +147,18 @@ def _touches(p, q, a, b):
 
 def _seam_template():
     """For a wall cell at (0, 0) (walls and tiles both sit where x + y is even, so one template serves every wall):
-    arm -> the ordered tile pairs (t, n), relative to the cell, whose centres' line that arm touches."""
+    arm -> the ordered tile pairs (t, n), relative to the cell, whose centres' line that arm touches. A tile's centre is
+    where the editor draws it, (x + 1/2, y + 3/2) (TILE_CENTRE)."""
     out = {}
+    cx, cy = TILE_CENTRE
     for arm in (TL, TR, BL, BR):
         a, b = (0.5, 0.5), (0.5 + arm[0] / 2, 0.5 + arm[1] / 2)
         out[arm] = [((tx, ty), (tx + dx, ty + dy)) for tx in range(-4, 4) for ty in range(-4, 4) if (tx + ty) % 2 == 0
-                    for dx, dy in _NEIGHBOURS if _touches((tx + 1, ty + 1), (tx + dx + 1, ty + dy + 1), a, b)]
+                    for dx, dy in _NEIGHBOURS if _touches((tx + cx, ty + cy), (tx + dx + cx, ty + dy + cy), a, b)]
     return out
+
+
+TILE_CENTRE = (0.5, 1.5)      # a floor tile (x, y) is drawn centred at cell (x + 1/2, y + 3/2) (TileRenderer.cs; TW-12)
 
 
 _SEAMS = _seam_template()
