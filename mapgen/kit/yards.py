@@ -852,7 +852,10 @@ def _graveyard(spec, land, y, fr):
     # square under the door's wall too, else half a square of grass is left before the door)
     # (from the gate's line, never out past it: a yard's paving stays inside its enclosure, QA round 2 [Q2T-6]; the
     # walk to the road, kit/yards.connect_gate, starts outside the gate)
-    v_end = Vf if style in ("single", "wide", "row3") else (D - 0.6) if style == "pair" else (D - 2.4)
+    # (under the memorial at the path's end, D - 1.5, its whole square: QA round 3 [Q3N-2], EX-GRAVEYARD-04 "Extend the
+    # cobblestone back towards the northwest wall a little bit further so that the obelisk sits entirely on it"; the
+    # path had stopped at D - 2.4, half a square short of the obelisk's middle; a square of grass stays before the wall)
+    v_end = Vf if style in ("single", "wide", "row3") else (D - 0.6) if style == "pair" else (D - 1.4)
     for s in fr.squares(-ph + 0.05, ph - 0.05, 0.0, v_end):
         if land is None or (s in land.squares and s not in land.water): spec.floor[square_tile(*s)] = "RoughCobble"
     keep_box(0, ph + 0.4, -2, D + 1)

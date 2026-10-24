@@ -182,6 +182,22 @@ SHRINE_CENTRE = {"obelisk_court": ("HorrendousStatue1", "DunMirWolfStatue"),
                  "mana_court": ("Obelisk",), "open_chapel": ("DunMirAltar2",)}
 
 
+# Where a shrine's centrepiece shows its base, off its point (map uv: the middle of its drawn footprint less its point),
+# measured on the map editor's render of each on a plain floor (the render with it less the render without, its base's
+# outline fitted; 2026-10-23). The game draws these sprites off their points; the kit had set each on the aisle's axis by
+# its point (QA round 3, 2026-10-23 [Q3N-3]: EX-SHRINE-01 "The main statue/altar is slightly out of center with the
+# cobblestone path down the middle. Make sure it's lined up and centered": the gold wolf's point was on the axis to the
+# pixel, its pedestal drawn 0.4 uv, 6 px, to the NE of it). So a centrepiece is set across the axis by its drawn base.
+DRAWN_BASE = {"DunMirWolfStatue": (-0.70, 0.39), "HorrendousStatue1": (0.46, -0.28), "HorrendousStatue2": (0.43, -0.43),
+              "DunMirAltar2": (-0.43, -0.26), "Obelisk": (-0.07, 0.02)}
+
+
+def _on_axis(fr, t):
+    """The frame u (squares) to set piece t at so that its base as drawn (DRAWN_BASE) lies on the axis, u = 0."""
+    du, dv = DRAWN_BASE.get(t, (0.0, 0.0))
+    return -((du / 2.0) * fr.r[0] + (dv / 2.0) * fr.r[1])          # (a square is 2 uv each way)
+
+
 def _shrine(spec, land, y, fr, rng):
     """A shrine court: a rectangle of paving whose shape the pieces set (corners and both long sides in parallel rows),
     an aisle up its axis to the grand centrepiece at the back, every piece mirrored (QA round 1, the shrine: all ten
@@ -225,7 +241,7 @@ def _shrine(spec, land, y, fr, rng):
     P.pair("DunMirFlameBasinLit" if arch in ("obelisk_court", "mana_court") else "Brazier", ah + 0.9, 0.3, 0.6)
     # the centrepiece and what flanks it
     if arch == "mana_court":
-        P.one("Obelisk", 0, cz, 1.0)
+        P.one("Obelisk", _on_axis(fr, "Obelisk"), cz, 1.0)
         for k in range(8):                               # a ring of mana crystals round it
             a = k * math.pi / 4 + math.pi / 8
             P.one(f"MineManaCrystal{1 + (k % 2) * 4}", 1.25 * math.cos(a), cz + 1.25 * math.sin(a), 0.4)
@@ -235,7 +251,7 @@ def _shrine(spec, land, y, fr, rng):
             P.pair("Monument1", ah + 0.8, v, 0.5)
             v += 2.0
     elif arch == "open_chapel":
-        P.one("DunMirAltar2", 0, cz, 0.9)
+        P.one("DunMirAltar2", _on_axis(fr, "DunMirAltar2"), cz, 0.9)
         P.one("Statue1" + STATUE_LETTER[face], 0, cz + 1.3, 0.7)
         P.pair("DunMirFlameBasinLit", 1.5, cz, 0.6)
         P.pair("StatueVase1S", 2.6, cz + 0.8, 0.6)
@@ -247,7 +263,7 @@ def _shrine(spec, land, y, fr, rng):
                 if u <= cu - 1.0: P.pair(face, u, v, 0.7)
             v += 1.5
     else:
-        P.one(ci, 0, cz + 0.2, 1.6)
+        P.one(ci, _on_axis(fr, ci), cz + 0.2, 1.6)              # (its base as drawn on the axis: Q3N-3)
         P.pair("DunMirFlameBasinLit", 2.3, cz - 0.4, 0.6)
         if arch == "statue_avenue":
             # victory statues facing each other across the aisle, the length of it
