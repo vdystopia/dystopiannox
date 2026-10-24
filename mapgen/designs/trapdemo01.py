@@ -9,7 +9,8 @@ The story
 - Side quest (Pell's satchel): Aldous's apprentice Pell ran ahead and never came back; his satchel with the abbey's
   map is in the ossuary's store, beyond a passage of fire. Aldous gives a staff for it.
 - The traps, in the order a player meets them: a spike field on a clock at the way down; the ossuary's fire passage
-  to the store; a hard passage to the gallery; the shrine's lever gate; the long run into the bone hall.
+  to the store; a floor that gave way before the gallery (look before you leap); the sliding doors of blades
+  before the shrine (hard); the shrine's lever gate into the bone hall.
 
     py mapgen/designs/trapdemo01.py [out_dir|-]
 """
@@ -34,8 +35,8 @@ M.room("sanctum", (12, 10), role="vault", kind="treasury")
 M.link("camp", "ante", trap=("spike", 0))                     # one field on a clock: the way down
 M.link("ante", "ossuary", length=6)
 M.link("ossuary", "store", trap=("flame", 2))                 # the fire wave: the side quest's price
-M.link("ossuary", "gallery", trap=("auto", "standard"))
-M.link("gallery", "shrine", trap=("auto", "hard"))
+M.link("ossuary", "gallery", trap=("pit", 2))                  # look before you leap: the gallery floor gave way
+M.link("gallery", "shrine", trap=("blade", 5))                # the sliding doors (hard): blades before the shrine
 M.link("shrine", "hall", trap=("spike", 7))                   # the spike gate: the shrine's lever
 M.link("hall", "sanctum", length=5)
 M.layout()
