@@ -288,6 +288,8 @@ class StationModel:
         for m in movers:
             for o in m["objs"]:
                 self.objs[o] = data["objects"][o]
+        # what stops a beam or a missile: the wall cells themselves (23 px), not the walking clearance round them
+        self.wallset = {tuple(w) for w in walls if self.secret_state.get(tuple(w), "closed") == "closed"}
         self.blocked = np.zeros((self.NA, self.NB), bool)
         for (x, y) in walls:
             if (x, y) in self.secret_state: continue      # a secret wall opens: the fields carry it while closed
@@ -306,6 +308,9 @@ class StationModel:
             a, b = self.ab(cx, cy)
             if -1 <= a <= self.L + 1 and -0.5 <= b <= self.W + 0.5:
                 self.secret[(x, y)] = self.cells_near(a, b, 0.62)
+
+    def wall_at(self, x, y):
+        return (int(x // 23), int(y // 23)) in self.wallset
 
     def inside(self, x, y, pad=0.0):
         a, b = self.ab(x, y)
@@ -464,9 +469,9 @@ class StationModel:
             px, py = x + dx * 8 * k, y + dy * 8 * k
             a, b = self.ab(px, py)
             if not (-0.5 <= a <= self.L + 0.5 and 0 <= b <= self.W): break
+            if self.wall_at(px, py): break
             i, j = self.cell_of(a, b)
             if 0 <= i < self.NA and 0 <= j < self.NB:
-                if self.blocked[i, j]: break
                 out |= set(self.cells_near(a, b, 14 / SQ))
         return out
 
@@ -515,8 +520,7 @@ class StationModel:
                 d += 8
                 a, b = self.ab(v["x"] + dx / n * d, v["y"] + dy / n * d)
                 if not (-0.5 <= a <= self.L + 0.5 and 0 <= b <= self.W): break
-                i, j = self.cell_of(a, b)
-                if 0 <= i < self.NA and 0 <= j < self.NB and self.blocked[i, j]: break
+                if self.wall_at(v["x"] + dx / n * d, v["y"] + dy / n * d): break
             self._range[o] = d
         return self._range[o]
 
@@ -538,8 +542,7 @@ class StationModel:
             x, y = p[0] + dx * 8 * k, p[1] + dy * 8 * k
             a, b = self.ab(x, y)
             if not (-0.5 <= a <= self.L + 0.5 and 0 <= b <= self.W): break
-            i, j = self.cell_of(a, b)
-            if 0 <= i < self.NA and 0 <= j < self.NB and self.blocked[i, j]: break
+            if self.wall_at(x, y): break
             out |= set(self.cells_near(a, b, (PLAYER_R + pad) / SQ))
         return out
 
@@ -752,8 +755,7 @@ class StationModel:
             x, y = sx + dx * k / n, sy + dy * k / n
             a, b = self.ab(x, y)
             if not (-0.5 <= a <= self.L + 0.5 and 0 <= b <= self.W): return (x, y)
-            i, j = self.cell_of(a, b)
-            if 0 <= i < self.NA and 0 <= j < self.NB and self.blocked[i, j]: return (x, y)
+            if self.wall_at(x, y): return (x, y)
         return end
 
     def path_frames(self, path, delay=0):
