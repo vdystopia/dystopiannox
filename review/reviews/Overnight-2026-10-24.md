@@ -155,10 +155,13 @@ What the ten that do not pass mean:
   first station of its lab, where the real-input walk starts badly; in missions 2 and 8 the same pattern drops a
   careless walker into the pit.
 
+Fixed after the run (07:45): **the closing room (TL-BLOCK-09, TG-08-S12).** A real walker stopped at its doorway.
+The door was open (the game reported it so every frame); the entry corridor was two squares wide and centred half a
+square off the station's line, so a straight walker caught the wall post at its corner. The corridor is now three
+squares wide on the station's line with a two-cell door. With real input the walker now enters, the door slams
+behind him, and the creeping wall pins him: 252 HP (lab), 240 HP (gauntlet 8).
+
 Known open points, not hidden:
-- **The closing room (TL-BLOCK-09, TG-08-S12):** with real input the careless walker stops in the two-square
-  corridor before the room, at the same spot before and after the door fix. The careful route was proven only by
-  the scripted tour, which passes through walls. Its doorway needs a look in play.
 - Hard tier is sometimes gentle on a careless *run*: a run outpaces several traps. The rule asks walk or run; many
   hard stations punish the walk hard and the run less.
 - The scripted tour cannot be shoved and passes through walls; pushers, blocks and doors were checked with real

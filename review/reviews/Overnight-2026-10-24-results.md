@@ -42,8 +42,8 @@ Totals: pass: 241, careful pass costs 35 HP: 2, careless costs too little: 1, ca
 | TL-BLOCK-06 Cross traffic | hard | 0 passed | 39 passed, 89 passed, 98 passed | pass |
 | TL-BLOCK-07 The runaway block | hard | 0 passed | 32 fell, 0 fell, 22 fell | pass |
 | TL-BLOCK-08 Pendulums over the drop | hard | 9 passed | 50 passed, 31 passed, 17 fell | pass |
-| TL-BLOCK-09 The closing room | hard | 0 passed | 47 passed, 40 passed, 0 passed | pass |
-| TL-BLOCK-10 The block gauntlet | hard | 0 passed | 140 passed, 224 passed, 314 passed | pass |
+| TL-BLOCK-09 The closing room | hard | 0 passed | 47 passed, 40 passed, 252 passed | pass |
+| TL-BLOCK-10 The block gauntlet | hard | 0 passed | 140 passed, 224 passed | pass |
 
 ### TLPush (9 of 10 pass)
 
@@ -250,9 +250,9 @@ Totals: pass: 241, careful pass costs 35 HP: 2, careless costs too little: 1, ca
 | TG-08-S9 Hold still | hard | 2 passed | 275 passed, 91 passed, 210 passed | pass |
 | TG-08-S10 Pendulums over the drop | hard | 10 passed | 50 passed, 31 passed, 65 fell | pass |
 | TG-08-S11 The ledge | hard | 0 passed | 0 fell, 0 fell, 1 fell | pass |
-| TG-08-S12 The closing room | hard | 0 passed | 50 passed, 41 passed, 84 passed | pass |
+| TG-08-S12 The closing room | hard | 0 passed | 50 passed, 41 passed, 240 passed | pass |
 | TG-08-S13 Run! | hard | 0 passed | 0 fell, 0 passed, 2 fell | pass |
-| TG-08-S14 Find the gap | hard | 0 passed | 46 passed, 101 passed, 718 passed | pass |
+| TG-08-S14 Find the gap | hard | 0 passed | 46 passed, 101 passed, 740 passed | pass |
 
 ### TrapGnt09: Clockwork Gate (10 of 10 pass)
 

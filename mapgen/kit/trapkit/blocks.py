@@ -329,9 +329,11 @@ def closing_room(st):
     """Step in and the door slams: a wall of spike blocks creeps across the room at you. The lever that stops it is
     in an alcove halfway; the way out opens in the side wall."""
     L, W = st.L, st.W
-    carve(st, lanes((0, 2, 0, W), (2, 4, 4, 6), (4, 16, 2, 8), (6, 8, 0, 2), (11, 13, 0, 2), (9, 11, 8, 9),
+    # the entry corridor three squares wide, centred on the station's line (b 5.5): two wide, a walker on the line
+    # caught the post at its corner (a real walker stopped at the doorway, 2026-10-24)
+    carve(st, lanes((0, 2, 0, W), (2, 4, 4, 7), (4, 16, 2, 8), (6, 8, 0, 2), (11, 13, 0, 2), (9, 11, 8, 9),
                     (9, L - 1, 9, 11), (L - 1, L, 0, W)))
-    entry = wall_at(st, 4, 5, secret="open")
+    entry = [wall_at(st, 4, 5, secret="open"), wall_at(st, 4, 6, secret="open")]   # the door across its mouth
     exit_ = wall_at(st, 10, 8, secret="closed")
     blocks = [block(st, 15.0, b, t) for b, t in ((3.0, "IronBlock"), (5.0, "SpikeBlock"), (7.0, "IronBlock"))]
     speed, start, hold = 1.15, 20, 20
@@ -340,13 +342,13 @@ def closing_room(st):
     creep = travel(path, speed)
     fail = start + creep + hold
     st.T.zone(f"{st.label}Z", st.at(7.0, 5.0), 2.4 * SQ * 2 ** 0.5, shape="diamond", who="player",
-              acts=[st.act("walls_close", walls=[entry]), st.act("sound", text="BigGong", src=st.at(10, 5)),
+              acts=[st.act("walls_close", walls=entry), st.act("sound", text="BigGong", src=st.at(10, 5)),
                     st.act("reset", mv), st.act("arm", mv, delay=start), st.act("disarm", "Z"),
                     st.act("push_retract", mv, delay=_f(fail), frames=20),
-                    st.act("walls_open", walls=[entry], delay=_f(fail + 90)),
+                    st.act("walls_open", walls=entry, delay=_f(fail + 90)),
                     st.act("arm", "Z", delay=_f(fail + 330))])
     pull = [st.act("disarm", mv), st.act("push_retract", mv, frames=60), st.act("walls_open", walls=[exit_]),
-            st.act("walls_open", walls=[entry], delay=30), st.act("sound", text="LeverToggle", src=st.at(12, 0.5)),
+            st.act("walls_open", walls=entry, delay=30), st.act("sound", text="LeverToggle", src=st.at(12, 0.5)),
             st.act("walls_close", walls=[exit_], delay=360), st.act("arm", "Z", delay=360)]
     st.lever("L", "FloorLever3", 12.0, 0.55, acts=pull, release=pull)
     # the race to the lever alcove (its near end at a = 11.3): the wall must still be 1.23 squares beyond it
