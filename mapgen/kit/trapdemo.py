@@ -28,7 +28,7 @@ Each trap passage is a station the simulator and the in-game tour read (<Name>.l
 import json, math, os, random, zlib
 
 from nox import Spec, SOLO
-from kit.dungeon import Dungeon
+from kit.dungeon import Dungeon, glow
 from kit.traps import Traps
 from kit.trapkit import Station, PATTERNS, tier_of
 from kit.quests import QuestBook, A, QUEST, COMPLETED
@@ -42,15 +42,15 @@ if not os.path.isdir(STOCK):
 SETTINGS = {
     # walls, floor, room floor, favoured kinds, decor
     "crypt": ("DungeonStone", "GreenBrick", "CryptFloor", ["spike", "blade", "pit", "spell", "block"],
-              dict(light="Torch", amb="AmbSpiritsFOV", centre=["Monument1", "Obelisk"], pair=["Statue2a", "Statue2c", "Statue2e"],
+              dict(light="Candleabra3", amb="AmbSpiritsFOV", centre=["Monument1", "Obelisk"], pair=["Statue2a", "Statue2c", "Statue2e"],
                    column="Column6", corner=["SkullImmobile", "ArmBoneImmobile", "LegBoneImmobile", "SpiderWebNorth"],
                    coffin=["Coffin1", "Coffin2", "Coffin3", "Coffin4"], chest="CryptChest4", store=["Crate1", "Crate2", "Barrel"])),
     "forge": ("GalavaTownWall", "LOTDPitted", "GalavaBrick2", ["flame", "block", "push", "spell", "spike"],
-              dict(light="Torch", amb="AmbLavaBubbles", centre=["ObeliskPrimitive"], pair=["Column5"], column="Column5",
+              dict(light="Brazier", amb="AmbLavaBubbles", centre=["ObeliskPrimitive"], pair=["Column5"], column="Column5",
                    corner=["CaveRocksPebblesImmobile", "RuinsColumnOutdoorRubble07", "RuinsColumnOutdoorRubble08"],
                    coffin=["CrateSteel1", "CrateSteel2"], chest="Chest4", store=["CrateSteel1", "Barrel", "BlackPowderBarrel"])),
     "temple": ("IxTempleWall", "IxBrickFancy", "AncientRuin", ["arrow", "spike", "pit", "trigger", "sentry"],
-               dict(light="Torch", amb="AmbIxTemple", centre=["ObeliskPrimitive"], pair=["RuinsColumnOutdoorRubble09"],
+               dict(light="Brazier", amb="AmbIxTemple", centre=["ObeliskPrimitive"], pair=["RuinsColumnOutdoorRubble09"],
                     column="RuinsColumnOutdoorRubble09", corner=["Plant4", "Mushroom4", "CaveRocksSmallImmobile", "PlantFern1"],
                     coffin=["Crypt1", "Crypt3"], chest="Chest4", store=["Crate1", "Barrel"])),
     "lotd": ("LOTDBrick", "LOTDPitted", "LOTDBlackMarble", ["sentry", "spell", "blade", "arrow", "trigger"],
@@ -58,11 +58,11 @@ SETTINGS = {
                   column="LOTDColumn1", corner=["SkullImmobile", "ArmBoneImmobile"], coffin=["Coffin1", "Coffin3"],
                   chest="CryptChest4", store=["DarkCrate1", "DarkCrate2"])),
     "mine": ("CaveWall", "CaveHardBrown", "CaveHardTan", ["pit", "push", "block", "blade", "flame"],
-             dict(light="TorchPole", amb="AmbCaveRumble", centre=["CaveRockPillarTall1"], pair=["CaveRockPillarShort1"],
+             dict(light="Brazier", amb="AmbCaveRumble", centre=["CaveRockPillarTall1"], pair=["CaveRockPillarShort1"],
                   column="CaveRockPillarTall1", corner=["CaveRocksSmallImmobile", "CaveRocksPebblesImmobile", "MineCrystalUp02"],
                   coffin=["Crate1", "Crate2"], chest="Chest4", store=["Barrel", "Barrel2", "Crate1", "BlackPowderBarrel"])),
     "castle": ("BrickBlue", "TileDark", "DungeonStoneDark", ["arrow", "trigger", "block", "sentry", "spell"],
-               dict(light="Torch", amb=None, centre=["Obelisk"], pair=["Statue2a", "Statue2c"], column="Column5",
+               dict(light="Candleabra3", amb=None, centre=["Obelisk"], pair=["Statue2a", "Statue2c"], column="Column5",
                     corner=["PlantForest1", "Mushroom3"], coffin=["Coffin2", "Coffin4"], chest="Chest4",
                     store=["Crate1", "Crate2", "Barrel"])),
 }
@@ -168,8 +168,7 @@ class Mission:
                                                      FallY=int(self.parts[L_["a"]].centre[1]))
             part = L_["part"]
             for a in range(3, part.length - 2, 7):
-                self.m.obj_px(self.decor["light"] if self.decor["light"] != "LOTDCandleabra1" else "Torch",
-                              *part.at(a, 0.25))
+                glow(self.m, *part.at(a, part.width / 2))     # no torches indoors, nothing in a trap's lane
             tier = meta.get("tier", L_["pattern"].tier)
             self.T.label(label, L_["pattern"].title, [*part.at(0, 0), *part.at(part.length, part.width)], L_["kind"],
                          tier, notes=json.dumps(meta))
@@ -284,7 +283,7 @@ class Mission:
                     continue
                 except Exception as e:              # the furnisher could not: fall back to the plain dressing
                     print(f"{self.name}: furnishing {rid} as {R['kind']} failed ({type(e).__name__}: {e}); plain dressing")
-            # lights: torches along the NE wall (b = h) and the NW wall (a = 0), every 4-5 squares
+            # lights: candelabras or braziers along the NE wall (b = h) and the NW wall (a = 0), every 4-5 squares
             for a in range(2, w - 1, 4):
                 self.put(rid, D["light"], a + 0.5, h - 0.3, clear=1.4)
             for b in range(2, h - 1, 5):
