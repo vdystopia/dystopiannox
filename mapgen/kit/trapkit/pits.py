@@ -182,8 +182,8 @@ def look_before(st):
     return Meta(tier="standard", tells="three rows of plates across the hall and, two squares beyond each, two rows "
                                        "of trapdoors; a click, and the trapdoors fall open for 2 s",
                 answer="stop at the click and let the trapdoors open and close (2 s), then walk on; or jump the "
-                       "plates (no click). They open 0.27 s after the click: a walker is still 0.8 squares short of "
-                       "them, a runner 0.1",
+                       "plates (no click). They open 0.27 s after the click: a walker is still 1.2 squares short of "
+                       "them, a runner 0.4; shut again 2 s later",
                 careless="walking or running on after the click: into the open trapdoors, the pit room",
                 mistake="the pit room")
 

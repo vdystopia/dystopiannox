@@ -221,8 +221,8 @@ def walk_with_quiet(st):
     P.mouth(st, P.restarts(st, clocks))
     return Meta(tier="hard", tells="five streams of arrows across the hall (seven a second); each goes quiet for "
                                    "0.8 s in turn, the quiet moving down the hall",
-                answer="step into the first quiet as it starts and walk on at an even pace: the quiet moves with "
-                       "you (0.2 s of slack at each stream). A runner must wait at each",
+                answer="wait a square before the first stream, step off as its quiet begins (a 0.6 s window to "
+                       "start in) and walk on at an even pace: the quiet moves with you. A runner must wait at each",
                 careless="a straight walk from the way in meets every stream loud: an arrow or two at each, death",
                 mistake="one stream met loud: one or two arrows, 25-50 HP")
 
@@ -264,9 +264,9 @@ def skull_causeway(st):
     st.rest += [(i + 0.5, 0.8 if n % 2 == 0 else W - 0.8) for n, i in enumerate(range(6, 18, 2))]
     return Meta(tier="hard", tells="a causeway one square wide over a chasm, ledges beside it, a skull gun at the far "
                                    "end that fires down it once a second while it sees you",
-                answer="stand on a ledge (out of the line), let a fireball pass, run to the next ledge two rows on "
-                       "(0.45 s on the line; the next fireball is 0.65 s behind at a run, 0.8 s at a walk but the "
-                       "walk takes 0.8 s); the plate at the end silences the gun",
+                answer="stand on a ledge (out of the line), let a fireball pass, run to the next ledge two rows on: "
+                       "a start window of 0.35-0.55 s in each second; walking the hop is too slow. The plate at the "
+                       "end of the causeway silences the gun",
                 careless="walking the causeway: a fireball a second, ~96 each: death",
                 mistake="one fireball, ~96 HP; a step off a ledge: the pit room")
 
