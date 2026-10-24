@@ -36,6 +36,9 @@ TEXT = {
     "Ruby": ("Ruby", "A large red gem. A trader will pay well for it."),
     "Emerald": ("Emerald", "A large green gem. A trader will pay well for it."),
     "Diamond": ("Diamond", "A flawless diamond. A trader will pay a fortune for it."),
+    # the TrapDemo missions' keepsakes (designs/trapdemo03.py, trapdemo04.py), types Westwood left without a name
+    "AutoMap": ("Map Case", "A scout's map case of oiled leather. The maps inside are half drawn."),
+    "TorchInventory": ("Miner's Torch", "A miner's pitch torch, burnt low and black with soot."),
     "AmuletofNature": ("Amulet of Nature", "A charm of carved wood and green stone. While you carry it, your wounds "
                                            "slowly close."),
     "BlackBook1": ("Black Book", "A road-book bound in black leather. A map is folded inside its cover."),

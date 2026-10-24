@@ -377,6 +377,23 @@ class Mission:
         room = Room(id=rid, tiles={square_tile(i, j) for i, j in sq}, floor=self.rooms[rid]["floor"], walls=walls,
                     doors=doors, kind=kind, building=rid)
         objs = furnish_room(self.m, room, kind, self.rng, style)
+        # and nothing stands in a mouth: a band 1.4 squares deep before each passage's opening, its whole width and a
+        # little more, is cleared of what the furnisher laid there (a bench or a barrel snug to the wall beside it)
+        drop = set()
+        for L_ in self.links:
+            if rid not in (L_["a"], L_["b"]) or "part" not in L_: continue
+            p = L_["part"]
+            x0, y0 = p.at(0, 0); ux, uy = p.direction(); vx, vy = p.across()
+            for o in objs:
+                a_ = ((o["x"] - x0) * ux + (o["y"] - y0) * uy) / 32.5
+                b_ = ((o["x"] - x0) * vx + (o["y"] - y0) * vy) / 32.5
+                near = (-1.4 < a_ < 0.4) if rid == L_["a"] else (p.length - 0.4 < a_ < p.length + 1.4)
+                if near and -0.7 < b_ < p.width + 0.7: drop.add(id(o))
+        if drop:
+            self.m.d["objects"] = [o for o in self.m.d["objects"] if id(o) not in drop]
+            objs = [o for o in objs if id(o) not in drop]
+        for o in objs:                  # no open torches indoors: the room kit's torches are the setting's light
+            if o.get("type") in ("Torch", "TorchPole"): o["type"] = self.decor["light"]
         self.rooms[rid]["furnished"] = kind
         return objs
 
