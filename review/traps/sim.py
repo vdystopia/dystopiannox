@@ -115,10 +115,12 @@ class World:
         self.wall_changed = set()
         self.changed = set()                      # objects whose state changed this frame
         self.volleys = set()                      # shooters switched on this frame
+        self.crushes = []
         for m in self.movers:                     # arriving `offset` frames later: the movers are that far on
             for _ in range(offset if m["armed"] else 0):
                 if m["done"]: break
                 self.step_mover(m)
+                self.push_after(m)
 
     def set_group(self, g, on):
         for o in self.groups.get(g, []):
@@ -209,10 +211,24 @@ class World:
                 m["seg"] -= 1; m["along"] = math.dist(P[m["seg"]], P[m["seg"] + 1])
         self._place(m)
 
+    def push_after(self, m):
+        """kit/behaviours/traps_push.go pushMover.step: a pusher's dwell at home (HomeWait) and at a loop's far end
+        (FarWait) in place of the mover's Pause, and the Crush blow when a stroke lands."""
+        ld, ls, ldone = m.get("_ld", 1), m.get("_ls", m["seg"]), m.get("_ldone", m["done"])
+        if ld < 0 and m["dir"] > 0 and m.get("home_wait", 0) > 0 and m["mode"] == "pingpong":
+            m["wait"] = m["home_wait"]
+        looped = m["mode"] == "loop" and ls == 0 and m["seg"] == 1
+        if looped and m.get("far_wait", 0) > 0:
+            m["wait"] = m["far_wait"]
+        if m.get("crush", 0) > 0 and ((ld > 0 and m["dir"] < 0) or (not ldone and m["done"]) or looped):
+            self.crushes.append(m)
+        m["_ld"], m["_ls"], m["_ldone"] = m["dir"], m["seg"], m["done"]
+
     def tick(self, player=None, airborne=False):
         """One frame: actions due, clocks, movers, zones (when a player position is given)."""
         self.f += 1
         self.changed, self.volleys, self.wall_changed = set(), set(), set()
+        self.crushes = []                         # movers whose stroke landed this frame (their Crush blow)
         while self.events and self.events[0][0] <= self.f:
             self.fire(self.events.pop(0)[1])
         due = [q for q in self.queue if q[0] <= self.f]
@@ -225,6 +241,7 @@ class World:
             self.set_group(c["group"], any(a <= t < b for a, b in c["on"]))
         for m in self.movers:
             if m["armed"] and not m["done"]: self.step_mover(m)
+            self.push_after(m)
         if player is not None:
             for z in self.zones:
                 if not z["armed"]: continue
@@ -440,7 +457,7 @@ class StationModel:
                 tp = self.objs[o]["type"]
                 a, b = self.ab(*w.pos[o])
                 if tp in BLOCKS:
-                    cells = self.cells_square(a, b, 0.91 + PLAYER_R / SQ)
+                    cells = self.cells_square(a, b, 0.91 + (PLAYER_R + PLAN_MARGIN) / SQ)   # a margin: a re-touch is a fresh strike
                     cost = SHOVE + BLOCKS[tp] * FPT
                 else:
                     cells = self.cells_near(a, b, (BLADES[tp][0] + PLAYER_R + PLAN_MARGIN) / SQ)   # it moves within a tick
@@ -674,6 +691,8 @@ class StationModel:
         cool = {o: 0 for o, _ in shooters}
         balls = []
         hist, eye_cool = [], {e["name"]: 0 for e in self.eyes}
+        imp_movers = [m for m in w.movers if m.get("impact", 0) > 0 and any(o in objs for o in m["objs"])]
+        touch, last_pos = {}, {}
         sentries = [(o, v) for o, v in objs.items() if v["type"] in SENTRIES]
         on_for = {o: (offset if w.en.get(o, True) else 0) for o, _ in sentries}
         dyn = [(o, v) for o, v in objs.items() if v["type"] in BLOCKS or v["type"] in BLADES]
@@ -736,6 +755,16 @@ class StationModel:
                     end = self.clip(sx, sy, end)
                     if seg_dist(p, (sx, sy), end) < PLAYER_R + 2:
                         return dmg + 500, "died", f
+            for m in w.crushes:                          # a stroke landed: whoever is pinned at a block takes Crush
+                if any(abs(x - w.pos[o][0]) + abs(y - w.pos[o][1]) < 54 for o in m["objs"] if o in w.pos):
+                    dmg += m["crush"]
+            for m in imp_movers:                         # a moving block's strike: Impact once a contact
+                on = any(abs(x - w.pos[o][0]) + abs(y - w.pos[o][1]) < 56 for o in m["objs"] if o in w.pos)
+                p0 = w.pos.get(m["objs"][0])
+                moved = p0 is not None and m["name"] in last_pos and math.dist(p0, last_pos[m["name"]]) > 0.5
+                if on and moved and not touch.get(m["name"]): dmg += m["impact"]
+                touch[m["name"]] = on
+                if p0 is not None: last_pos[m["name"]] = p0
             for o, v in dyn:
                 tp = v["type"]
                 ox, oy = w.pos[o]

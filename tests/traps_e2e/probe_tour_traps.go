@@ -65,6 +65,7 @@ func ptReset(label string) {
 	}
 	trapQueue = nil
 	ptEyes(st.prefix)
+	ptPush(st.prefix)
 	for _, c := range st.clocks {
 		if cl := trapClocks[c]; cl != nil {
 			cl.Armed = true

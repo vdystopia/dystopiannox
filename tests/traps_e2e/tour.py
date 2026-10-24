@@ -91,6 +91,18 @@ def probe_source(name, bdir):
 """
     else:
         eyes = "func ptEyes(prefix string) {}"
+    if os.path.exists(os.path.join(bdir, f"{name}_scripts", "traps_push.go")):   # pushers forget their last stroke
+        eyes += """
+func ptPush(prefix string) {
+    for _, p := range pushMovers {
+        if prefix != "" && len(p.Mover) >= len(prefix) && p.Mover[:len(prefix)] == prefix {
+            p.lastDir, p.lastSeg, p.lastDone, p.seen, p.moving, p.back, p.touch = 1, 0, false, false, false, false, nil
+        }
+    }
+}
+"""
+    else:
+        eyes += "\nfunc ptPush(prefix string) {}\n"
     src = src.replace("//EYES", eyes)
     hx, hy = labinfo["hub_start"]
     src = src.replace("LIMBOX, LIMBOY", f"{hx}, {hy}")
