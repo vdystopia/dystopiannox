@@ -177,8 +177,11 @@ def main(rnd, dirs):
     tpl = re.sub(r"const CATS = \[.*?\];", f"const CATS = {cats_js};", tpl, count=1)
     tpl = tpl.replace('cat = "room";', 'cat = "traplab";').replace('localStorage.getItem("qa-cat")', 'localStorage.getItem("trap-cat")') \
              .replace('localStorage.setItem("qa-cat", k)', 'localStorage.setItem("trap-cat", k)')
+    intro = os.path.join(HERE, "intro.json")          # the page's opening paragraphs (what to rate, what was tested)
+    ctx = {"_intro": json.load(open(intro, encoding="utf-8"))} if os.path.exists(intro) else {}
     html = (tpl.replace("/*ITEMS*/[]", json.dumps(data, separators=(",", ":")))
-               .replace("/*CONTEXT*/{}", "{}").replace("ROUND_NAME", rnd))
+               .replace("/*CONTEXT*/{}", json.dumps(ctx, ensure_ascii=False))
+               .replace("Nox QA Round ROUND_NAME", "Nox Trap Review").replace("ROUND_NAME", rnd))
     open(os.path.join(base, "site", "index.html"), "w", encoding="utf-8").write(html)
     print(f"{len(data)} items, {len(by_sheet)} sheets -> {os.path.join(base, 'site')}")
 

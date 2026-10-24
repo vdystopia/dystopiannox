@@ -131,10 +131,10 @@ class World:
                     m.update(seg=0, along=0.0, dir=1, wait=0, done=False); self._place(m)
             for z in self.zones:
                 if z["name"] == t: z.update(fired=False, inn=False, cool=0)
-        elif k in ("walls_open", "walls_close"):
+        elif k in ("walls_open", "walls_close", "blade_break"):
             for wc in a.get("walls", []):
                 wc = tuple(wc)
-                if k == "walls_open" and wc in self.closed: self.closed.discard(wc); self.wall_changed.add(wc)
+                if k in ("walls_open", "blade_break") and wc in self.closed: self.closed.discard(wc); self.wall_changed.add(wc)
                 if k == "walls_close" and wc not in self.closed: self.closed.add(wc); self.wall_changed.add(wc)
         # cast, wake, say, log, sound: no effect on the floor the simulator reads
 
@@ -240,7 +240,11 @@ def seg_dist(p, a, b):
 # ---- a station's frame -----------------------------------------------------------------------------------------
 class StationModel:
     def __init__(self, data, st, walls, secret=None):
-        secret = secret or {}
+        secret = dict(secret or {})
+        for z in data["zones"]:                          # breakable walls a saw bursts: closed until the act
+            for a in z["acts"] + z["release"]:
+                if a["kind"] == "blade_break":
+                    for wc in a.get("walls", []): secret.setdefault(tuple(wc), "closed")
         self.secret_state = {tuple(k): v for k, v in secret.items()}
         self.data, self.st = data, st
         self.L, self.W = st["L"], st["W"]
@@ -406,7 +410,7 @@ class StationModel:
                     cells = self.cells_square(a, b, 0.91 + PLAYER_R / SQ)
                     cost = SHOVE + BLOCKS[tp] * FPT
                 else:
-                    cells = self.cells_near(a, b, (BLADES[tp][0] + PLAYER_R) / SQ)
+                    cells = self.cells_near(a, b, (BLADES[tp][0] + PLAYER_R + PLAN_MARGIN) / SQ)   # it moves within a tick
                     cost = SHOVE + BLADES[tp][1] * FPT
                 for i, j in cells:
                     G[t, i, j] += cost; A[t, i, j] += cost
@@ -781,7 +785,7 @@ def analyse(map_dir, only=None, trace=False):
         row["slack"] = round(slack, 2)
         # what this station does that the simulator does not model: its verdict is the game's (the tour)
         known = {"on", "off", "toggle", "pulse", "arm", "disarm", "restart", "reset", "walls_open", "walls_close",
-                 "log", "sound", "say", "wake"}
+                 "blade_break", "log", "sound", "say", "wake"}
         pre = st.get("prefix") or ""
         acts = [a for z in data["zones"] if z["name"].startswith(pre) or sm.inside(*z["c"]) for a in z["acts"] + z["release"]]
         acts += [a for w in data.get("watches", []) if w["name"].startswith(pre) for a in w["acts"]]
