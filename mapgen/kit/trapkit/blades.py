@@ -103,33 +103,57 @@ def _sound(st, name, a, b, delay=0):
     return st.act("sound", text=name, src=st.at(a, b), delay=delay)
 
 
-# ---- 01 standard: round the pillar ------------------------------------------------------------------------------
+def _shuttle(p0, p1, speed, dwell, e=0.15):
+    """A closed loop p0 -> p1 -> p0 (station squares) that holds still `dwell` frames at each end: the blade shivers
+    e squares back and forth there (a loop mover only pauses at its lap start). A loop, so a later start along it
+    (_loop_from) is a later phase: blades on the same track keep a fixed stagger from the map's first frame."""
+    def zig(p, q):
+        n = max(1, int(math.ceil(dwell * speed / (2 * e * SQ))))
+        d = math.dist(p, q)
+        back = (p[0] + (q[0] - p[0]) * e / d, p[1] + (q[1] - p[1]) * e / d)
+        return [back, p] * n
+    return [p0, p1] + zig(p1, p0) + zig(p0, p1)[:-1]
 
-@pattern("blade", size=(20, 6), title="Round the pillar")
-def round_the_pillar(st):
-    # a pillar block splits the hall into two corridors 2 squares wide; two blade pairs circle it, half a lap apart:
-    # up the NW corridor, across the far end, down the SE corridor, across the near end
-    _wall(st, 6.5, 2, 13.5, 2)                                   # the block: a 6.5 .. 13.5, b 2 .. 4
-    _wall(st, 6.5, 4, 13.5, 4)
-    _wall(st, 6.5, 2, 6.5, 4)
-    _wall(st, 13.5, 2, 13.5, 4)
-    track = [(5.5, 0.5), (14.5, 0.5), (14.5, 4.5), (5.5, 4.5)]  # the first blade of a pair; its mate rides 1 across
-    lap = _perimeter(track)                                      # 845 px
-    speed = 3.0
-    for k, d in enumerate((0.0, 13.0)):
-        path = _loop_from(track, d)
-        a, b = path[0]
-        _move(st, f"P{k}", [_blade(st, a, b), _blade(st, a, b + 1)], path, speed, mode="loop")
-    st.rest += [(2.5, 3.0), (17.5, 3.0)]
+
+def _phase(path, frames, speed):
+    """The loop `path` started `frames` frames later in its cycle."""
+    return _loop_from(path, frames * speed / SQ)
+
+
+# ---- 01 standard: round the pillars -----------------------------------------------------------------------------
+
+@pattern("blade", size=(20, 8), title="Round the pillars")
+def round_the_pillars(st):
+    # two stone blocks make three corridors 2 squares wide; blade pairs circle each block, up an outer corridor,
+    # across the far end, down the shared middle corridor, across the near end: the outer corridors carry the blades
+    # away from you, the middle one brings them at you
+    for b0 in (2, 5):
+        _wall(st, 6.5, b0, 13.5, b0)                             # a block: a 6.5 .. 13.5, b b0 .. b0 + 1
+        _wall(st, 6.5, b0 + 1, 13.5, b0 + 1)
+        _wall(st, 6.5, b0, 6.5, b0 + 1)
+        _wall(st, 13.5, b0, 13.5, b0 + 1)
+    near, far, mid = 5.5, 14.5, 3.5
+    tracks = [[(near, 0.5), (far, 0.5), (far, mid), (near, mid)],     # round the NW block (pairs ride +1 across)
+              [(near, 6.5), (far, 6.5), (far, mid), (near, mid)]]     # round the SE block
+    lap = _perimeter(tracks[0])                                       # 780 px
+    speed = 4.0
+    for t, track in enumerate(tracks):
+        for k in range(2):
+            path = _loop_from(track, (k * lap / 2 + t * lap / 4) / SQ)
+            a, b = path[0]
+            _move(st, f"P{t}{k}", [_blade(st, a, b), _blade(st, a, b + 1)], path, speed, mode="loop")
+    st.rest += [(2.5, 4.0), (17.5, 4.0)]
     f_lap = lap / speed
-    return Meta(tier="standard", tells="two pairs of blades circle a stone block, up one side and down the other",
-                answer="go with them: step into the NW corridor two squares behind a pair as it starts up, follow it "
-                       "(it moves 3 px a frame, a walk 3.3) and step out at the far end once it has turned across; "
-                       "the other pair is half a lap behind you",
-                careless="walking up the SE corridor meets a pair head-on: shoved back down it touch after touch, "
+    return Meta(tier="standard", tells="two stone blocks, three corridors: blade pairs go up the outer two and come "
+                                       "back down the middle one",
+                answer="go up an outer corridor right behind a pair as it turns into it and walk on without stopping: "
+                       "it pulls away from you (4 px a frame) and the next is half a lap behind; step out at the far "
+                       "end once the pair ahead has turned across; never take the middle",
+                careless="walking up the middle meets a pair head-on every 1.6 s: shoved back touch after touch, "
                          "~30-50 HP",
-                timing=f"lap {f_lap:.0f} frames ({f_lap / 30:.1f} s); a pair spends ~98 frames in each corridor; "
-                       "following needs no window, only the right corridor")
+                timing=f"lap {f_lap:.0f} frames ({f_lap / 30:.1f} s), two pairs a block half a lap apart, the blocks "
+                       "a quarter lap out of step; an outer corridor takes ~90 frames at a walk, the next pair "
+                       "reaches its mouth ~98 frames after the one you follow")
 
 
 # ---- 02 standard: the jaws ----------------------------------------------------------------------------------------
@@ -241,66 +265,77 @@ def saw(st):
                        f"~162 frames; it pauses {pause} frames at each end of its {a1 - a0:.0f}-square stroke")
 
 
-# ---- 06 hard: the pendulum row ------------------------------------------------------------------------------------
+# ---- 06 hard: the sliding doors ----------------------------------------------------------------------------------
 
-@pattern("blade", size=(22, 6), tier="hard", title="The pendulum row")
-def pendulum_row(st):
-    # eight blades swing from wall to wall, a lane each, 1.5 squares apart (their bands overlap: nowhere to stand
-    # between them); each starts 7 frames after the one before, so a gap runs down the hall at running pace. They
-    # wait by the NW wall until someone steps in.
+@pattern("blade", size=(22, 6), tier="hard", title="The sliding doors")
+def sliding_doors(st):
+    # six walls of blades across the hall, 1.5 squares apart (nowhere to stand between them), each with a door two
+    # blades wide; the doors line up and slide together from one side wall to the other and back, pausing at each:
+    # a corridor through the blades that will not keep still
     W = st.W
-    lo, hi = 0.45, W - 0.45
-    speed, pause, lag = 8.0, 9, 7
-    acts = [_sound(st, "SpikeBlockMove", 5.0, 1.0)]
-    for k in range(8):
-        a = 5.5 + 1.5 * k
-        _move(st, f"P{k}", [_blade(st, a, lo)], [(a, lo), (a, hi)], speed, pause=pause, armed=False)
-        acts.append(st.act("arm", f"P{k}", delay=lag * k))
-    st.T.zone(f"{st.label}Z", st.at(1.2, W / 2), 60.0, shape="circle", who="player", once=True, acts=acts)
-    st.rest += [(2.0, W / 2), (19.5, W / 2)]
-    stroke = (hi - lo) * SQ / speed
-    period = 2 * (stroke + pause)
-    return Meta(tier="hard", tells="a row of blades by the wall that start to swing, one after another, as you step "
-                                   "in",
-                answer="run, not walk: start just behind the wave of blades along a wall and keep pace with it (the "
-                       "gap moves 1.5 squares every 7 frames, a run's pace); a walker drifts out of the gap after "
-                       "four or five blades with nowhere to stop",
-                careless="walking down the middle: blade after blade, pinned at the walls, ~60-100 HP",
-                timing=f"swing period {period:.0f} frames ({stroke:.0f} each way, {pause} at the walls); a spot by "
-                       f"the wall is free ~45 frames a period, the middle two windows of ~25")
+    lo, hi = 1.5, W - 1.5                                      # the door's middle, at each end of its slide
+    speed, pause = 2.5, 30
+    offs = [d for k in range(1, W) for d in (-(k + 0.5), k + 0.5)]   # blades either side of the door, into the walls
+    for k in range(6):
+        a = 6.0 + 1.5 * k
+        objs = [_blade(st, a, lo + d) for d in offs]
+        _move(st, f"D{k}", objs, [(a, lo + offs[0]), (a, hi + offs[0])], speed, pause=pause)
+    st.rest += [(2.5, W / 2), (17.5, W / 2)]
+    slide = (hi - lo) * SQ / speed
+    return Meta(tier="hard", tells="six walls of blades across the hall, a door in each; the doors line up and slide "
+                                   "from wall to wall together",
+                answer="step into the doors' corridor while it waits by a wall and walk in along it; when it slides, "
+                       "slide with it (2.5 px a frame, nearly a walk: no time to go forward too); go forward again at "
+                       "the next pause; about two pauses take you through",
+                careless="walking straight through: a sliding wall of blades catches you and grinds you against the "
+                         "side wall, ~60-100 HP or worse",
+                timing=f"the doors slide {slide:.0f} frames, wait {pause} at each wall (period "
+                       f"{2 * (slide + pause):.0f}); the door's middle +-0.8 square is safe; 6 walls over 8 squares")
+
+
+def _pendulums(st, s, lanes, speed, dwell, lag):
+    """Blades swinging wall to wall, one lane each at the given a, each `lag` frames behind the one before (a wave
+    rolling down the hall at 1.5 squares per lag); loops from the map's first frame."""
+    W = st.W
+    loop = _shuttle((0.0, 0.45), (0.0, W - 0.45), speed, dwell)
+    for k, a in enumerate(lanes):
+        path = [(a, b) for _, b in _phase(loop, -lag * k, speed)]
+        _move(st, f"{s}{k}", [_blade(st, *path[0])], path, speed, mode="loop")
 
 
 # ---- 07 hard: find the gap ----------------------------------------------------------------------------------------
 
 @pattern("blade", size=(22, 7), tier="hard", title="Find the gap")
 def find_the_gap(st):
-    # three walls of blades plough up and down the hall, each with a two-blade gap in a different place (by the NW
-    # wall, in the middle, by the SE wall): stand in a wall's gap and it passes over you
+    # two walls of blades plough up and down the hall in counter-step (they pass through each other mid-hall), each
+    # with a two-blade gap by a different wall: stand in a wall's gap and it passes over you
     W = st.W
     a0, a1 = 4.0, 18.0
     speed, pause = 4.5, 15
-    full = [0.5 + k for k in range(W)]
-    gaps = {"A": (0.5, 1.5), "B": (5.5, 6.5), "C": (2.5, 3.5)}
-    period = 2 * ((a1 - a0) * SQ / speed + pause)
-    acts = [_sound(st, "SpikeBlockMove", a0, W / 2)]
-    for s, path, delay in (("A", [(a0, 0), (a1, 0)], 0), ("B", [(a1, 0), (a0, 0)], 0),
-                           ("C", [(a0, 0), (a1, 0)], int(period / 4))):
-        bs = [b for b in full if b not in gaps[s]]
-        start = path[0][0]
-        objs = [_blade(st, start, b) for b in bs]
-        _move(st, s, objs, [(a, bs[0]) for a, _ in path], speed, pause=pause, armed=False)
-        acts.append(st.act("arm", s, delay=delay))
-    st.T.zone(f"{st.label}Z", st.at(1.2, W / 2), 60.0, shape="circle", who="player", once=True, acts=acts)
+    _ploughs(st, a0, a1, speed, pause, {"A": (0.5, 1.5), "B": (W - 1.5, W - 0.5)})
     st.rest += [(2.0, W / 2), (20.0, W / 2)]
-    return Meta(tier="hard", tells="three rows of blades across the hall, each missing two blades in a different "
-                                   "place: by the NW wall, in the middle, by the SE wall",
-                answer="read each row as it comes and stand in its gap (the gap's middle +-0.8 square) while it "
-                       "passes; between rows walk on and cross over to the next row's gap (up to 5 squares across)",
-                careless="walking up the middle meets the rows with gaps by the walls: bulldozed along the hall, "
-                         "~40-80 HP",
+    period = 2 * ((a1 - a0) * SQ / speed + pause)
+    mid = (a0 + a1) / 2
+    return Meta(tier="hard", tells="two rows of blades sweeping up and down the hall in turn, one missing two blades "
+                                   "by the NW wall, the other by the SE wall",
+                answer="stand in a row's gap (its middle +-0.8 square) as it passes over you; cross the hall to the "
+                       "other row's gap before that one comes (4.5 squares, ~45 frames), and make the crossings near "
+                       f"the ends of the hall: the rows meet in the middle (a {mid:.0f}), where no gap is safe",
+                careless="walking up the middle: both rows bulldoze you along the hall, ~40-80 HP",
                 timing=f"each row {speed} px a frame over {a1 - a0:.0f} squares, {pause} frames at each end (period "
-                       f"{period:.0f}); A and B start together from either end, C a quarter period later; a row "
-                       "passes a spot every ~1.5-3 s, a shift between gaps takes up to ~50 frames")
+                       f"{period:.0f}), the two half a period apart; at a spot d squares from the middle the rows "
+                       f"pass ~{2 * SQ / speed:.0f}*d frames apart (a 6 or 16: ~58)")
+
+
+def _ploughs(st, a0, a1, speed, pause, gaps):
+    """Rows of blades across the hall (one a square) shuttling between a0 and a1, each missing the blades at its gap;
+    the first starts at a0, the second at a1 (counter-step)."""
+    full = [0.5 + k for k in range(st.W)]
+    for k, (s, gap) in enumerate(gaps.items()):
+        bs = [b for b in full if b not in gap]
+        ends = [a0, a1] if k % 2 == 0 else [a1, a0]
+        objs = [_blade(st, ends[0], b) for b in bs]
+        _move(st, s, objs, [(a, bs[0]) for a in ends], speed, pause=pause)
 
 
 # ---- 08 hard: the ledge -------------------------------------------------------------------------------------------
@@ -367,13 +402,8 @@ def zipper(st):
 def long_run(st):
     W = st.W
     lo, hi = 0.45, W - 0.45
-    # 1. four pendulums, a travelling gap, started when you step in
-    acts = [_sound(st, "SpikeBlockMove", 5.0, 1.0)]
-    for k in range(4):
-        a = 5.0 + 1.5 * k
-        _move(st, f"P{k}", [_blade(st, a, lo)], [(a, lo), (a, hi)], 8.0, pause=9, armed=False)
-        acts.append(st.act("arm", f"P{k}", delay=7 * k))
-    st.T.zone(f"{st.label}Z", st.at(1.2, W / 2), 60.0, shape="circle", who="player", once=True, acts=acts)
+    # 1. four pendulums, a travelling gap
+    _pendulums(st, "P", [5.0 + 1.5 * k for k in range(4)], 8.0, 9, 7)
     st.rest.append((12.0, W / 2))
     # 2. the ledge: pits from a = 14 to 25, three blades punching across the ledge in turn
     for a in range(14, 25):
@@ -384,12 +414,7 @@ def long_run(st):
         _move(st, f"K{k}", [_blade(st, *path[0])], path, 7.0, pause=16)
     st.rest += [(17.5, 0.5), (20.5, 0.5), (26.5, W / 2)]
     # 3. two ploughs with gaps on opposite sides
-    a0, a1 = 29.0, 39.0
-    gaps = {"A": (0.5, 1.5), "B": (3.5, 4.5)}
-    for s, path in (("A", [a0, a1]), ("B", [a1, a0])):
-        bs = [0.5 + k for k in range(W) if 0.5 + k not in gaps[s]]
-        objs = [_blade(st, path[0], b) for b in bs]
-        _move(st, s, objs, [(a, bs[0]) for a in path], 4.5, pause=15)
+    _ploughs(st, 29.0, 39.0, 4.5, 15, {"A": (0.5, 1.5), "B": (3.5, 4.5)})
     st.rest.append((42.0, W / 2))
     return Meta(tier="hard", tells="a row of pendulums, a ledge over a pit with stabbing blades, two rows of blades "
                                    "with gaps",
