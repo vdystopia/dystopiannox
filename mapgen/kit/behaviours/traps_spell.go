@@ -249,12 +249,31 @@ func spellAim(u ns.Obj, lead int) ns.Pointf {
 	return ns.Ptf(p.X+vx*float32(lead), p.Y+vy*float32(lead))
 }
 
+// A turn: casters taking turns (Westwood's death-ray statues): cast_mark with Target = the turn's name casts from
+// its next point.
+type spellTurn struct {
+	pts []ns.Pointf
+	k   int
+}
+
+var spellTurns = map[string]*spellTurn{}
+
+func SpellTurn(name string, pts ...ns.Pointf) {
+	SpellTrapsOn()
+	spellTurns[name] = &spellTurn{pts: pts}
+}
+
 func spellCastMark(a trapAct) {
 	if trapCaller == nil {
 		return
 	}
+	src, from := a.Target, a.From
+	if t := spellTurns[a.Target]; t != nil && len(t.pts) > 0 {
+		from, src = t.pts[t.k%len(t.pts)], ""
+		t.k++
+	}
 	to := spellAim(trapCaller, spellOpt(a.Text, "lead", 0))
-	later := trapAct{Kind: "cast_lvl", Spell: a.Spell, Target: a.Target, From: a.From, To: to,
+	later := trapAct{Kind: "cast_lvl", Spell: a.Spell, Target: src, From: from, To: to,
 		Text: "lvl:" + spellItoa(spellOpt(a.Text, "lvl", 0))}
 	if a.Frames > 0 {
 		trapQueue = append(trapQueue, trapPending{at: trapFrame + a.Frames, act: later})
