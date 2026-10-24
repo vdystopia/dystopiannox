@@ -22,6 +22,7 @@ type ptWatch struct {
 type ptStation struct {
 	clocks, clocksOff, movers, moversOff, zones, zonesOff []string
 	on, off                                                []string
+	sentries                                               []string // switched off while the hero waits: the beam back at its base angle
 	closed, open                                           [][2]int
 	watches                                                []ptWatch
 }
@@ -98,6 +99,11 @@ func ptReset(label string) {
 	for _, g := range trapGroups {
 		g.set = false
 	}
+	for _, n := range st.sentries {
+		if o := ns.Object(n); o != nil {
+			o.Enable(true)
+		}
+	}
 	for _, n := range st.on {
 		if o := ns.Object(n); o != nil {
 			o.Enable(true)
@@ -169,6 +175,13 @@ func ptFrame() {
 		p, _ := ptPt(r, 0)
 		h.SetHealth(3000)
 		h.SetPos(p)
+		if st := ptStations[r.label]; st != nil {
+			for _, n := range st.sentries { // a globe's angle goes back to its base only while it is off
+				if o := ns.Object(n); o != nil {
+					o.Enable(false)
+				}
+			}
+		}
 		ptHold++
 		hold := 20
 		if ptFell {
