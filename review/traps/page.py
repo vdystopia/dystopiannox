@@ -91,7 +91,8 @@ def real(rw):
     """A real-input careless walk's result (tests/traps_e2e/realwalk.py), as words."""
     if not rw: return ""
     out = rw["outcome"]
-    out = {"fell": "shoved or dropped into the pit", "passed": "got through"}.get(out, out.replace("stuck at", "held back at a ="))
+    out = {"fell": "shoved or dropped into the pit", "passed": "got through", "died": "killed"}.get(
+        out, out.replace("stuck at", "held back") + " squares in" if out.startswith("stuck") else out)
     return f"a careless walk with real input (the game's own physics): {rw['lost']} HP, {out}"
 
 
