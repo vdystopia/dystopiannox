@@ -116,7 +116,8 @@ q.talker(nala, [
           ask=True,
           do=[A.stage(MAIN, 1), q.journal(IDOL), q.journal(CASE)],
           else_=[q.tell(nala, "Then Garet gets the Eye, and we all go home poor.")]),
-], pic="MaidenPic6", title="Nala the Scout")
+], pic="MaidenPic6", title="Nala the Scout",
+   voice="A young woman scout in her twenties. Clear, mid-range voice, a soft Irish accent. Calm and unhurried, never rushed.")
 q.on_death(boss, [A.stage(MAIN, 2), q.note("Garet Hawkeye is dead. The way to the inner shrine is open.")])
 q.on_pickup("Emerald", [q.note("The Serpent's Eye is cold to the touch, and heavier than it looks.")])
 q.start([q.journal("Speak to Nala the scout in the outer court.")])

@@ -133,7 +133,8 @@ q.talker(brannoc, [
           ask=True,
           do=[A.stage(MAIN, 1), q.journal(HOLD), q.journal(WYNN)],
           else_=[q.tell(brannoc, "Then the mine's finished, and so are we.")]),
-], pic="MalePic9", title="Foreman Brannoc")
+], pic="MalePic9", title="Foreman Brannoc",
+   voice="A gruff mine foreman in his fifties. Deep, rough baritone, a northern English accent. Slow, plain and steady.")
 q.on_death(boss, [A.stage(MAIN, 2), q.done(HOLD), q.journal(BRING),
                   q.note("Oskar Thorne is dead. His hold on the deep seam is broken.")])
 q.start([q.journal("Speak to Foreman Brannoc at the pithead.")])

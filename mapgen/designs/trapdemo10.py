@@ -220,7 +220,8 @@ q.talker(evelyn, [
               q.tell(evelyn, "One thing more. Roderick, the last champion, fell in that arena. Garrick hung his "
                              "amulet in the trophy hall off the great hall. His family would have it back.")],
           else_=[q.tell(evelyn, "As you wish. The arena will have its next victim soon enough.")]),
-], pic="IngridPic", title="Herald Evelyn")
+], pic="IngridPic", title="Herald Evelyn",
+   voice="A herald in her thirties. Clear, warm alto voice, a crisp southern English accent. Formal and measured, never rushed.")
 q.on_death(boss, [A.stage(MAIN, 2), q.journal("Take the Gold Key from Garrick's strongroom to Herald Evelyn.")])
 q.start([q.journal("Speak to Herald Evelyn at the camp by the castle gate.")])
 M.sign("camp", "THE WARLORD'S TRIAL. Challengers enter here.", *sign_at)

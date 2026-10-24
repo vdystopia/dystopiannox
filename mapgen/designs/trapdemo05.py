@@ -118,7 +118,8 @@ q.talker(ingrid, [
           else_=[q.tell(ingrid, "Then stay out of my way. I have no use for cowards.")]),
     q.say("Vael still lives. I can feel it in the walls.", when=q.at(MAIN, 1, has=IDOL)),
     q.say("Why are you still here? Vael won't wait for you!", when=q.at(MAIN, 1)),
-], pic="IngridPic", title="Ingrid")
+], pic="IngridPic", title="Ingrid",
+   voice="A wary woman in her forties. Low, husky alto voice, a faint Scandinavian lilt. Quiet, measured and tense.")
 q.on_pickup(KEY, [q.journal("Hagen is dead. Bring his silver key back to Ingrid.")])
 q.on_death(boss, [A.stage(MAIN, 2), q.note("Vael the Unbound is dead. The vault beyond his hall lies open.")])
 q.start([q.journal("Speak to Ingrid at the camp by the upper gate.")])
