@@ -2198,6 +2198,82 @@ def bridge_span_paving(m):
     return out
 
 
+# A paved road's end at a rope bridge's deck, as the user sees it (QA round 3 [Q3X-1]; kit/water.py DECK_REACH,
+# TILE_V_DRAWN, EDGE_REACH, measured on the bridge lab's round 3 render): along the axis, outward from each end piece, the
+# FarEnd's planks reach 2 uv past it and the NearEnd's stop at it; a tile is drawn a unit toward -v of its point; the
+# paving's kerb on the first tile of earth carries its look a unit on. A gap or an overrun past ROAD_END_TOL (uv, 12 px
+# along the axis) shows: round 3's BR-01, BR-06 and BR-11 were 1 to 2.1 uv off at both ends, one each way.
+CHAIN_DECK_REACH = {"RopeBridge1": (2.0, 0.0), "RopeBridge2": (2.0, 0.0)}
+TILE_DV, EDGE_REACH, ROAD_END_TOL, ROAD_END_LOOK = -1.0, 1.0, 0.75, 12.0
+
+
+def bridge_road_ends(m):
+    """A paved road that stops short of a rope bridge's deck (earth showing between) or runs on under it, at either end,
+    read where the tiles are drawn (QA round 3, 2026-10-23 [Q3X-1]: BR-01, BR-06, BR-11 "On one side of the bridge, the
+    cobblestone ends before the bridge with a small gap of dirt. On the other side of the bridge, it ends on the
+    cobblestone. Make sure both sides start/end just on the edge of the end of the cobblestone"): [(x, y, fault)]. In each
+    of the deck's two rows, from the road's paving within ROAD_END_LOOK of the deck's end in toward the bridge, the paving's
+    edge as drawn (the last paved tile's drawn middle, its half and the kerb's EDGE_REACH on) against the deck's end."""
+    ends = [o for o in m.objects if CHAIN_END.match(o["type"]) and CHAIN_END.match(o["type"]).group(1) in CHAIN_DECK_REACH]
+    out, used = [], set()
+    for a in ends:
+        ka = CHAIN_END.match(a["type"])
+        if ka.group(2) != "FarEnd" or a["id"] in used: continue
+        b = min((o for o in ends if CHAIN_END.match(o["type"]).group(1) == ka.group(1) and
+                 CHAIN_END.match(o["type"]).group(2) == "NearEnd" and o["id"] not in used),
+                key=lambda o: math.hypot(o["x"] - a["x"], o["y"] - a["y"]), default=None)
+        if b is None or not 60 <= math.hypot(b["x"] - a["x"], b["y"] - a["y"]) <= 1200: continue
+        used |= {a["id"], b["id"]}
+        kit = ka.group(1)
+        axis_u = kit == "RopeBridge1"                      # RopeBridge1 runs along u, RopeBridge2 along v
+        al = (lambda o: (o["x"] + o["y"]) / CELL) if axis_u else (lambda o: (o["x"] - o["y"]) / CELL)
+        ac = (lambda o: (o["x"] - o["y"]) / CELL) if axis_u else (lambda o: (o["x"] + o["y"]) / CELL)
+        fa, na = al(a), al(b)
+        sgn = 1 if na > fa else -1                         # along the axis from the FarEnd to the NearEnd
+        far_r, near_r = CHAIN_DECK_REACH[kit]
+        deck = {"far": (fa - sgn * far_r, -sgn), "near": (na + sgn * near_r, sgn)}
+        # the deck's middle line across (its Front pieces' line and the Back pieces', 30 px up), and the road's rows: the
+        # tile rows whose drawn middles lie within 1.5 uv of it (the deck's own two)
+        mid = ac(a) + (15 / CELL if axis_u else -15 / CELL)
+        dr = TILE_DV if axis_u else 0.0                     # across a u-axis deck runs v, drawn a unit toward -v
+        rows = [r for r in range(int(mid) - 6, int(mid) + 7) if r % 2 == 0 and abs(r + dr - mid) <= 1.5]
+        da = 0.0 if axis_u else TILE_DV                     # along a v-axis deck the tiles' drawn middles a unit toward -v
+        tile = (lambda A, R: _tile_uv(A, R)) if axis_u else (lambda A, R: _tile_uv(R, A))
+        paved = lambda t: t in m.tiles and PAVED_RE.search(m.tiles[t]["material"]) is not None
+        span = abs(na - fa)
+        for end, (d_end, o) in deck.items():
+            errs = []
+            for r in rows:
+                # the row's tiles from ROAD_END_LOOK out, in to the span's middle, by drawn middle along the axis
+                seq = []
+                for A in range(int(d_end - da) - int(ROAD_END_LOOK) - 3, int(d_end - da) + int(ROAD_END_LOOK) + 4):
+                    if A % 2: continue
+                    d = A + da
+                    if -span / 2 <= o * (d - d_end) <= ROAD_END_LOOK: seq.append((d, tile(A, r)))
+                seq.sort(key=lambda t: -o * (t[0] - d_end))
+                k = next((i for i, (_, t) in enumerate(seq) if paved(t)), None)
+                if k is None or o * (seq[k][0] - d_end) < 0: continue     # no paving coming in along this row
+                while k + 1 < len(seq) and paved(seq[k + 1][1]): k += 1
+                edge = seq[k][0] - o * (1.0 + EDGE_REACH)
+                errs.append(o * (edge - d_end))                 # > 0 earth between, < 0 the paving under the deck
+            if not errs: continue
+            e = max(errs, key=abs)
+            if abs(e) <= ROAD_END_TOL: continue
+            x, y = ((d_end + mid) / 2 * CELL, (d_end - mid) / 2 * CELL) if axis_u else \
+                ((mid + d_end) / 2 * CELL, (mid - d_end) / 2 * CELL)
+            where = {(True, -1): "north-west", (True, 1): "south-east", (False, 1): "north-east",
+                     (False, -1): "south-west"}[(axis_u, o)]
+            if e > 0:
+                out.append((x, y, f"The paved road stops {e / 2:.1f} tiles short of the {kit} bridge's {where} end, earth "
+                                  f"showing between (read as drawn): a paved road meets the bridge's deck exactly, on both "
+                                  f"banks alike (kit/water.Waterworks._road_to_deck)."))
+            else:
+                out.append((x, y, f"The paved road runs on {-e / 2:.1f} tiles under the {kit} bridge's {where} end (read "
+                                  f"as drawn): a paved road meets the bridge's deck exactly, on both banks alike "
+                                  f"(kit/water.Waterworks._road_to_deck)."))
+    return out
+
+
 def crossing_faults(m):
     """A bridge and its road (QA round 1, the bridges: "the path should be the same width as the bridge or wider. The
     path must be lined up more consistently with the bridge"; "It also extends farther to the southeast bank than it
@@ -2351,7 +2427,7 @@ def check_water(m, ctx, base):
                              f"(Waterworks._smooth).", x + CELL, y + CELL))
     for x, y, msg in crossing_faults(m):
         out.append(F("water", "warning", msg, x, y))
-    for x, y, msg in bridge_span_paving(m):
+    for x, y, msg in bridge_span_paving(m) + bridge_road_ends(m):
         out.append(F("water", "warning", msg, x, y, rule="water.bridge_paved"))
     for x, y, msg in dock_faults(m):
         out.append(F("water", "warning", msg, x, y))
@@ -4541,7 +4617,8 @@ RULES = [
     ("water.bridge_narrow", "water", r"is narrower than the bridge", "Q1W-1"),
     ("water.bridge_off", "water", r"off its centre line", "Q1W-1"),
     ("water.bridge_even", "water", r"farther onto one bank", "Q1W-2"),
-    ("water.bridge_paved", "water", r"paved road runs under the bridge", "Q2T-6 Q2X-6"),
+    ("water.bridge_paved", "water", r"paved road runs under the bridge|paved road (stops .* short of|runs on .* under) "
+                                    r"the .* bridge's", "Q2T-6 Q2X-6 Q3X-1"),
     ("water.dock_long", "water", r"a third of the way at most", "Q1W-6"),
     ("water.dock_side", "water", r"runs close along one bank", "Q1W-7"),
     ("water.dock_wall", "water", r"dock starts against a wall", "Q1W-9"),

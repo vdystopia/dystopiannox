@@ -589,6 +589,43 @@ def cobbles_under_bridge(m):
     ww.finish()
 
 
+def _paved_crossing(m, stream, rows, along, a_uv, b_uv):
+    """A stream, a RoughCobble road on `rows` across it (`along`: the axis it runs on, over the range given) and a rope
+    bridge laid by the kit, which meets the road's paving with the deck's ends exactly (kit/water._road_to_deck)."""
+    from kit.water import tile_at_uv, WATER_MATERIALS
+    ww = Waterworks(m, random.Random(5))
+    ww.stream(stream, width=2.2, wiggle=0.0)
+    along_u = a_uv[1] == b_uv[1]                         # the bridge (and its road) runs along u
+    for r in rows:
+        for a in range(*along, 2):
+            t = tile_at_uv(a, r) if along_u else tile_at_uv(r, a)
+            if m.floor.get(t) and m.floor[t] not in WATER_MATERIALS: m.floor[t] = "RoughCobble"
+    ww.rope_bridge(a_uv, b_uv)
+    return ww
+
+
+def road_short_of_bridge(m):
+    # Q3X-1 (BR-01, BR-06, BR-11: "On one side of the bridge, the cobblestone ends before the bridge with a small gap of
+    # dirt"): a RopeBridge2 (along v) whose road's last tile on the south-west bank is lifted, a tile of earth between
+    from kit.water import tile_at_uv
+    ww = _paved_crossing(m, [(184, -24), (256, -24)], (234, 236), (-40, -6), (236, -36), (236, -12))
+    for u in (234, 236):
+        v = max(v for v in range(-40, -24, 2) if m.floor.get(tile_at_uv(u, v)) == "RoughCobble")
+        m.floor[tile_at_uv(u, v)] = "GrassNorm"
+    ww.finish()
+
+
+def road_under_bridge_end(m):
+    # Q3X-1 ("On the other side of the bridge, it ends on the cobblestone"): a RopeBridge1 (along u) whose road runs a tile
+    # on under the deck's north-west end
+    from kit.water import tile_at_uv
+    ww = _paved_crossing(m, [(244, -38), (244, 0)], (-28, -26), (222, 260), (236, -28), (252, -28))
+    for v in (-28, -26):
+        u = max(u for u in range(222, 244, 2) if m.floor.get(tile_at_uv(u, v)) == "RoughCobble")
+        m.floor[tile_at_uv(u + 2, v)] = "RoughCobble"
+    ww.finish()
+
+
 # ---- the object knowledge base (Harrowby playtest, HB-1..HB-5; validate/checks.py check_pieces) ------------------------
 def two_cauldrons(m):
     for u, v in ((206, -6), (214, 3)): m.obj("CauldronAnimated", u, v)          # HB-1: "Why are there two cauldrons?"
@@ -1341,6 +1378,10 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STbrrd", road_off_bridge, "water", "warning", "a one-row road beside a plank deck's rows - Q1W-1", "narrower than"),
     ("STbrpav", cobbles_under_bridge, "water", "warning", "a rope bridge's span paved to the water - Q2T-6",
      "runs under the bridge"),
+    ("STbrgap", road_short_of_bridge, "water", "warning", "a paved road a tile short of a rope bridge's end - Q3X-1",
+     "short of the RopeBridge2 bridge's south-west end"),
+    ("STbrovr", road_under_bridge_end, "water", "warning", "a paved road a tile on under a rope bridge's end - Q3X-1",
+     "under the RopeBridge1 bridge's north-west end"),
     ("STbreven", bridge_uneven, "water", "warning", "a deck reaching three tiles more onto one bank - Q1W-2",
      "farther onto one bank"),
     ("STdklong", dock_too_long, "water", "warning", "a long dock in a small pond - Q1W-6", "a third of the way"),
