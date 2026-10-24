@@ -89,6 +89,10 @@ class World:
         self.wall_changed = set()
         self.changed = set()                      # objects whose state changed this frame
         self.volleys = set()                      # shooters switched on this frame
+        for m in self.movers:                     # arriving `offset` frames later: the movers are that far on
+            for _ in range(offset if m["armed"] else 0):
+                if m["done"]: break
+                self.step_mover(m)
 
     def set_group(self, g, on):
         for o in self.groups.get(g, []):
@@ -331,7 +335,7 @@ class StationModel:
         shooters = {o: v for o, v in self.objs.items() if v["type"] in SHOOTERS}
         lanes = {o: self.lane(v) for o, v in shooters.items()}
         sentries = {o: v for o, v in self.objs.items() if v["type"] in SENTRIES}
-        sentry_on = {o: 0 for o in sentries}
+        sentry_on = {o: (offset if w.en.get(o, True) else 0) for o in sentries}   # an always-on globe has turned
         dyn = [o for o, v in self.objs.items() if v["type"] in BLOCKS or v["type"] in BLADES]
         skulls = [o for o, v in shooters.items() if v["type"].startswith("Skull")]
         balls = []                                      # skull fireballs in flight: (gun, frame fired)
@@ -423,6 +427,24 @@ class StationModel:
                 if self.blocked[i, j]: break
                 out |= set(self.cells_near(a, b, 14 / SQ))
         return out
+
+    def moments(self):
+        """Six arrival moments (frames) spread over the station's longest cycle: its clocks' periods, its movers'
+        rounds and its globes' turns (a player comes at any point of them)."""
+        P = 90
+        mine = set(self.objs)
+        for c in self.data["clocks"]:
+            if mine & set(self.data["groups"].get(c["group"], [])): P = max(P, c["period"])
+        for m in self.data["movers"]:
+            if not (mine & set(m["objs"])) or not m.get("speed"): continue
+            pts = m["path"]
+            L = sum(math.dist(a, b) for a, b in zip(pts, pts[1:])) + (math.dist(pts[-1], pts[0]) if m["mode"] == "loop" else 0)
+            P = max(P, int(L / m["speed"] * (1 if m["mode"] == "loop" else 2) + 2 * m.get("pause", 0)))
+        for o, v in self.objs.items():
+            rot = abs((v.get("xfer") or {}).get("RotateSpeed", 0.0)) if v["type"] in SENTRIES else 0
+            if rot: P = max(P, int(2 * math.pi / rot))
+        P = min(P, 1500)
+        return [int(round(P * k / 7)) for k in range(1, 7)]
 
     def ball_range(self, o):
         """How far a skull's fireball flies (px) before a wall or a pillar stops it."""
@@ -587,7 +609,7 @@ class StationModel:
         cool = {o: 0 for o, _ in shooters}
         balls = []
         sentries = [(o, v) for o, v in objs.items() if v["type"] in SENTRIES]
-        on_for = {o: 0 for o, _ in sentries}
+        on_for = {o: (offset if w.en.get(o, True) else 0) for o, _ in sentries}
         dyn = [(o, v) for o, v in objs.items() if v["type"] in BLOCKS or v["type"] in BLADES]
         for f, (x, y, air) in enumerate(path_px):
             w.tick((x, y), air)
@@ -720,7 +742,7 @@ def analyse(map_dir, only=None, trace=False):
             if r2 and (res is None or r2[0] < res[0] - 5):
                 res, used = (r2[0], r2[1], p1[:-1] + r2[2]), zname
         slack_ok = 0
-        offsets = [10, 23, 37, 51, 66, 83]
+        offsets = sm.moments()
         for off in offsets:
             Gs, As = sm.fields(off)
             r = sm.plan(Gs, As)

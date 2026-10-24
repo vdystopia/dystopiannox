@@ -295,8 +295,9 @@ def two_beams(st):
 
 @_pattern("sentry", size=(20, 10), title="The lighthouse")
 def lighthouse(st):
-    # a globe in a niche in the NW wall turns once in 22 s; for 4 s a turn its beam swings out across the room, the
-    # rest of the time it sweeps the niche's own walls. Stone stubs in the room to hide behind.
+    # two globes back to back in a niche in the NW wall turn once in 22 s; twice a turn (every 11 s) a beam swings out
+    # across the room for 4 s, the rest of the time they sweep the niche's own walls. Stone stubs in the room to hide
+    # behind. (One beam missed a careless walker at every moment the simulator tried: QA of the traps, 2026-10-24.)
     _wall(st, 8.5, 0, 8.5, 2)
     _wall(st, 11.5, 0, 11.5, 2)
     _wall(st, 9.5, 4, 10.5, 4)
@@ -305,17 +306,18 @@ def lighthouse(st):
     lap = 660
     spin = TAU / lap
     a, b = 10.0, IN
-    g, base = _globe(st, a, b, 0, 1, spin=spin)
-    _sweep(st, g, a, b, base, spin)
+    for db in (1, -1):
+        g, base = _globe(st, a, b, 0, db, spin=spin)
+        _sweep(st, g, a, b, base, spin)
     st.rest += [(2.5, 5.0), (10.0, 5.6), (10.0, 8.5), (5.0, 8.5), (15.0, 8.5), (17.5, 5.0), (4.0, 1.2), (16.0, 1.2)]
     out = 2 * math.atan(1.5 / (2.5 - IN))
-    return _meta(st, tier="standard", tells="a globe in a niche, its beam turning slowly; once a turn it swings out "
-                                            "across the room",
-                 answer="watch one turn: cross while the beam sweeps the inside of its niche (~18 s of 22); caught "
-                        "in the open as it swings out, step behind a stone stub (its shadow is safe) or out of the fan",
-                 careless="crossing the fan at a walk without looking: about one walker in three meets the swing",
-                 timing=f"a turn {lap} frames (22 s); out of the niche ~{out / spin:.0f} frames a turn; the beam "
-                        "moves ~1 px a frame three squares out, ~3-4 at the far wall")
+    return _meta(st, tier="standard", tells="two globes back to back in a niche, their beams turning slowly; twice a "
+                                            "turn one swings out across the room",
+                 answer="watch a swing: cross in the ~7 s while both beams sweep the inside of their niche; caught in "
+                        "the open as one swings out, step behind a stone stub (its shadow is safe) or out of the fan",
+                 careless="crossing the fan at a walk without looking: about one walker in two meets a swing",
+                 timing=f"a turn {lap} frames (22 s); a beam out of the niche ~{out / spin:.0f} frames every half turn; "
+                        "the beam moves ~1 px a frame three squares out, ~3-4 at the far wall")
 
 
 # ---- 04 standard: the walking gap ----------------------------------------------------------------------------------
