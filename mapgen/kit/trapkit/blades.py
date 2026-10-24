@@ -30,21 +30,27 @@ def _move(st, s, objs, pts, speed, mode="pingpong", pause=0, armed=True):
 
 
 def _cell(st, a, b):
-    """The wall cell on the square corner nearest station point (a, b) (Dungeon.apply's convention: corner (p, q)
-    of Land's squares is wall cell (p + q, p - q))."""
+    """The wall cell whose centre is nearest station point (a, b). A cell (X, Y) (X + Y even) is centred at world
+    ((X + .5) * 23, (Y + .5) * 23); in a lab station (along j) the centres fall at half-integer a and integer b: a wall
+    along a lies on the squares' edges, a wall across (along b) runs through the middle of a row of squares."""
     x, y = st.at(a, b)
-    si = (x / 23.0 - 1 + y / 23.0) / 2
-    sj = (x / 23.0 - 1 - y / 23.0) / 2
-    p, q = int(round(si)), int(round(sj))
-    return p + q, p - q
+    fx, fy = x / 23.0 - 0.5, y / 23.0 - 0.5
+    X0, Y0 = math.floor(fx), math.floor(fy)
+    return min(((X, Y) for X in (X0, X0 + 1) for Y in (Y0, Y0 + 1) if (X + Y) % 2 == 0),
+               key=lambda c: (c[0] - fx) ** 2 + (c[1] - fy) ** 2)
 
 
-def _wall(st, a0, b0, a1, b1, breakable=False, material=None):
-    """A straight wall along a or b between two square corners; returns its cells."""
+def _wall(st, a0, b0, a1, b1, breakable=False, material=None, facing=None):
+    """Wall cells centred on the line from (a0, b0) to (a1, b1), one a square (in the lab: a = k + 0.5 along the
+    run, b = whole squares across); each covers half a square either side of its centre. Returns its cells."""
     n = int(round(max(abs(a1 - a0), abs(b1 - b0))))
-    cells = [_cell(st, a0 + (a1 - a0) * k / max(1, n), b0 + (b1 - b0) * k / max(1, n)) for k in range(n + 1)]
+    cells = []
+    for k in range(n + 1):
+        c = _cell(st, a0 + (a1 - a0) * k / max(1, n), b0 + (b1 - b0) * k / max(1, n))
+        if c not in cells:
+            cells.append(c)
     for x, y in cells:
-        st.spec.wall(x, y, material or st.part.wall or "DungeonStone", breakable=breakable)
+        st.spec.wall(x, y, material or st.part.wall or "DungeonStone", breakable=breakable, facing=facing)
     return cells
 
 
@@ -103,14 +109,14 @@ def _sound(st, name, a, b, delay=0):
 def round_the_pillar(st):
     # a pillar block splits the hall into two corridors 2 squares wide; two blade pairs circle it, half a lap apart:
     # up the NW corridor, across the far end, down the SE corridor, across the near end
-    _wall(st, 6, 2, 14, 2)
-    _wall(st, 6, 4, 14, 4)
-    _wall(st, 6, 2, 6, 4)
-    _wall(st, 14, 2, 14, 4)
-    track = [(5, 0.5), (15, 0.5), (15, 4.5), (5, 4.5)]        # the first blade of a pair; its mate rides 1 across
-    lap = _perimeter(track)                                      # 910 px
+    _wall(st, 6.5, 2, 13.5, 2)                                   # the block: a 6.5 .. 13.5, b 2 .. 4
+    _wall(st, 6.5, 4, 13.5, 4)
+    _wall(st, 6.5, 2, 6.5, 4)
+    _wall(st, 13.5, 2, 13.5, 4)
+    track = [(5.5, 0.5), (14.5, 0.5), (14.5, 4.5), (5.5, 4.5)]  # the first blade of a pair; its mate rides 1 across
+    lap = _perimeter(track)                                      # 845 px
     speed = 3.0
-    for k, d in enumerate((0.0, 14.0)):
+    for k, d in enumerate((0.0, 13.0)):
         path = _loop_from(track, d)
         a, b = path[0]
         _move(st, f"P{k}", [_blade(st, a, b), _blade(st, a, b + 1)], path, speed, mode="loop")
@@ -122,7 +128,7 @@ def round_the_pillar(st):
                        "the other pair is half a lap behind you",
                 careless="walking up the SE corridor meets a pair head-on: shoved back down it touch after touch, "
                          "~30-50 HP",
-                timing=f"lap {f_lap:.0f} frames ({f_lap / 30:.1f} s); a pair spends ~108 frames in each corridor; "
+                timing=f"lap {f_lap:.0f} frames ({f_lap / 30:.1f} s); a pair spends ~98 frames in each corridor; "
                        "following needs no window, only the right corridor")
 
 
@@ -161,8 +167,8 @@ def jaws(st):
 def orbit(st):
     # four bars of three blades turn round a stone pillar like the spokes of a wheel; inside them a calm ring (the
     # eye) round the pillar; the bars reach the side walls, so there is no way round
-    ca, cb = 9.0, st.W / 2
-    _wall(st, ca, cb, ca, cb)
+    ca, cb = 9.5, st.W / 2                                       # a wall cell's centre (half-integer a)
+    _wall(st, ca, cb, ca, cb, facing=2)                          # a cross-shaped stone pillar
     lap = 280
     radii = (2.2, 3.0, 3.8)
     _orbit(st, "O", ca, cb, radii, [k * math.pi / 2 for k in range(4)], lap)
@@ -210,11 +216,11 @@ def saw(st):
     lane = 4
     a0, a1 = 4.0, 21.0
     speed, pause = 3.0, 45
-    bars = (10, 15, 20)
+    bars = (9.5, 14.5, 19.5)                                        # walls across run through square middles
     walls = {}
     for a in bars:
-        _wall(st, a, lane, a, st.W)                                 # the stub (bay divider)
-        walls[a] = _wall(st, a, 1, a, lane - 1, breakable=True)     # the breakable barrier across the lane
+        _wall(st, a, lane, a, st.W)                                 # the stub (bay divider), b 3.5 .. 6
+        walls[a] = _wall(st, a, 1, a, lane - 1, breakable=True)     # the breakable barrier, b 0.5 .. 3.5
     bs = (0.7, 2.0, 3.3)
     saw_ = [_blade(st, a0, b) for b in bs]
     _move(st, "S", saw_, [(a0, bs[0]), (a1, bs[0])], speed, pause=pause, armed=False)
@@ -224,15 +230,15 @@ def saw(st):
         acts.append(st.act("blade_break", walls=walls[a], text="WallDestroyedStone", src=st.at(a, 2.0),
                            delay=int(round(t))))
     st.lever("L", "FloorLever1", 2.0, 0.6, acts=acts, once=True)
-    st.rest += [(1.5, 3.0), (12.5, 5.2), (17.5, 5.2), (22.5, 5.0)]
+    st.rest += [(1.5, 3.0), (12.0, 5.2), (17.0, 5.2), (22.5, 5.0)]
     return Meta(tier="standard", tells="a lane walled off three times, a saw of blades parked at its mouth, a lever "
                                        "by the wall, bays along the side",
                 answer="pull the lever and follow the saw a few squares back as it bursts each wall; when it turns "
                        "back at the end, step into a bay (beyond the lane's edge) and let it pass, then walk on",
                 careless="standing in the lane when it comes back: shoved back down the lane touch after touch, "
                          "~30-40 HP",
-                timing=f"the saw {speed} px a frame (a walk is faster: keep back); walls burst at ~60, ~114 and "
-                       f"~168 frames; it pauses {pause} frames at each end of its {a1 - a0:.0f}-square stroke")
+                timing=f"the saw {speed} px a frame (a walk is faster: keep back); walls burst at ~54, ~108 and "
+                       f"~162 frames; it pauses {pause} frames at each end of its {a1 - a0:.0f}-square stroke")
 
 
 # ---- 06 hard: the pendulum row ------------------------------------------------------------------------------------
@@ -333,8 +339,8 @@ def zipper(st):
     # a lane 2 squares wide with alcoves 2 deep along its SE side; trains of blade pairs burst from the far wall,
     # rush down the lane faster than a run and vanish into the wall at the near end (they go back up inside it)
     lane = 2
-    for a in (4, 7, 10, 13, 16, 19, 22):
-        _wall(st, a, lane, a, st.W)
+    for a in (3.5, 6.5, 9.5, 12.5, 15.5, 18.5, 21.5):              # stubs b 2.5 .. 4 (walls across: k + 0.5)
+        _wall(st, a, lane + 1, a, st.W)
     track = [(21, 0.5), (3, 0.5), (3, -1.5), (21, -1.5)]
     speed, spacing, pairs = 7.0, 6, 5
     total = _perimeter(track)
@@ -344,7 +350,7 @@ def zipper(st):
             path = _loop_from(track, d)
             a, b = path[0]
             _move(st, f"Z{t}_{k}", [_blade(st, a, b), _blade(st, a, b + 1)], path, speed, mode="loop")
-    st.rest += [(1.5, 1.0)] + [(a + 1.5, 3.0) for a in (4, 7, 10, 13, 16, 19)] + [(23.0, 1.0)]
+    st.rest += [(1.5, 1.0)] + [(a + 1.5, 3.2) for a in (3.5, 6.5, 9.5, 12.5, 15.5, 18.5)] + [(23.0, 1.0)]
     lap = total / speed
     return Meta(tier="hard", tells="a narrow lane with alcoves; trains of blades burst from the far wall and rush "
                                    "down it",
