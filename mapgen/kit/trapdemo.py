@@ -67,6 +67,8 @@ SETTINGS = {
                     store=["Crate1", "Crate2", "Barrel"])),
 }
 DIRS = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+# a room's walls by the way out through them (a along i from the NW wall, b along j from the SW wall)
+WALL_DIRS = {"NW": (-1, 0), "SE": (1, 0), "SW": (0, -1), "NE": (0, 1)}
 
 
 class Mission:
@@ -93,10 +95,12 @@ class Mission:
         self.sign_n = 0
 
     # ---- the plan ----------------------------------------------------------------------------------------------
-    def room(self, rid, size, role="room", floor=None, start=False, kind=None, style="town"):
-        """A room: `role` places the plot pieces (camp, boss, vault...); `kind` furnishes it with the room kit."""
+    def room(self, rid, size, role="room", floor=None, start=False, kind=None, style="town", closed=()):
+        """A room: `role` places the plot pieces (camp, boss, vault...); `kind` furnishes it with the room kit.
+        `closed`: walls no passage may open in ("NW", "NE", "SE", "SW"): a throne room's NW wall (the Dun Mir throne
+        faces SE only, kit/identity.py), a camp's back walls for its beds."""
         self.rooms[rid] = dict(id=rid, size=size, role=role, floor=floor or self.rfloor, start=start or not self.rooms,
-                               kind=kind, style=style)
+                               kind=kind, style=style, closed={WALL_DIRS[c] for c in closed})
         return rid
 
     def link(self, a, b, trap=None, length=8, width=4):
@@ -207,7 +211,7 @@ class Mission:
             for L_ in children.get(rid, []):
                 b = L_["b"]
                 bw, bh = self.rooms[b]["size"]
-                sides = [d for d in DIRS if d not in used_sides[rid]]
+                sides = [d for d in DIRS if d not in used_sides[rid] and d not in self.rooms[rid]["closed"]]
                 rng.shuffle(sides)
                 done = False
                 for d in sides:
@@ -228,6 +232,7 @@ class Mission:
                     else:
                         i0, j0 = ci - Wp // 2, cj - h // 2
                         ni, nj = ci, j0 - Lp - bh + bh // 2
+                    if (-d[0], -d[1]) in self.rooms[b]["closed"]: continue
                     sq = box_sq(i0, j0, Lp, Wp, axis, sign)
                     rq = room_sq(b, ni, nj)
                     if not ok(sq | rq): continue
