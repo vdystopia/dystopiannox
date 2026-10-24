@@ -543,10 +543,12 @@ class StationModel:
         ground_pen = np.zeros((NA, NB), np.float32)
         if avoid_plates:
             for z in self.zones:
-                if z.get("jump"):
+                # a plate (seen or hidden) that fires something at whoever treads it: the fields cannot see it fire
+                harm = any(a_["kind"] in ("pulse", "on", "cast", "cast_at_caller", "arrow_hold") for a_ in z["acts"])
+                if z.get("jump") or (harm and not z.get("toggle")):
                     a, b = self.ab(*z["c"])
                     for i, j in self.cells_near(a, b, z["r"] / SQ):
-                        ground_pen[i, j] += PLATE_PENALTY
+                        ground_pen[i, j] += PLATE_PENALTY * (2 if harm else 1)
         block = self.blocked
         if start_cells is None:
             start_cells = [(i, j) for i in range(NA) for j in range(NB)
