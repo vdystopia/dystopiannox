@@ -29,6 +29,7 @@ impossible; a variety of difficulty, nothing easy.
 | Pit (on) | **no damage**: the faller is teleported to FallX/FallY after ~11 frames | landed in the sealed cell |
 | PitCrumblingFloor (off) | opens ScriptTimeout frames after the first touch, stays open | fell after ~10 frames at timeout 4 |
 | Secret wall | `ns.Wall(x, y).Enable(false/true)` opens / closes it (23-frame slide); only walls written secret react | worked |
+| Secret wall that starts open | written with scan flag 8 and **no** state: the map reader opens it with its slide counter at 23 (Westwood's way); a stored state 3 keeps the file's counter 0 and the wall stands **shut** | a real walker stopped at the closing room's open door (2026-10-24) |
 | PushTo / ApplyForce | a shove from the script | PushTo force 30: ~60 units |
 | Pressure plate, lever | **the xfer's script names do not reach Go scripts in alpha13**: the kit watches them as zones | polled plate fired on press and release; a jump passes over; lever toggled |
 | Health regeneration | the hero regains ~0.3 HP a frame | |
