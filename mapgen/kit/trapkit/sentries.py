@@ -106,12 +106,6 @@ def _ang(st, da, db):
     return math.atan2(da * uy + db * vy, da * ux + db * vx) % TAU
 
 
-def _turn(st):
-    """+1 if a positive RotateSpeed turns a beam from +a toward +b in this station, else -1."""
-    d = (_ang(st, 0, 1) - _ang(st, 1, 0)) % TAU
-    return 1 if abs(d - math.pi / 2) < 0.1 else -1
-
-
 _ARMS = ((-1, -1), (1, -1), (-1, 1), (1, 1))
 
 
@@ -181,10 +175,11 @@ def _record(st, name, kind, segs_, keep=1):
 # ---- globes -------------------------------------------------------------------------------------------------------
 
 def _globe(st, a, b, da, db, spin=0.0, kind="SentryGlobe", enabled=True):
-    """A globe at (a, b) aimed along station direction (da, db), turning `spin` radians a frame (positive: in the
-    station's own sense from +a toward +b)."""
+    """A globe at (a, b) aimed along station direction (da, db), turning `spin` radians a frame. The speed is
+    always written positive (east toward south: in a lab station from +a toward +b; along i the other way): Westwood
+    never used a negative one, and the turning patterns here are symmetric, so the sense does not matter."""
     base = _ang(st, da, db)
-    xfer = {"BasePosRadian": round(base, 5), "RotateSpeed": round(_turn(st) * spin, 6),
+    xfer = {"BasePosRadian": round(base, 5), "RotateSpeed": round(abs(spin), 6),
             "CurrentPosRadian": round(base, 5)}
     return st.obj(kind, a, b, enabled=enabled, xfer=xfer), base
 
@@ -211,8 +206,7 @@ def _sweep(st, name, a, b, base, spin, step=0.25, keep=8):
     segs = _segments(st)
     x, y = st.at(a, b)
     n = int(round(360 / step))
-    sign = 1 if spin * _turn(st) >= 0 else -1
-    _record(st, name, "turning", [((x, y), _ray(x, y, base + sign * TAU * k / n, segs)) for k in range(n)], keep)
+    _record(st, name, "turning", [((x, y), _ray(x, y, base + TAU * k / n, segs)) for k in range(n)], keep)
 
 
 def _carried(st, name, path, da, db, step=0.1, keep=4):
