@@ -96,7 +96,13 @@ def probe_source(name, bdir):
 func ptPush(prefix string) {
     for _, p := range pushMovers {
         if prefix != "" && len(p.Mover) >= len(prefix) && p.Mover[:len(prefix)] == prefix {
-            p.lastDir, p.lastSeg, p.lastDone, p.seen, p.moving, p.back, p.touch = 1, 0, false, false, false, false, nil
+            p.lastDir = 1
+            p.lastSeg = 0
+            p.lastDone = false
+            p.seen = false
+            p.moving = false
+            p.back = false
+            p.touch = map[int]bool{}
         }
     }
 }
