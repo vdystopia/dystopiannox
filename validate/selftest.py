@@ -589,6 +589,43 @@ def cobbles_under_bridge(m):
     ww.finish()
 
 
+def _paved_crossing(m, stream, rows, along, a_uv, b_uv):
+    """A stream, a RoughCobble road on `rows` across it (`along`: the axis it runs on, over the range given) and a rope
+    bridge laid by the kit, which meets the road's paving with the deck's ends exactly (kit/water._road_to_deck)."""
+    from kit.water import tile_at_uv, WATER_MATERIALS
+    ww = Waterworks(m, random.Random(5))
+    ww.stream(stream, width=2.2, wiggle=0.0)
+    along_u = a_uv[1] == b_uv[1]                         # the bridge (and its road) runs along u
+    for r in rows:
+        for a in range(*along, 2):
+            t = tile_at_uv(a, r) if along_u else tile_at_uv(r, a)
+            if m.floor.get(t) and m.floor[t] not in WATER_MATERIALS: m.floor[t] = "RoughCobble"
+    ww.rope_bridge(a_uv, b_uv)
+    return ww
+
+
+def road_short_of_bridge(m):
+    # Q3X-1 (BR-01, BR-06, BR-11: "On one side of the bridge, the cobblestone ends before the bridge with a small gap of
+    # dirt"): a RopeBridge2 (along v) whose road's last tile on the south-west bank is lifted, a tile of earth between
+    from kit.water import tile_at_uv
+    ww = _paved_crossing(m, [(184, -24), (256, -24)], (234, 236), (-40, -6), (236, -36), (236, -12))
+    for u in (234, 236):
+        v = max(v for v in range(-40, -24, 2) if m.floor.get(tile_at_uv(u, v)) == "RoughCobble")
+        m.floor[tile_at_uv(u, v)] = "GrassNorm"
+    ww.finish()
+
+
+def road_under_bridge_end(m):
+    # Q3X-1 ("On the other side of the bridge, it ends on the cobblestone"): a RopeBridge1 (along u) whose road runs a tile
+    # on under the deck's north-west end
+    from kit.water import tile_at_uv
+    ww = _paved_crossing(m, [(244, -38), (244, 0)], (-28, -26), (222, 260), (236, -28), (252, -28))
+    for v in (-28, -26):
+        u = max(u for u in range(222, 244, 2) if m.floor.get(tile_at_uv(u, v)) == "RoughCobble")
+        m.floor[tile_at_uv(u + 2, v)] = "RoughCobble"
+    ww.finish()
+
+
 # ---- the object knowledge base (Harrowby playtest, HB-1..HB-5; validate/checks.py check_pieces) ------------------------
 def two_cauldrons(m):
     for u, v in ((206, -6), (214, 3)): m.obj("CauldronAnimated", u, v)          # HB-1: "Why are there two cauldrons?"
@@ -815,6 +852,25 @@ def q2_chests_scattered(m):
     _declare(m, "barracks")                                    # Q2F-2: "fix chest": three beds, two chests anywhere
     for k in range(3): m.obj("Cot2", 203 + 3.0 * k, 8.4)
     m.obj("Chest3", 206, -9.2); m.obj("Chest3", 214, -9.2)
+
+
+# ---- QA round 3, the barracks' chests (validate/checks.py qa2_space_flags; review/qa3/ledger-rooms.md Q3R-6..8) --------
+def q3_chests_sideways(m):
+    _declare(m, "barracks")                                    # Q3R-6: RM-BARRACKS-01 "perpendicular to the beds"
+    for u in (203, 207, 211):
+        m.obj("Cot2", u, 8.4); m.obj("Chest4", u, 5.75)       # the NW wall's chest at the foot of a bed headed NE
+
+
+def q3_chests_far(m):
+    _declare(m, "barracks")                                    # Q3R-7: RM-BARRACKS-02 "slightly closer to the three beds"
+    for u in (203, 207, 211):
+        m.obj("Cot2", u, 8.4); m.obj("Chest3", u, 5.65)       # facing away, 0.6 units off the foot
+
+
+def q3_pair_gap_bare(m):
+    _declare(m, "barracks")                                    # Q3R-8: RM-BARRACKS-03 "the empty gap between the pairs"
+    for u in (203, 205, 209, 211):
+        m.obj("Cot2", u, 8.4); m.obj("Chest3", u, 6.05)       # two pairs of beds, a chest snug at every foot, none between
 
 
 def q2_ogre_pen_in_house(m):
@@ -1097,6 +1153,18 @@ def same_altars(m):
     for u, v in ((220.4, 0), (220.4, -28), (244.4, -28)): m.obj("DunMirAltar1", u, v)
 
 
+def same_shrine_altars(m):
+    # Q3R-2: three shrines, each round Dun Mir's square stone altar ("stop using that same altar so often")
+    m.room(204, 222, -36, -20, wall="StuccoLightWood", floor="WoodLight2")
+    m.room(228, 246, -36, -20, wall="StuccoLightWood", floor="WoodLight2")
+    m.door("WoodenDoor", (88, 116), "/"); m.door("WoodenDoor", (100, 128), "/")
+    extra = [dict(number=k + 2, building=f"shrine {k}", kind="shrine", purpose="", tiles=0, box=[0, 0, 0, 0],
+                  floor=[list(t) for t in rect_tiles(u0, u0 + 18, -36, -20)]) for k, u0 in enumerate((204, 228))]
+    _declare(m, "shrine", extra)
+    m.d["objects"] = [o for o in m.d["objects"] if o.get("type") not in ("WoodBed2", "Table1", "Wolf")]
+    for u, v in ((211, 0), (213, -28), (237, -28)): m.obj("DunMirAltar1", u, v)
+
+
 def bare_chapel(m):
     _chapel(m)
     m.obj("DunMirAltar1", 220.4, 0)                             # Q1C-19: an altar and one pair of pews, nothing else
@@ -1106,6 +1174,12 @@ def bare_chapel(m):
 def crypt_without_dead(m):
     _chapel(m, "crypt")
     m.obj("Coffin1", 214, 0)                                   # Q1C-14, Q1C-17: one coffin and nothing else
+
+
+def crypt_crates(m):
+    _chapel(m, "crypt")                                        # Q3R-1: "the pair of crates in each room look off"
+    for v in (-4, 4): m.obj("Coffin1", 212, v)
+    for v in (-8.6, 8.6): m.obj("Crate1", 206, v)
 
 
 def wooden_door_in_lotd(m):
@@ -1143,6 +1217,78 @@ def q2_winch_crates(m):
 def q2_keeper_space(m):
     _declare(m, "smithy")                                      # Q2V-3: "a barrel and a mannequin behind the desk"
     m.obj("TraderDesk1", 211, 7.0); m.obj("Barrel", 211, 9.0)
+
+
+def q3_smithy_mid_stock(m):
+    _declare(m, "smithy")                                      # Q3R-9: RM-SMITHY-04 "A little overcrowded with objects"
+    for k in range(18): m.obj("Barrel2" if k % 2 else "BarrelSteel1", 205 + 1.4 * (k % 6), -4 + 3.0 * (k // 6))
+
+
+# ---- QA round 3's floor and batch rules (review/qa3/ledger-civic.md; validate/checks.py check_qa3) -------------------
+def _drawn_tile(u, v):
+    """The floor tile drawn centred at uv (u, v) (u even, v odd: tile (x, y) at (x + y + 2, x - y - 1))."""
+    return (u + v - 1) // 2, (u - v - 3) // 2
+
+
+def q3_carpet_blended(m):
+    # Q3C-1 (the tavern set: "The other carpets are all blended into the floor ... A carpet doesn't blend into the floor
+    # underneath. It has solid, distinct edges"): a declared tavern's carpet of three by three squares spilling a
+    # BlendEdge onto the boards round it
+    _declare(m, "tavern")
+    m.raw_floors = True
+    rect = {_drawn_tile(u, v) for u in (208, 210, 212) for v in (-3, -1, 1)}
+    for t in rect: m.tile(*t, "RugRed")
+    m.blending("RugRed", 40, "BlendEdge")
+    for t in rect:
+        for a, b in ((1, -1), (-1, -1), (1, 1), (-1, 1), (0, 2), (0, -2), (2, 0), (-2, 0)):
+            n = (t[0] + a, t[1] + b)
+            if n not in rect: m.local_blend[n] = -60; m.local_from.setdefault(n, set()).add("RugRed")
+
+
+def q3_patch_unbordered(m):
+    # Q3C-4 (RM-GREATHALL-01..03: "The brick tiling along the exterior of this room is not properly bordered"): a declared
+    # great hall's band of brick along its NE wall laid with hard edges
+    _declare(m, "great_hall")
+    m.raw_floors = True
+    for u in range(204, 220, 2): m.tile(*_drawn_tile(u, 9), "RedBrick")
+
+
+def q3_bar_opening(m):
+    # Q3C-2 (the tavern set: "All taverns need to have the floor properly transitioned between the bar floor and the
+    # main tavern floor where the bar entrance / gap is"): a bar in the house's E corner, brick behind it, the counter's
+    # opening at v = 7 with the brick meeting the boards there unbordered
+    _declare(m, "tavern")
+    m.raw_floors = True
+    for u in (218, 220, 222):
+        for v in (5, 7, 9): m.tile(*_drawn_tile(u, v), "RedBrick")
+    m.obj("BarCorner1C", 216, 3)
+    for u in (218, 220): m.obj("BarPiece2A", u, 3)
+    for v in (5, 9): m.obj("BarPiece1A", 216, v)
+    m.obj("BarHingedTop", 216, 7)
+
+
+def q3_same_throne_rooms(m):
+    # Q3C-6 (the throne room set: "Individually, they are all very good. But as a whole, they are very repetitive and
+    # all too similar"): three declared throne rooms of the same pieces
+    rooms = [(182, 196, -36, -22), (230, 252, -36, -22)]
+    for k, (u0, u1, v0, v1) in enumerate(rooms):
+        m.room(u0, u1, v0, v1, wall="StuccoLightWood", floor="WoodLight2")
+    _declare(m, "throne_room", [dict(number=2 + k, building=f"test hall {k}", kind="throne_room", purpose="", tiles=0,
+                                     box=[0, 0, 0, 0], floor=[list(t) for t in rect_tiles(*r)])
+                                for k, r in enumerate(rooms)])
+    m.d["objects"] = [o for o in m.d["objects"] if o.get("type") not in ("WoodBed2", "Table1", "Wolf")]
+    for cu, cv in ((211, 0), (189, -29), (241, -29)):
+        for t, du, dv in (("Statue2a", -3, -3), ("Statue2a", -3, 3), ("Column5", 2, -3), ("Column5", 2, 3),
+                          ("Brazier", 4, -2), ("Brazier", 4, 2)):
+            m.obj(t, cu + du, cv + dv)
+
+
+def q3_hall_ranks(m):
+    # Q3C-7 (RM-HALL-01/03: "Incoherent, random , cluttered with too many pillars and statues"): a declared hall whose
+    # columns and statues stand in four ranks across its width
+    _declare(m, "hall")
+    for v in (-6, -2, 2, 6):
+        for u in (205, 211, 217): m.obj("Column5" if v in (-2, 2) else "Statue2c", u, v)
 
 
 CASES = [  # (map name, defect, expected check, expected severity, description)
@@ -1278,12 +1424,15 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STsSym", pews_one_side, "sacred", "warning", "a chapel's pews on one side of the aisle only - Q1C-1", "no twin"),
     ("STsCarp", carpet_one_side, "sacred", "warning", "a chapel's carpet off its middle line - Q1C-3", "carpet squares"),
     ("STsAltr", same_altars, "sacred", "warning", "three chapels ending in the same altar - Q1C-4", "same altar"),
+    ("STsShrA", same_shrine_altars, "sacred", "warning", "three shrines round the same stone altar - Q3R-2",
+     "shrine rooms end in the same altar"),
     ("STcAxis", runner_unit_off, "sacred", "warning", "a runner a unit off the door's line as drawn - Q2T-2",
      "the carpet's middle stands"),
     ("STcOn", ring_off_carpet, "sacred", "warning", "a ring of obelisks a unit off its carpet as drawn - Q2T-2",
      "the middle of what stands on it"),
     ("STsFull", bare_chapel, "sacred", "warning", "a chapel of an altar and two pews - Q1C-19", "kinds of piece"),
     ("STsDead", crypt_without_dead, "sacred", "warning", "a crypt of one coffin - Q1C-14", "the dead lie here"),
+    ("STsCrat", crypt_crates, "sacred", "warning", "a crypt with a pair of crates - Q3R-1", "holds no crates"),
     ("STdLotd", wooden_door_in_lotd, "doors", "warning", "a plain door in the Land of the Dead's walls - Q1C-18",
      "Land of the Dead"),
     ("STq1Nst", q1_nightstand, "rooms", "warning", "a bed with a nightstand on one side - Q1R-3", "one side only"),
@@ -1314,6 +1463,12 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq2Mid", q2_bench_mid, "rooms", "warning", "a bench alone mid-floor - Q2T-5", "alone in the middle"),
     ("STq2Lin", q2_chests_unlined, "rooms", "warning", "two chests at two depths on one wall - Q2T-5", "not lined up"),
     ("STq2Chs", q2_chests_scattered, "rooms", "warning", "a barracks' chests off the beds' feet - Q2F-2", "at a bed's foot"),
+    ("STq3Fac", q3_chests_sideways, "rooms", "warning", "a barracks' foot chests side-on to their beds - Q3R-6",
+     "not away from the bed"),
+    ("STq3Far", q3_chests_far, "rooms", "warning", "a barracks' foot chests 0.6 units off the beds - Q3R-7",
+     "units off the foot of"),
+    ("STq3Gap", q3_pair_gap_bare, "rooms", "warning", "two pairs of beds with no chest between them - Q3R-8",
+     "holds no chest"),
     ("STq2Ogr", q2_ogre_pen_in_house, "rooms", "warning", "an ogre pen in a town house - Q2F-6", "a town house's"),
     ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
     ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),
@@ -1341,6 +1496,10 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STbrrd", road_off_bridge, "water", "warning", "a one-row road beside a plank deck's rows - Q1W-1", "narrower than"),
     ("STbrpav", cobbles_under_bridge, "water", "warning", "a rope bridge's span paved to the water - Q2T-6",
      "runs under the bridge"),
+    ("STbrgap", road_short_of_bridge, "water", "warning", "a paved road a tile short of a rope bridge's end - Q3X-1",
+     "short of the RopeBridge2 bridge's south-west end"),
+    ("STbrovr", road_under_bridge_end, "water", "warning", "a paved road a tile on under a rope bridge's end - Q3X-1",
+     "under the RopeBridge1 bridge's north-west end"),
     ("STbreven", bridge_uneven, "water", "warning", "a deck reaching three tiles more onto one bank - Q1W-2",
      "farther onto one bank"),
     ("STdklong", dock_too_long, "water", "warning", "a long dock in a small pond - Q1W-6", "a third of the way"),
@@ -1358,8 +1517,20 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq1scr", q1_bare_s_corner, "composition", "warning", "a guardroom's bare S corner - QA1 Q1B", "S corner is bare"),
     ("STq2sig", q2_winch_crates, "composition", "warning", "a winch room of 30 crates and barrels - Q2T-8 Q2V-4",
      "past its cap of"),
+    ("STq3mid", q3_smithy_mid_stock, "composition", "warning", "18 barrels out on a smithy's floor - Q3R-9",
+     "out on the floor"),
     ("STq2kpr", q2_keeper_space, "composition", "warning", "a barrel behind a smithy's counter - Q2V-3",
      "where the keeper stands"),
+    ("STq3Blnd", q3_carpet_blended, "qa3", "warning", "a tavern's carpet blended into its boards - Q3C-1",
+     "blend into the floor"),
+    ("STq3Brd", q3_patch_unbordered, "qa3", "warning", "a great hall's brick band with hard edges - Q3C-4",
+     "with no border"),
+    ("STq3Bar", q3_bar_opening, "qa3", "warning", "a bar's brick unbordered at the counter's opening - Q3C-2",
+     "at the bar's opening"),
+    ("STq3Rep", q3_same_throne_rooms, "qa3", "warning", "three throne rooms of the same pieces - Q3C-6",
+     "s repeat one another"),
+    ("STq3Rnk", q3_hall_ranks, "qa3", "warning", "a hall of four ranks of columns and statues - Q3C-7",
+     "stand in 4 ranks"),
 ]
 
 

@@ -38,6 +38,24 @@ SEAT_KEEP = _re.compile(r"^(Barrel|WaterBarrel|BlackPowder|Crate|DarkCrate|Crate
 CHEST_BACK = {(1, -1): "Chest3", (-1, -1): "Chest4", (1, 1): "Chest1", (-1, 1): "Chest2"}
 # a cot's variant by the screen direction its foot points (toward the fire): Cot1-4 lie along the four wall lines
 COT_BY_ANGLE = ("Cot1", "Cot2", "Cot3", "Cot4")
+# QA round 3, 2026-10-23 [Q3N-1], EX-BANDITCAMP-02 (a cave pocket): "The entrance is completely blocked by objects. The
+# treasure chest is between the bed and the wall, which is not correct. Move the bed back a little bit closer to the wall,
+# and move the treasure chest to the side a little bit against the wall. Don't put treasure chests between a bed or cot
+# and the wall."
+# - the way in: in a pocket the way in is a passage through the rock, and nothing stands on it: no piece within WAY_CLEAR
+#   px (and its own radius) of the line from the fire out through the mouth, past WAY_FROM px from the fire (the hearth's
+#   ring and seats). Round 3's camp had its arms row across the pocket's neck and the watch's torch pole and quivers in the
+#   passage itself (Camp.way, in_way; bandit_camp's lookout beside the way in);
+# - a chest is never between a bed and the wall: not within BED_BEHIND px of a bed's middle along the bed's own line on
+#   its head's side (the wall's), nor BED_SIDE px across it (Camp.behind_bed; the head of each cot by BED_HEAD, the
+#   direction its head points: COT_FOOT lays its foot toward the fire);
+# - a pocket's beds lie closer to the rock: their middles WALL_BED_OFF px off its line (Westwood's hideouts: cots 20-48),
+#   their heads BED_WALL_MARGIN past their drawn half-length (round 3's lay 43-50 px off, a chest's width short of it)
+WAY_CLEAR, WAY_FROM = 32.0, 50.0
+BED_RE = _re.compile(r"^(Cot\d|Bedroll|BedRoll|WoodBed|Bed\d|UrchinBed)")
+BED_HEAD = {"Cot1": (-1.0, -1.0), "Cot3": (1.0, 1.0), "Cot4": (-1.0, 1.0), "Cot2": (1.0, -1.0)}   # +i is SE, +j NE (px)
+BED_BEHIND, BED_SIDE = 78.0, 30.0
+WALL_BED_OFF, BED_WALL_MARGIN = 40.0, 4.0
 
 
 class Scene:
@@ -98,15 +116,42 @@ class Camp(Scene):
     # 2026-10-14 [Q2T-4, Q2X-4]: EX-BANDITCAMP-02 "two barrels that are way too close to the bench near the fire"):
     # bandit_camp sets it; 0 keeps a camp as it was
     seat_clear = 0.0
+    # (fire x, fire y, the way in's angle): a pocket's way in, kept clear [Q3N-1] (bandit_camp sets it); None: no lane
+    way = None
+    bed_margin = 12.0                 # px a bed's head keeps off a wall past its half-length (_wall_beds: BED_WALL_MARGIN)
+
+    def in_way(self, x, y, t=None):
+        """Whether a piece of type t at (x, y) stands on the way in (Camp.way): within WAY_CLEAR px and its radius of the
+        line from the fire out through the mouth, more than WAY_FROM px out [Q3N-1]."""
+        if self.way is None: return False
+        wx, wy, a = self.way
+        dx, dy = x - wx, y - wy
+        along = dx * math.cos(a) + dy * math.sin(a)
+        return along > WAY_FROM and abs(-dx * math.sin(a) + dy * math.cos(a)) < WAY_CLEAR + (SP.radius(t) if t else 0.0)
+
+    def behind_bed(self, x, y):
+        """Whether (x, y) lies between a bed laid and the wall at its head [Q3N-1]: on the bed's own line, on its head's
+        side, within BED_BEHIND px of its middle and BED_SIDE px across."""
+        for t2, bx, by in self.typed:
+            if not BED_RE.match(t2): continue
+            hx, hy = BED_HEAD.get(t2, (bx - self.fx, by - self.fy))
+            L = math.hypot(hx, hy) or 1.0
+            hx, hy = hx / L, hy / L
+            along = (x - bx) * hx + (y - by) * hy
+            if 0 < along < BED_BEHIND and abs(-(x - bx) * hy + (y - by) * hx) < BED_SIDE: return True
+        return False
 
     def free(self, x, y, gap=0.0, t=None, snug=False):
         # a piece of a known type may stand snug to a wall, its drawn half-width and a margin off the wall's line
         # (kit/spacing.off_walls; Westwood's hideouts stack their barrels and lay their cots against the rock); a bare
         # point keeps a cell clear of every wall
         if t is not None:
-            if not self.ok(*_sq(x, y), walls=False) or not SP.off_walls(self.spec.wallmap, t, x, y, margin=12):
+            margin = self.bed_margin if BED_RE.match(t) else 12
+            if not self.ok(*_sq(x, y), walls=False) or not SP.off_walls(self.spec.wallmap, t, x, y, margin=margin):
                 return False
         elif not self.ok(*_sq(x, y)): return False
+        if self.in_way(x, y, t): return False
+        if t is not None and t.startswith("Chest") and self.behind_bed(x, y): return False
         if t is not None and not snug:
             if not SP.spaced(t, x, y, self.typed, scale=self.SPACE): return False
             if not SP.LOOSE.match(t) and any(not SP.LOOSE.match(t2) and (x - a) ** 2 + (y - b) ** 2 < self.SOLID_CLEAR ** 2
@@ -133,9 +178,7 @@ class Camp(Scene):
                 return (x, y)
         return None
 
-    def row(self, pieces, x0, y0, ux, uy, centred=True):
-        """Pieces [(type, extra)] in a row along (ux, uy) from (x0, y0), each its Westwood gap after the one before
-        (kit/spacing.gap): a tidy stack, never overlapping. Returns [(type, x, y)] of those laid."""
+    def _row_plan(self, pieces, x0, y0, ux, uy, centred=True):
         offs, o = [], 0.0
         for k, (t, _) in enumerate(pieces):
             if k: o += max(SP.gap(pieces[k - 1][0], t) * self.SPACE, self.SOLID_CLEAR) + 3
@@ -153,6 +196,16 @@ class Camp(Scene):
             return n
         # the whole row slid along its line where more of it stands (a row against a curving wall lost its ends)
         shift = max((0.0, -24.0, 24.0, -48.0, 48.0), key=lambda d: (fits(d), -abs(d))) if pieces else 0.0
+        return offs, mid, shift, (fits(shift) if pieces else 0)
+
+    def row_fit(self, pieces, x0, y0, ux, uy, centred=True):
+        """How many of a row (Camp.row) would stand there, slid to where most of it does: a dry run."""
+        return self._row_plan(pieces, x0, y0, ux, uy, centred)[3]
+
+    def row(self, pieces, x0, y0, ux, uy, centred=True):
+        """Pieces [(type, extra)] in a row along (ux, uy) from (x0, y0), each its Westwood gap after the one before
+        (kit/spacing.gap): a tidy stack, never overlapping. Returns [(type, x, y)] of those laid."""
+        offs, mid, shift, _ = self._row_plan(pieces, x0, y0, ux, uy, centred)
         out = []
         for (t, extra), o in zip(pieces, offs):
             x, y = x0 + ux * (o - mid + shift), y0 + uy * (o - mid + shift)
@@ -313,17 +366,24 @@ def _wall_beds(sc, fx, fy, b, R, n, gap=PAIR_GAP, near=62.0):
     laid = []
     step = 0.5 * gap / max(R, 60.0)                   # half a bed's pitch: the next free place along the rock
     order = [0] + [q * sg for q in range(1, 24) for sg in (1, -1)]
+    # (a bed's head close to the rock, its drawn half-length and BED_WALL_MARGIN off its line, its middle WALL_BED_OFF:
+    # QA round 3 [Q3N-1], EX-BANDITCAMP-02 "Move the bed back a little bit closer to the wall")
+    keep_margin, sc.bed_margin = sc.bed_margin, BED_WALL_MARGIN
+    least = 30.0 + BED_WALL_MARGIN + 1                # a cot's half-length (kit/spacing.sprite_half) and the margin
     for need_wall in (True, False):
         for k in order:
             if len(laid) >= n: break
             a = b + k * step
-            # (a bedroll's head a hand off the rock: its drawn half-length and a margin, kit/spacing.off_walls)
-            (x, y), met = _snug(sc, *sc.p(R, a), math.cos(a), math.sin(a), want=50, reach=200)
+            (x, y), met = _snug(sc, *sc.p(R, a), math.cos(a), math.sin(a), want=WALL_BED_OFF, reach=200)
+            for _ in range(8):                        # (a step short of the rock where the 8 px probe overshot it)
+                if wall_clearance(sc.spec.wallmap, x, y, reach=4) >= least: break
+                x, y = x - math.cos(a) * 2, y - math.sin(a) * 2
             if need_wall and (not met or wall_clearance(sc.spec.wallmap, x, y, reach=4) > near): continue
             if any(math.hypot(x - x2, y - y2) < gap - 4 for _, x2, y2, _ in laid): continue
             if laid and not any(math.hypot(x - x2, y - y2) < gap + 22 for _, x2, y2, _ in laid): continue
             t = S.COT_FOOT[S.axis_of(fx - x, fy - y)]
             if sc.put_px(t, x, y): laid.append((t, x, y, a))
+    sc.bed_margin = keep_margin
     return laid
 
 
@@ -436,6 +496,7 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
     if abs(_ang(b + left * 1.75 - a_in)) < abs(_ang(b - left * 1.75 - a_in)): left = -left
     sc = Camp(spec, rng, land, centre)
     sc.seat_clear = SEAT_CLEAR                                      # (seats a stride from the stores: Q2X-4)
+    if pocket: sc.way = (fx, fy, a_in)                              # (a pocket's way in kept clear: Q3N-1)
     sc.put_px("CampFire", fx, fy)
     ph = rng.uniform(0, 1)
     n_st = rng.randint(6, 8)
@@ -687,10 +748,35 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
         # builds, the pole arms and the bows racked at the row's ends, the quivers before them; every camp has them
         builds = rng.sample(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack2", "OutdoorTraderArmorRack3",
                              "OutdoorTraderArmorRack4"), rng.randint(2, 3))
-        ln = S.line_of(ux, uy)
-        racks = ([(S.ALONG[ln][rng.choice(("TraderPoleArm1", "TraderPoleArm2"))], {})] + [(t, {}) for t in builds] +
-                 [(S.ALONG[ln]["TraderBowRack1"], {})])
-        racks.append(("TraderQuiverRack", {}) if rng.random() < 0.6 else ("OutdoorTraderHelmPoles", {}))
+        pole = rng.choice(("TraderPoleArm1", "TraderPoleArm2"))
+        tail = ("TraderQuiverRack", {}) if rng.random() < 0.6 else ("OutdoorTraderHelmPoles", {})
+
+        def racks_for(ln):
+            return [(S.ALONG[ln][pole], {})] + [(t, {}) for t in builds] + [(S.ALONG[ln]["TraderBowRack1"], {}), tail]
+        racks = racks_for(S.line_of(ux, uy))
+        if pocket and sc.row_fit(racks, ax, ay, ux, uy) < len(racks):
+            # (a pocket's arms on the stretch of rock where the most of the row stands, off its way in, which no piece
+            # stands on (Camp.way): QA round 3 [Q3N-1], EX-BANDITCAMP-02's row had run across the pocket's neck)
+            best = (sc.row_fit(racks, ax, ay, ux, uy), ar, ax, ay, (ux, uy), racks)
+            for d2 in (0.0, 0.35, -0.35, 0.7, -0.7, 1.05, -1.05, 1.4, -1.4, 1.75, -1.75):
+                a2 = b - left * flank + d2
+                if abs(_ang(a2 - a_in)) <= 0.6: continue
+                (x2, y2), met2 = _snug(sc, *sc.p(R["arms"] * 0.85, a2), math.cos(a2), math.sin(a2), want=40, reach=210)
+                if not met2: continue
+                # (along the rock's own line there, from the points snug to it either side, not square to the ray: a
+                # row square to the ray on a slanting wall stands out into the pocket)
+                side_pts = [_snug(sc, *sc.p(R["arms"] * 0.85, a2 + e), math.cos(a2 + e), math.sin(a2 + e), want=40,
+                                  reach=210) for e in (-0.22, 0.22)]
+                u2 = (-math.sin(a2), math.cos(a2))
+                if all(m_ for _, m_ in side_pts):
+                    (p0, _), (p1, _) = side_pts
+                    L2 = math.hypot(p1[0] - p0[0], p1[1] - p0[1])
+                    if L2 > 8: u2 = ((p1[0] - p0[0]) / L2, (p1[1] - p0[1]) / L2)
+                r2 = racks_for(S.line_of(*u2))
+                n2 = sc.row_fit(r2, x2, y2, *u2)
+                if n2 > best[0]: best = (n2, a2, x2, y2, u2, r2)
+            _, ar, ax, ay, (ux, uy), racks = best
+            wx, wy = math.cos(ar), math.sin(ar)
         got_ = sc.row(racks, ax, ay, ux, uy)
         rehome.append((racks, got_, _sweep(ar, a_in, n=16, clear=0.4), R["arms"] * 0.85))
         arms_spot = (ax - wx * 80 + ux * 40, ay - wy * 80 + uy * 40)
@@ -715,7 +801,22 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
 
     # ---- the lookout at the way in: the torch pole, the watchman's stool, his quivers ---------------------------------
     lookout = None
-    for r, d in [(r, d) for r in (R["lookout"], R["lookout"] - 30, R["lookout"] - 60, 210, 180) for d in (0, 0.25, -0.25)]:
+    if pocket:
+        # in a pocket, the torch pole against the rock at the side of the way in, inside the mouth, the watch beside it
+        # and his quivers along the rock: never on the way in (QA round 3 [Q3N-1], EX-BANDITCAMP-02: "The entrance is
+        # completely blocked by objects": round 3's torch pole and quivers had stood in the passage itself)
+        for r, sd in [(r, sd) for r in (R["lookout"] - 30, R["lookout"] - 60, R["lookout"], 150, 120, 100, 180)
+                      for sd in (1, -1)]:
+            ux, uy = -math.sin(a_in) * sd, math.cos(a_in) * sd
+            (x, y), met = _snug(sc, *sc.p(r, a_in), ux, uy, want=30, reach=140)
+            if met and sc.put_px("TorchPole", x, y):
+                lookout = (x - ux * 30, y - uy * 30)
+                if rng.random() < 0.15:
+                    for e in (26, -26):
+                        if sc.put_px("TraderQuiverRack", x + math.cos(a_in) * e, y + math.sin(a_in) * e): break
+                break
+    for r, d in [] if pocket else [(r, d) for r in (R["lookout"], R["lookout"] - 30, R["lookout"] - 60, 210, 180)
+                                   for d in (0, 0.25, -0.25)]:
         a = a_in + d
         x, y = sc.p(r, a)
         ux, uy = -math.sin(a), math.cos(a)
@@ -1095,7 +1196,7 @@ def hideout_camp(spec, rng, land, centre, toward, loot, sleepers=4):
     for k in order:
         if k in used or abs(_ang(A(k) - b)) > 2.2: continue
         p = wall_pt(A(k), HIDE_OFF["chest"])
-        if p:
+        if p and not sc.behind_bed(*p):              # (never between a cot and the rock: Q3N-1)
             chest = put("Chest3", *p, items=loot)
             if chest: claim(k, 2); break
     for t_, x_, y_ in [q for q in sc.typed if q[0].startswith("Cot")]:

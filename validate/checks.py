@@ -2200,6 +2200,82 @@ def bridge_span_paving(m):
     return out
 
 
+# A paved road's end at a rope bridge's deck, as the user sees it (QA round 3 [Q3X-1]; kit/water.py DECK_REACH,
+# TILE_V_DRAWN, EDGE_REACH, measured on the bridge lab's round 3 render): along the axis, outward from each end piece, the
+# FarEnd's planks reach 2 uv past it and the NearEnd's stop at it; a tile is drawn a unit toward -v of its point; the
+# paving's kerb on the first tile of earth carries its look a unit on. A gap or an overrun past ROAD_END_TOL (uv, 12 px
+# along the axis) shows: round 3's BR-01, BR-06 and BR-11 were 1 to 2.1 uv off at both ends, one each way.
+CHAIN_DECK_REACH = {"RopeBridge1": (2.0, 0.0), "RopeBridge2": (2.0, 0.0)}
+TILE_DV, EDGE_REACH, ROAD_END_TOL, ROAD_END_LOOK = -1.0, 1.0, 0.75, 12.0
+
+
+def bridge_road_ends(m):
+    """A paved road that stops short of a rope bridge's deck (earth showing between) or runs on under it, at either end,
+    read where the tiles are drawn (QA round 3, 2026-10-23 [Q3X-1]: BR-01, BR-06, BR-11 "On one side of the bridge, the
+    cobblestone ends before the bridge with a small gap of dirt. On the other side of the bridge, it ends on the
+    cobblestone. Make sure both sides start/end just on the edge of the end of the cobblestone"): [(x, y, fault)]. In each
+    of the deck's two rows, from the road's paving within ROAD_END_LOOK of the deck's end in toward the bridge, the paving's
+    edge as drawn (the last paved tile's drawn middle, its half and the kerb's EDGE_REACH on) against the deck's end."""
+    ends = [o for o in m.objects if CHAIN_END.match(o["type"]) and CHAIN_END.match(o["type"]).group(1) in CHAIN_DECK_REACH]
+    out, used = [], set()
+    for a in ends:
+        ka = CHAIN_END.match(a["type"])
+        if ka.group(2) != "FarEnd" or a["id"] in used: continue
+        b = min((o for o in ends if CHAIN_END.match(o["type"]).group(1) == ka.group(1) and
+                 CHAIN_END.match(o["type"]).group(2) == "NearEnd" and o["id"] not in used),
+                key=lambda o: math.hypot(o["x"] - a["x"], o["y"] - a["y"]), default=None)
+        if b is None or not 60 <= math.hypot(b["x"] - a["x"], b["y"] - a["y"]) <= 1200: continue
+        used |= {a["id"], b["id"]}
+        kit = ka.group(1)
+        axis_u = kit == "RopeBridge1"                      # RopeBridge1 runs along u, RopeBridge2 along v
+        al = (lambda o: (o["x"] + o["y"]) / CELL) if axis_u else (lambda o: (o["x"] - o["y"]) / CELL)
+        ac = (lambda o: (o["x"] - o["y"]) / CELL) if axis_u else (lambda o: (o["x"] + o["y"]) / CELL)
+        fa, na = al(a), al(b)
+        sgn = 1 if na > fa else -1                         # along the axis from the FarEnd to the NearEnd
+        far_r, near_r = CHAIN_DECK_REACH[kit]
+        deck = {"far": (fa - sgn * far_r, -sgn), "near": (na + sgn * near_r, sgn)}
+        # the deck's middle line across (its Front pieces' line and the Back pieces', 30 px up), and the road's rows: the
+        # tile rows whose drawn middles lie within 1.5 uv of it (the deck's own two)
+        mid = ac(a) + (15 / CELL if axis_u else -15 / CELL)
+        dr = TILE_DV if axis_u else 0.0                     # across a u-axis deck runs v, drawn a unit toward -v
+        rows = [r for r in range(int(mid) - 6, int(mid) + 7) if r % 2 == 0 and abs(r + dr - mid) <= 1.5]
+        da = 0.0 if axis_u else TILE_DV                     # along a v-axis deck the tiles' drawn middles a unit toward -v
+        tile = (lambda A, R: _tile_uv(A, R)) if axis_u else (lambda A, R: _tile_uv(R, A))
+        paved = lambda t: t in m.tiles and PAVED_RE.search(m.tiles[t]["material"]) is not None
+        span = abs(na - fa)
+        for end, (d_end, o) in deck.items():
+            errs = []
+            for r in rows:
+                # the row's tiles from ROAD_END_LOOK out, in to the span's middle, by drawn middle along the axis
+                seq = []
+                for A in range(int(d_end - da) - int(ROAD_END_LOOK) - 3, int(d_end - da) + int(ROAD_END_LOOK) + 4):
+                    if A % 2: continue
+                    d = A + da
+                    if -span / 2 <= o * (d - d_end) <= ROAD_END_LOOK: seq.append((d, tile(A, r)))
+                seq.sort(key=lambda t: -o * (t[0] - d_end))
+                k = next((i for i, (_, t) in enumerate(seq) if paved(t)), None)
+                if k is None or o * (seq[k][0] - d_end) < 0: continue     # no paving coming in along this row
+                while k + 1 < len(seq) and paved(seq[k + 1][1]): k += 1
+                edge = seq[k][0] - o * (1.0 + EDGE_REACH)
+                errs.append(o * (edge - d_end))                 # > 0 earth between, < 0 the paving under the deck
+            if not errs: continue
+            e = max(errs, key=abs)
+            if abs(e) <= ROAD_END_TOL: continue
+            x, y = ((d_end + mid) / 2 * CELL, (d_end - mid) / 2 * CELL) if axis_u else \
+                ((mid + d_end) / 2 * CELL, (mid - d_end) / 2 * CELL)
+            where = {(True, -1): "north-west", (True, 1): "south-east", (False, 1): "north-east",
+                     (False, -1): "south-west"}[(axis_u, o)]
+            if e > 0:
+                out.append((x, y, f"The paved road stops {e / 2:.1f} tiles short of the {kit} bridge's {where} end, earth "
+                                  f"showing between (read as drawn): a paved road meets the bridge's deck exactly, on both "
+                                  f"banks alike (kit/water.Waterworks._road_to_deck)."))
+            else:
+                out.append((x, y, f"The paved road runs on {-e / 2:.1f} tiles under the {kit} bridge's {where} end (read "
+                                  f"as drawn): a paved road meets the bridge's deck exactly, on both banks alike "
+                                  f"(kit/water.Waterworks._road_to_deck)."))
+    return out
+
+
 def crossing_faults(m):
     """A bridge and its road (QA round 1, the bridges: "the path should be the same width as the bridge or wider. The
     path must be lined up more consistently with the bridge"; "It also extends farther to the southeast bank than it
@@ -2353,7 +2429,7 @@ def check_water(m, ctx, base):
                              f"(Waterworks._smooth).", x + CELL, y + CELL))
     for x, y, msg in crossing_faults(m):
         out.append(F("water", "warning", msg, x, y))
-    for x, y, msg in bridge_span_paving(m):
+    for x, y, msg in bridge_span_paving(m) + bridge_road_ends(m):
         out.append(F("water", "warning", msg, x, y, rule="water.bridge_paved"))
     for x, y, msg in dock_faults(m):
         out.append(F("water", "warning", msg, x, y))
@@ -2964,6 +3040,8 @@ SACRED_DEAD_KINDS = {"crypt", "dark_crypt", "coven", "dark_chapel"}
 ALTAR_END_RE = re.compile(r"^(DunMirAltar\d|LOTDLichGodStatue\d|LOTDFlamingSkulls(Static|Animated)|OrbPoolWithOrb|"
                           r"Fountain|HorrendousStatue\d)$")
 ALTAR_RE = re.compile(r"^(DunMirAltar\d|LOTDLichGodStatue\d|LOTDFlamingSkulls(Static|Animated))$")
+SACRED_NO_CRATES = {"crypt", "dark_crypt"}                         # QA round 3, Q3R-1
+SACRED_CRATE_RE = re.compile(r"^(Crate\d|DarkCrate\d|CrateSteel\d|TraderAppleCrate)$")
 SACRED_TOMB_RE = re.compile(r"^(Coffin\d|Crypt\d+|Tombstone\d+|DunMirTombstone\d|TombstoneReadable\d+)$")
 SACRED_ALTAR_OFF = 1.0       # uv units the altar may stand off the main door's line
 SACRED_DOOR_OFF = 1.6        # uv units the main door may stand off the middle of its wall
@@ -2979,7 +3057,18 @@ SACRED_ALTAR_SHARE = 0.6     # (round 1's share; since QA round 2 the altar obje
 # more than ceil(rooms / ALTAR_OPTIONS[type]) times (kit/sacred.py CHAPEL_ALTARS, COVEN_ALTARS)
 ALTAR_OBJ_RE = re.compile(r"^(DunMirAltar\d|LOTDLichGodStatue\d|LOTDFlamingSkulls(Static|Animated)|OrbPoolWithOrb|"
                           r"Fountain|HorrendousStatue\d|Crypt\d+)$")
-ALTAR_OPTIONS = {"chapel": 5, "coven": 3}
+ALTAR_OPTIONS = {"chapel": 5, "coven": 3, "shrine": 5}
+# QA round 3 (Q3R-2..5), the shrine set: "Good, but stop using that same altar so often, as I've said before in other
+# sets. Use alternate objects instead of that altar in every single [one]": a map's shrines, light and dark together,
+# share a holy thing no more than ceil(shrines / 5) times (kit/works.py SHRINE_HOLY, DARK_HOLY). A shrine's holy thing is
+# its largest piece of these (a dark shrine's lich god before the incense basin in its square of obelisks)
+SHRINE_KINDS = {"shrine", "dark_shrine"}
+SHRINE_HOLY_RE = re.compile(r"^(DunMirAltar\d|Brazier|LOTDLichGodStatue\d|HorrendousStatue\d|DunMirWolfStatue|"
+                            r"OrbPoolWithOrb|Fountain|Crypt\d+|LOTDArk\d|LOTDJudgementBalance\d|"
+                            r"LOTDFlamingSkulls(Static|Animated))$")
+ALTAR_QUOTE = {"shrine": "\"stop using that same altar so often ... Use alternate objects instead of that altar\"; Q3R-2",
+               "chapel": "\"Every single one of these chapels has the same square stone altar\"; Q1C-4, Q2S-1",
+               "coven": "\"Every single one of these chapels has the same square stone altar\"; Q1C-4, Q2S-1"}
 # QA round 2 (Q2T-2: "The carpet is slightly off-center with the door and altar" (RM-CHAPEL-01/02/03, RM-COVEN-01);
 # "Center the tables and chairs on the carpet" (RM-SOLAR-03/04/05); "The mana obelisk arrangement is not centered on
 # the carpet" (RM-SHRINE-03); "The statues and torches are not centered with the carpet" (RM-GALLERY-03)). Recurring
@@ -3207,15 +3296,28 @@ def check_sacred(m, ctx, base):
                 out.append(F("sacred", "warning", f"{name} room: {len(dead)} coffins, sarcophagi or graves and {len(kinds)} "
                              f"kinds of piece: the dead lie here, in coffins or sarcophagi, with bones, statues, obelisks "
                              f"(RM-CRYPT-09, RM-CRYPT-10; Q1C-14, Q1C-17).", x, y, rule="sacred.dead"))
+        if kind in SACRED_NO_CRATES:
+            # QA round 3 (Q3R-1), the crypt set: "the pair of crates in each room look off. Remove them" (the dressing's
+            # pair of burial-goods crates on the front walls): a crypt's storage is its crypt chest, never a crate
+            crates = [o for o in r["objects"] if SACRED_CRATE_RE.match(o["type"])]
+            if crates:
+                out.append(F("sacred", "warning", f"{name} room: {len(crates)} crates "
+                             f"({', '.join(sorted({o['type'] for o in crates}))}): a crypt holds no crates, its storage is "
+                             f"the crypt chest (\"the pair of crates in each room look off. Remove them\"; Q3R-1).",
+                             crates[0]["x"], crates[0]["y"], rule="sacred.crates"))
+    for r in indoor_rooms(m):                  # (the shrines' holy things, Q3R-2)
+        if (r.get("declared") or {}).get("kind") not in SHRINE_KINDS: continue
+        holy = [o for o in r["objects"] if SHRINE_HOLY_RE.match(o["type"])]
+        big = max(holy, key=lambda o: _half_uv(o)[0] * _half_uv(o)[1]) if holy else None
+        ends["shrine"].append({re.sub(r"\d+$", "", big["type"]) if big else ""})
     for kind, sigs in ends.items():
         if len(sigs) < 2: continue
         # (each altar kind counted in every room it stands on the axis of, beside another or alone)
         top, n = collections.Counter(k for sig in sigs for k in sig).most_common(1)[0]
         if n > math.ceil(len(sigs) / ALTAR_OPTIONS.get(kind, 3)):
             out.append(F("sacred", "warning", f"{n} of the map's {len(sigs)} {kind.replace('_', ' ')} rooms end in the same "
-                         f"altar ({top or 'none'}): vary the altar itself, not what stands beside it (\"Every single one "
-                         f"of these chapels has the same square stone altar\"; Q1C-4, Q2S-1).", None, None,
-                         rule="sacred.altar_kind"))
+                         f"altar ({top or 'none'}): vary the altar itself, not what stands beside it "
+                         f"({ALTAR_QUOTE.get(kind, ALTAR_QUOTE['chapel'])}).", None, None, rule="sacred.altar_kind"))
     # the carpets of every room composed on an axis or about its pieces, centred as drawn (Q2T-2; the sacred.carpet rule
     # extended past the sacred rooms)
     for r in indoor_rooms(m):
@@ -3264,6 +3366,13 @@ SIGNATURE_CAPS = {
 # (QA round 2, RM-SMITHY-01/02/05: "There is a barrel and a mannequin behind the desk where the shopkeeper would be
 # standing. There needs to be room for the shopkeeper"; Q2V-3; as the shop and the armoury, Q1G-6)
 KEEPER_TYPES = {"shop", "armoury", "smithy"}
+# QA round 3 (Q3R-9, Q3R-10): RM-SMITHY-04 "A little overcrowded with objects reduced by 10%" (and RM-SMITHY-01, Fix with
+# no note, the same band): a smithy's barrels and crates out on the floor, more than MID_STOCK_WALL units from every
+# wall, at most MID_STOCK_SHARE a floor tile (3 at least). Round 3's 01 and 04 held 12 and 10 on 64 and 62 tiles (0.19,
+# 0.16), round 2's overcrowded 03 14 on 90 (0.16); the sets' kept rooms 2-8 (0.05-0.09)
+MID_STOCK_TYPES = {"smithy"}
+MID_STOCK_WALL = 2.0
+MID_STOCK_SHARE = 0.12
 
 
 def _room_doors_uv(m, r):
@@ -3400,6 +3509,22 @@ def qa2_works_flags(m, r, kind, objs, tiles):
                                 f"the counter, where the keeper stands: the space between a trader's counter and its "
                                 f"wall is kept clear (kit/works.py keeper_zones; Q2V-3)", o))
                     break
+    if rtype in MID_STOCK_TYPES:
+        runs = room_runs(m, r["cells"])
+        mid = []
+        for o in objs:
+            if not QA1_SUPPLY.match(o["type"]): continue
+            u, v = uv_of(o)
+            hu, hv = _half_uv(o)
+            d = min([(abs(u - coord) - hu if line == "/" else abs(v - coord) - hv)
+                     for (line, coord), (lo, hi) in runs.items() if lo - 0.5 <= (v if line == "/" else u) <= hi + 0.5]
+                    or [0.0])
+            if d > MID_STOCK_WALL: mid.append(o)
+        most = max(3, int(MID_STOCK_SHARE * tiles))
+        if len(mid) > most:
+            out.append(("composition.mid_stock", f"{name}: {len(mid)} barrels and crates out on the floor of {tiles} "
+                        f"tiles, past {most}: a smithy's stock stands by its walls, a stack or two in the middle "
+                        f"(\"A little overcrowded with objects\"; kit/works.py extras_by_walls; Q3R-9, Q3R-10)", mid[0]))
     return out
 
 
@@ -4491,6 +4616,7 @@ RULES = [
     ("sacred.altar_kind", "sacred", r"end in the same altar", "Q1C-4"),
     ("sacred.dead", "sacred", r"the dead lie here", "Q1C-14 Q1C-17"),
     ("sacred.fullness", "sacred", r"kinds of piece and covers", "Q1C-19"),
+    ("sacred.crates", "sacred", r"a crypt holds no crates", "Q3R-1"),
     ("civic.s_corner", "civic", r"nothing stands in its S corner", "Q1A-1"),
     ("civic.bare_wall", "civic", r"wall stand bare", "Q1A-3"),
     ("civic.kinds", "civic", r"kinds of piece \(its size wants", "Q1A-2"),
@@ -4504,6 +4630,7 @@ RULES = [
     ("composition.qa1_s_corner", "composition", r"its S corner is bare", "Q1B"),
     ("composition.signature_cap", "composition", r"past its cap of", "Q2T-8 Q2V-4"),
     ("composition.keeper_space", "composition", r"where the keeper stands", "Q2V-3"),
+    ("composition.mid_stock", "composition", r"barrels and crates out on the floor", "Q3R-9 Q3R-10"),
     ("routes.waypoint", "routes", r"^Waypoint ", "TW-1 TW-9"),
     ("routes.leg", "routes", r"^(Link|.*'s route) from", "TW-1 TW-9 GW-1"),
     ("routes.shared_stop", "routes", r"one spot for two", "GW-6"),
@@ -4543,7 +4670,8 @@ RULES = [
     ("water.bridge_narrow", "water", r"is narrower than the bridge", "Q1W-1"),
     ("water.bridge_off", "water", r"off its centre line", "Q1W-1"),
     ("water.bridge_even", "water", r"farther onto one bank", "Q1W-2"),
-    ("water.bridge_paved", "water", r"paved road runs under the bridge", "Q2T-6 Q2X-6"),
+    ("water.bridge_paved", "water", r"paved road runs under the bridge|paved road (stops .* short of|runs on .* under) "
+                                    r"the .* bridge's", "Q2T-6 Q2X-6 Q3X-1"),
     ("water.dock_long", "water", r"a third of the way at most", "Q1W-6"),
     ("water.dock_side", "water", r"runs close along one bank", "Q1W-7"),
     ("water.dock_wall", "water", r"dock starts against a wall", "Q1W-9"),
@@ -4605,12 +4733,24 @@ def qa2_space_flags(m, r, kind):
     objs = [o for o in r["objects"] if "MONSTER" not in o["cls"] and not m.is_door(o)]
     solid = [o for o in objs if m.blocking(o)]
     flags = []
+    runs0 = room_runs(m, r["cells"])
+    # (a chest at a bed's foot is the bed's own piece, snug against it: QA round 3, Q3R-7)
+    beds0 = [o for o in solid if QA1_BED.match(o["type"])]
+    heads = {id(b): bed_head(b, runs0) for b in beds0}
+    foot_of = {}                                     # id(chest) -> (bed, gap from its foot)
+    for c in solid:
+        if not QA1_CHEST.match(c["type"]): continue
+        for b in beds0:
+            h = heads[id(b)]
+            g = foot_chest_gap(c, b, h[2]) if h else None
+            if g is not None: foot_of[id(c)] = (b, g); break
     # Q2T-4: gaps (each piece faulted once, at its closest offender)
     seen = set()
     for i, a in enumerate(solid):
         for b in solid[i + 1:]:
             need = GP.need(a["type"], b["type"])
             if not need or id(a) in seen and id(b) in seen: continue
+            if foot_of.get(id(a), (None,))[0] is b or foot_of.get(id(b), (None,))[0] is a: continue
             g = _edge(a, b)
             if g < need - 0.05:
                 big = GP.BIG.match(GP.base(a["type"])) or GP.BIG.match(GP.base(b["type"]))
@@ -4652,9 +4792,36 @@ def qa2_space_flags(m, r, kind):
             o = max(ps, key=lambda p: p[0])[1]
             flags.append(("qa2_wall", f"{len(ps)} {k}s on one wall at depths {min(gs):.2f}-{max(gs):.2f}: not lined up",
                           o))
-    # Q2F-2: a barracks' chests in one of the user's two arrangements
+    # QA round 3 (Q3R-6, Q3R-7): a chest at a bed's foot faces away from the bed, its back to it; a barracks' stands
+    # snug at the foot
+    if rtype in QA3_FOOT_TYPES:
+        for c in solid:
+            if id(c) not in foot_of: continue
+            b, g = foot_of[id(c)]
+            d = heads[id(b)][2]
+            front = CHEST_FRONT.get(GP.base(c["type"]))
+            if front and front != d:
+                flags.append(("qa3_foot_chest", f"{c['type']} at the foot of {b['type']} faces {DIR_NAME[front]}, "
+                              f"not away from the bed ({DIR_NAME[d]})", c))
+            elif rtype == "barracks" and g > QA3_FOOT_SNUG[d in ((1, 0), (0, -1))]:
+                flags.append(("qa3_foot_chest", f"{c['type']} stands {g:.2f} units off the foot of {b['type']} (at "
+                              f"most {QA3_FOOT_SNUG[d in ((1, 0), (0, -1))]:.2f})", c))
+    # QA round 3 (Q3R-8): a paired row of a barracks' beds has a chest in every gap between its pairs
+    between = set()
     if rtype == "barracks":
-        chests = [o for o in solid if QA1_CHEST.match(o["type"])]
+        chests_ = [o for o in solid if QA1_CHEST.match(o["type"])]
+        for line, coord, a0, a1, b in bed_pair_gaps(beds0, heads):
+            inside = [c for c in chests_ if a0 < (uv_of(c)[1] if line == "/" else uv_of(c)[0]) < a1 and
+                      abs((uv_of(c)[0] if line == "/" else uv_of(c)[1]) - coord) < 1.6]
+            between.update(id(c) for c in inside)
+            if not inside and a1 - a0 >= QA3_GAP_CHEST:
+                name = ("NW" if coord < cu else "SE") if line == "/" else ("NE" if coord > cv else "SW")
+                flags.append(("qa3_pair_gap", f"the {a1 - a0:.1f}-unit gap between two pairs of beds on the {name} wall "
+                              f"holds no chest", b))
+    # Q2F-2: a barracks' chests in one of the user's two arrangements (the chests between the pairs of beds, Q3R-8,
+    # stand against the wall beside them, apart from both)
+    if rtype == "barracks":
+        chests = [o for o in solid if QA1_CHEST.match(o["type"]) and id(o) not in between]
         if len(chests) == 1:
             w = _against(chests[0], runs, cu, cv, m, reach=GP.MID_FLOOR, across=True)
             if not w or w[1] > GP.FLUSH:
@@ -4679,6 +4846,73 @@ def qa2_space_flags(m, r, kind):
 
 
 QA2_FOOT_CHESTS = 6          # kit/finish.py BARRACKS_FOOT_CHESTS
+# QA round 3 (review/qa3/ledger-rooms.md Q3R-6..8; kit/finish.py _barracks_chests): RM-BARRACKS-01 "The chests are
+# perpendicular to the beds. Change the way they are facing so that their back is to the bed and their front is facing
+# away from the bed"; 02 "Move the three chests slightly closer to the three beds"; 03 "Add another chest in the empty
+# gap between the pairs of beds". A chest's front by its variant (Westwood's numbering, kit/finish.py CHEST_ON_WALL):
+# Chest1 faces NW (-u), Chest2 NE (+v), Chest3 SW (-v), Chest4 SE (+u)
+CHEST_FRONT = {"Chest1": (-1, 0), "Chest2": (0, 1), "Chest3": (0, -1), "Chest4": (1, 0)}
+DIR_NAME = {(1, 0): "SE", (-1, 0): "NW", (0, 1): "NE", (0, -1): "SW"}
+QA3_FOOT_TYPES = {"barracks", "bedroom"}     # the rooms whose chests stand at beds' feet (the facing rule)
+# units a barracks' foot chest stands off its bed's foot at most: [a foot away from the camera (NE, NW), toward it (SE,
+# SW)]; a bed's sprite is drawn above its footprint, so the second reads further off (kit/finish.py FOOT_CHEST_GAPS)
+QA3_FOOT_SNUG = (0.65, 0.35)
+QA3_FOOT_REACH = 1.2         # a chest in line with a bed and this near its foot stands at its foot
+QA3_FOOT_INTO = 0.7          # ... or reaching this far into the footprint's end, which a cot's drawing leaves empty
+QA3_PAIR_SLACK = 0.3         # kit/finish.py PAIR_SLACK: a gap between pairs is a bed's width (less this) over the tightest
+QA3_GAP_CHEST = 1.9          # a gap between pairs this wide holds a chest and its clear gaps
+
+
+def bed_head(b, runs):
+    """(line, coord, foot direction (du, dv)) of the wall a bed's head stands against (its long axis across the wall,
+    its end within 0.8 units of the wall line), or None."""
+    u, v = uv_of(b)
+    hu, hv = _half_uv(b)
+    best = None
+    for (line, coord), (lo, hi) in runs.items():
+        if line == "/":                          # a wall of constant u: the bed lies along u, across it
+            if hu <= hv or not lo - 0.5 <= v <= hi + 0.5: continue
+            gap, d = abs(u - coord) - hu, (1 if u > coord else -1, 0)
+        else:
+            if hv <= hu or not lo - 0.5 <= u <= hi + 0.5: continue
+            gap, d = abs(v - coord) - hv, (0, 1 if v > coord else -1)
+        if -0.3 < gap <= 0.8 and (best is None or gap < best[3]): best = (line, coord, d, gap)
+    return best[:3] if best else None
+
+
+def foot_chest_gap(c, b, d):
+    """The gap from bed b's foot (its foot toward d) to chest c when c stands at that foot, in line with the bed, else
+    None."""
+    cu, cv = uv_of(c); bu, bv = uv_of(b)
+    chu, chv = _half_uv(c); bhu, bhv = _half_uv(b)
+    if d[0]:
+        if abs(cv - bv) > bhv: return None
+        g = (cu - bu) * d[0] - bhu - chu
+    else:
+        if abs(cu - bu) > bhu: return None
+        g = (cv - bv) * d[1] - bhv - chv
+    return g if -QA3_FOOT_INTO <= g <= QA3_FOOT_REACH else None
+
+
+def bed_pair_gaps(beds, heads):
+    """[(line, coord, a0, a1, bed)]: the gaps between the pairs of each row of beds headed on one wall, from one bed's
+    side to the next's: a bed's place left out, a bed's width (less QA3_PAIR_SLACK) wider than the row's tightest gap
+    (an evenly spaced row has none)."""
+    rows = collections.defaultdict(list)
+    for b in beds:
+        h = heads.get(id(b))
+        if not h: continue
+        u, v = uv_of(b); hu, hv = _half_uv(b)
+        rows[h[:2]].append((v, hv, b) if h[0] == "/" else (u, hu, b))
+    out = []
+    for (line, coord), row in rows.items():
+        row.sort(key=lambda x: x[0])
+        gaps = [(row[i][0] + row[i][1], row[i + 1][0] - row[i + 1][1], row[i][2]) for i in range(len(row) - 1)]
+        if not gaps: continue
+        tight = min(a1 - a0 for a0, a1, _ in gaps)
+        width = 2 * min(h for _, h, _ in row)
+        out += [(line, coord, a0, a1, b) for a0, a1, b in gaps if a1 - a0 >= tight + width - QA3_PAIR_SLACK]
+    return out
 
 
 QA2_TEXT = {
@@ -4688,6 +4922,10 @@ QA2_TEXT = {
                 "(Q2T-5)",
     "qa2_chests": "a barracks keeps one chest against a wall, or (six beds or fewer) one at every bed's foot (Q2F-2)",
     "qa2_ogre_shell": "an ogre room stands in the ogres' own walls and floors, never a town house's (Q2F-6)",
+    "qa3_foot_chest": "a chest at a bed's foot has its back to the bed and its front away from it, snug at the foot "
+                      "(Q3R-6, Q3R-7)",
+    "qa3_pair_gap": "where a barracks' beds stand in pairs, a chest stands against the wall in every gap between the "
+                    "pairs (Q3R-8)",
 }
 
 
@@ -4708,6 +4946,174 @@ def check_qa2_space(m, ctx, base):
 RULES += [("rooms.qa2_gap", "rooms", r"separate pieces never touch", "Q2T-4"),
           ("rooms.qa2_wall", "rooms", r"stand flush against their wall", "Q2T-5"),
           ("rooms.qa2_chests", "rooms", r"keeps one chest against a wall", "Q2F-2"),
-          ("rooms.qa2_ogre_shell", "rooms", r"the ogres' own walls and floors", "Q2F-6")]
-_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-4:]]
+          ("rooms.qa2_ogre_shell", "rooms", r"the ogres' own walls and floors", "Q2F-6"),
+          ("rooms.qa3_foot_chest", "rooms", r"has its back to the bed and its front away", "Q3R-6 Q3R-7"),
+          ("rooms.qa3_pair_gap", "rooms", r"in every gap between the pairs", "Q3R-8")]
+_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-6:]]
 ALL.append(check_qa2_space)
+
+
+# ---- QA round 3's floor and batch rules (review/qa3/ledger-civic.md Q3C-1, Q3C-2, Q3C-4, Q3C-6) ----------------------
+# Q3C-1 (the tavern set): "A carpet doesn't blend into the floor underneath. It has solid, distinct edges." Q3C-4
+# (RM-GREATHALL-01: "The northeast side of the carpet does not have a proper border. The brick tiling along the exterior
+# of this room is not properly bordered"): every carpet and brick patch ends at a bordered edge on every side. Q3C-2
+# (the tavern set): "All taverns need to have the floor properly transitioned between the bar floor and the main tavern
+# floor where the bar entrance / gap is": the brick behind a bar is bordered wherever no counter covers its seam
+# (kit/civic.py bar_gap_border). Q3C-6 (the throne room set: "very repetitive and all too similar"): the rooms of one
+# ceremonial type in a map differ in more than their size.
+QA3_BRICK = re.compile(r"[Bb]rick")
+QA3_SIDES = ((1, -1), (-1, -1), (1, 1), (-1, 1))
+QA3_BAR = re.compile(r"^Bar(Piece|Corner)")
+QA3_BAR_ANY = re.compile(r"^Bar(Piece|Corner|Hinged)")
+QA3_REPEAT_KINDS = {"throne_room"}        # the ceremonial rooms the user found repeating (Q3C-6)
+QA3_REPEAT_SHARE = 0.8                    # past this mean share of a room's pieces of the kinds every room has
+
+
+def _qa3_room_tiles(r):
+    return {tuple(t) for t in (r.get("declared") or {}).get("floor", [])}
+
+
+def _qa3_edge_to(m, t, n, mat):
+    """The edge types drawn on tile t from its neighbour n (of material mat)."""
+    out = []
+    for ov, _var, piece, et in m.tiles[t]["edges"]:
+        if ov != mat: continue
+        if any((t[0] + EDGE_STEP[d][0], t[1] + EDGE_STEP[d][1]) == n for d in EDGE_FROM.get(piece, ())): out.append(et)
+    return out
+
+
+def qa3_floor_flags(m, r):
+    """What QA round 3's floor rules fault in one declared room: [(rule, text, tile)] (Q3C-1, Q3C-2, Q3C-4)."""
+    tiles = _qa3_room_tiles(r)
+    if not tiles: return []
+    seams = seams_at_walls(m)
+    mats = collections.Counter(m.tiles[t]["material"] for t in tiles if t in m.tiles)
+    if not mats: return []
+    main = mats.most_common(1)[0][0]
+    rug = lambda mat: mat.startswith("Rug") and "Edge" not in mat
+    patch = lambda mat: mat != main and bool(QA3_BRICK.search(mat)) and not QA3_BRICK.search(main)
+    bars = [(uv_of(o), _half_uv(o)) for o in r["objects"] if QA3_BAR.match(o["type"])]
+    bar_any = [uv_of(o) for o in r["objects"] if QA3_BAR_ANY.match(o["type"])]
+    blended, bare, gap = [], [], []
+    for t in sorted(tiles):
+        if t not in m.tiles: continue
+        mat = m.tiles[t]["material"]
+        if not (rug(mat) or patch(mat)): continue
+        for dx, dy in QA3_SIDES:
+            n = (t[0] + dx, t[1] + dy)
+            if n not in tiles or n not in m.tiles or (t, n) in seams: continue
+            nm = m.tiles[n]["material"]
+            if nm == mat or rug(nm) or (patch(mat) and patch(nm)): continue
+            ets = _qa3_edge_to(m, n, t, mat) + _qa3_edge_to(m, t, n, nm)
+            if rug(mat) and "BlendEdge" in ets:
+                blended.append(t); continue
+            if ets: continue
+            mu, mv = (tile_uv(t)[0] + tile_uv(n)[0]) / 2, (tile_uv(t)[1] + tile_uv(n)[1]) / 2
+            if patch(mat) and any(abs(mu - u) <= hu + 0.35 and abs(mv - v) <= hv + 0.35 for (u, v), (hu, hv) in bars):
+                continue                                       # under the bar's counter: the bar covers it (Q2C-6)
+            if patch(mat) and any(math.hypot(mu - u, mv - v) <= 3.0 for u, v in bar_any):
+                gap.append(t)
+            else:
+                bare.append(t)
+    out = []
+    if blended:
+        out.append(("carpet_blend", f"{len(blended)} of its carpet's sides blend into the floor (BlendEdge)", blended[0]))
+    if bare:
+        what = sorted({"carpet" if rug(m.tiles[t]["material"]) else m.tiles[t]["material"] for t in bare})
+        out.append(("patch_border", f"{len(bare)} sides of its {' and '.join(what)} meet the floor with no border",
+                    bare[0]))
+    if gap:
+        out.append(("bar_gap", f"the brick behind its bar meets the floor at the bar's opening with no border on "
+                               f"{len(gap)} sides", gap[0]))
+    return out
+
+
+QA3_TEXT = {
+    "carpet_blend": "a carpet is never blended into the floor under it: it ends at a solid trim, as RM-TAVERN-02's "
+                    "(Q3C-1)",
+    "patch_border": "a carpet, a brick band or a hearth's bricks end at a bordered edge on every side, the NE wall's "
+                    "side too (Q3C-4)",
+    "bar_gap": "the brick behind a bar is bordered where no counter covers its edge, at the barkeep's opening (Q3C-2)",
+}
+
+
+def _qa3_stem(t):
+    t = re.sub(r"^(Blue|Red|Green|White)(Tapestry)", r"\2", t)
+    return re.sub(r"(\d+[a-z]?|Shadow|Base|Back|Front|NE|NW|SE|SW|N|S|E|W)+$", "", t) or t
+
+
+def qa3_batch_repeat(m, rooms):
+    """[(kind, mean share, rooms)] for each ceremonial kind (QA3_REPEAT_KINDS) the map holds three or more declared rooms
+    of whose pieces are, past QA3_REPEAT_SHARE on average, of the kinds every one of them has (Q3C-6)."""
+    by = collections.defaultdict(list)
+    for r in rooms:
+        k = (r.get("declared") or {}).get("kind")
+        if k in QA3_REPEAT_KINDS: by[k].append(r)
+    out = []
+    for k, rs in sorted(by.items()):
+        if len(rs) < 3: continue
+        sigs = [collections.Counter(_qa3_stem(o["type"]) for o in r["objects"]
+                                    if not m.is_door(o) and "MONSTER" not in o["cls"]) for r in rs]
+        sigs = [s for s in sigs if s]
+        if len(sigs) < 3: continue
+        pres = collections.Counter(x for s in sigs for x in s)
+        core = {x for x, n in pres.items() if n >= 0.8 * len(sigs)}
+        share = sum(sum(n for x, n in s.items() if x in core) / sum(s.values()) for s in sigs) / len(sigs)
+        if share >= QA3_REPEAT_SHARE: out.append((k, share, rs))
+    return out
+
+
+QA3_STATUESQUE = re.compile(r"^(Statue|Column|CathedralColumn|MarbleColumn|DunMirColumn)")
+QA3_HALL_RANKS = 2          # a hall's columns and statues stand in one rank either side of its aisle (Q3C-7)
+
+
+def qa3_hall_ranks(m, r):
+    """The ranks of a hall's columns, statues and urns: lines of three or more along one wall's direction (a shared u or
+    v within 0.7, spread six units or more along it), the most in either direction (Q3C-7: RM-HALL-01/03, "cluttered with
+    too many pillars and statues", stood three ranks a side). Returns (ranks, pieces)."""
+    ps = [uv_of(o) for o in r["objects"] if QA3_STATUESQUE.match(o["type"])]
+    best = 0
+    for k in (0, 1):
+        ps_ = sorted(ps, key=lambda p: p[k])
+        groups, cur = [], []
+        for p in ps_:
+            if cur and p[k] - cur[-1][k] > 0.7:
+                groups.append(cur); cur = []
+            cur.append(p)
+        if cur: groups.append(cur)
+        best = max(best, sum(1 for g in groups if len(g) >= 3 and max(q[1 - k] for q in g) - min(q[1 - k] for q in g) >= 6))
+    return best, len(ps)
+
+
+def check_qa3(m, ctx, base):
+    """QA round 3's floor rules and its batch rule (review/qa3/ledger-civic.md Q3C-1, Q3C-2, Q3C-4, Q3C-6)."""
+    out = []
+    rooms = [r for r in indoor_rooms(m) if r.get("declared")]
+    for r in rooms:
+        kind = r["declared"].get("kind") or "declared"
+        for rule, text, t in qa3_floor_flags(m, r):
+            x, y = cell_px((t[0] + 1, t[1] + 1))
+            out.append(F("qa3", "warning", f"{kind.replace('_', ' ')} room: {text}: {QA3_TEXT[rule]}.", x, y,
+                         rule=f"qa3.{rule}"))
+        if kind == "hall":
+            ranks, n = qa3_hall_ranks(m, r)
+            if ranks > QA3_HALL_RANKS:
+                x, y = cell_px(next(iter(r["cells"])))
+                out.append(F("qa3", "warning", f"hall room: its {n} columns, statues and urns stand in {ranks} ranks: a "
+                             f"hall has one colonnade either side of its aisle, benches by the walls, never ranks of "
+                             f"statues across its width (Q3C-7).", x, y, rule="qa3.hall_ranks"))
+    for k, share, rs in qa3_batch_repeat(m, rooms):
+        x, y = cell_px(next(iter(rs[0]["cells"])))
+        out.append(F("qa3", "warning", f"{len(rs)} {k.replace('_', ' ')}s repeat one another: {share:.0%} of each "
+                     f"room's pieces are of the kinds they all have: the rooms of a type differ in layout and pieces, "
+                     f"not only in size (Q3C-6).", x, y, rule="qa3.batch_repeat"))
+    return out
+
+
+RULES += [("qa3.carpet_blend", "qa3", r"carpet's sides blend into the floor", "Q3C-1"),
+          ("qa3.patch_border", "qa3", r"meet the floor with no border", "Q3C-4"),
+          ("qa3.bar_gap", "qa3", r"the brick behind its bar meets the floor", "Q3C-2"),
+          ("qa3.batch_repeat", "qa3", r"s repeat one another", "Q3C-6"),
+          ("qa3.hall_ranks", "qa3", r"columns, statues and urns stand in", "Q3C-7")]
+_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-5:]]
+ALL.append(check_qa3)

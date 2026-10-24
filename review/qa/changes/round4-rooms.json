@@ -1,0 +1,6 @@
+{
+ "crypt": "The pair of crates is gone from every crypt (crates are no longer allowed in crypts at all); urns, rubble and broken coffins fill those spots. The dark crypt is unchanged.",
+ "shrine": "No two shrines share an altar now: stone altar, sacred fire, holy font, the Land of the Dead's ark, a burning heap of skulls (other shrines can get the saint's or the wolf's statue, a tomb, the scales or a bier). The obelisks, basins and tapestries stay as they were.",
+ "smithy": "The 80-99 tile smithies (01, 04) are about a sixth emptier: no barrels mid-floor beyond the stacks in the middle, more racks and armour stands on the walls instead, and a work table with stools in 01. 02, 03 and 05 are unchanged.",
+ "barracks": "Foot chests now have their back to the bed and their front facing away, for beds against any wall, and stand right at the foot. Where the beds stand in pairs, a chest fills each gap between the pairs."
+}

@@ -155,3 +155,34 @@ The user: "The room is not centered" (RM-THRONEROOM-02, -05); "Fill the southwes
   statues and urns between the colonnade and the side walls in a wide room; urns of another kind flanking the way in.
   The SW wall is a front wall and takes no hangings, so its side is filled on the floor.
 - **Benches face the aisle** (`facing_pair`). Checked: `qa2.centre`, `qa2.facing`.
+
+## QA round 3 (2026-10-23; review/qa3/ledger-civic.md Q3C-6)
+
+The user, of the whole set (all five 5 of 5): "Individually, they are all very good. But as a whole, they are very
+repetitive and all too similar. Add some variance and more object diversity."
+
+- **A batch's throne rooms differ in plan, not only in size or pieces:** each room draws one of five plans in strict
+  rotation over the map's throne rooms (`civic.THRONE_LAYOUTS`, `throne_layout`, as the chapels' altars, Q2S-1: no plan
+  twice while another that fits is unused). The plans differ in where the throne stands, what the floor holds and how
+  the room is crossed (a first pass that varied only the pieces still ran a runner from the door to a throne against
+  its wall in all five):
+  - **processional** (round 3's room, kept as rated): the runner lined with braziers between pairs of columns, statues
+    and candelabras flanking the throne, benches, statues and urns by the side walls, urns at the way in;
+  - **dais court**: the throne out in the room on a carpeted dais, columns at the dais's back corners, candelabras at
+    its front ones, benches round it on three sides facing it (two a side beside it, rows before it), statues and hand
+    braziers against the wall behind it, urns in the far corners; no runner;
+  - **apse court**: the throne in an apse of four columns against its wall, statues beyond it; galleries of cathedral
+    columns down both sides with benches and urns behind them against the walls; the court between them a pair of orb
+    pools on the bare floor, or carpeted wall to wall where too narrow for them; plants in the corners; no runner;
+  - **twin thrones**: two thrones side by side on the back wall, a flame basin between them, candelabras and statues
+    outside them, a broad carpet before both lined with candelabras, the side walls dressed with cathedral columns,
+    statues and benches, paintings, plants in the corners;
+  - **petition hall**: the throne between obelisks and statues, flame basins before it, the petitioners' benches in rows
+    across the room facing it either side of a bare walk, statues between the rows by the side walls, columns framing
+    the way in; no runner.
+  A plan whose seats or columns are its structure lifts the type's cap on them for that room (`civic.allow`).
+- **The throne's dais bordered** like a hearth's patch (`shells.BORDERED_ZONES`), never blended.
+- **Every column in a pair placed with a purpose** (`civic.way_in_columns`), never a lone column left by the finishing
+  pass against a wall.
+- A throne room takes no chest (the object knowledge base's cap for the type). Checked: `qa3.batch_repeat` (three or
+  more throne rooms in a map whose pieces are, past 80% on average, of the kinds all of them have).

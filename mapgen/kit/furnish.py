@@ -154,6 +154,28 @@ SNUG_GAP = {"shelves": 0.18, "storage": 0.22, "desk": 0.25, "fireplace": 0.15, "
 # floors only: Westwood never lets carpet touch dirt, grass or cobbles (floors.json never_touch).
 CARPET_EDGE = "RugTanLightEdge"
 CARPET_FLOORS = re.compile(r"Wood|Oak|Redwood|Slat|Plank|Marble|Brick|Tile|Stone")
+# A carpet's trim: a solid carpet edge, never BlendEdge. QA round 3 (Q3C-1, the tavern set): "02 has the proper edge
+# between the carpet and the plank floor. The other carpets are all blended into the floor ... A carpet doesn't blend
+# into the floor underneath. It has solid, distinct edges" (02 was RugRed on WoodSlatFloor2 in Westwood's RugBrownEdge;
+# 01, 03 and 04 had been given BlendEdge by shells.blend_pattern, which took the carpet for a second floor). The two
+# solid trims: RugBrownEdge (02's band) and the gold RugTanLightEdge (the great halls' carpets); Westwood's RugTanEdge
+# is a ragged fringe (tried on RugGreen in the qa4 lab), so a pair Westwood draws with it takes the gold trim.
+CARPET_TRIMS = re.compile(r"^(RugBrownEdge|RugTanLightEdge)$")
+# A trim contrasts with its carpet (the coordinator's look at the qa4 great halls: RM-GREATHALL-03's brown carpet in
+# Westwood's RugBrownEdge read ragged, as if blended): the brown band never on a brown carpet, the gold trim never on a
+# tan one.
+TRIM_CLASHES = {"RugBrownEdge": re.compile(r"^RugBrown"), "RugTanLightEdge": re.compile(r"^RugTan")}
+
+
+def carpet_trim(mat, base):
+    """The trim a carpet of `mat` draws onto `base`: the solid carpet edge Westwood draws for the pair
+    (rules/out/floors.json) where it contrasts with the carpet, else the gold trim (CARPET_EDGE), else (a tan carpet)
+    the brown band."""
+    from kit import shells as _SH
+    rec = _SH._blend_rules().get(frozenset((mat, base))) or {}
+    for e in (rec.get("preferred_edge_type"), CARPET_EDGE, "RugBrownEdge"):
+        if e and CARPET_TRIMS.match(e) and not TRIM_CLASHES[e].match(mat or ""): return e
+    return CARPET_EDGE
 # a carpet laid over a room's whole floor less a ring: Westwood's share of carpeted rooms whose carpet is that, by the
 # room's short side in squares (rules/rooms/shells.json: 4 across 19 of 26, 5 across 5 of 13, 6 across 6 of 19, 7
 # across 2 of 9, 8 or more 2 of 19); the others' carpets are 2-5 by 3-8 squares (lay_carpet)
@@ -2955,6 +2977,10 @@ class Furnisher:
         for s in ring:
             self.spec.local_blend[tile(s)] = -60
             self.spec.local_from.setdefault(tile(s), set()).add(mat)
+            # its trim on every floor round it, never a blend (QA round 3, Q3C-1: "A carpet doesn't blend into the floor
+            # underneath. It has solid, distinct edges"): kit/shells.py blend_pattern leaves carpets alone
+            base = self.spec.floor.get(tile(s))
+            if base and not base.startswith("Rug"): self.spec.edge_over[(mat, base)] = carpet_trim(mat, base)
         return sorted(rect)
 
     def _table_box(self):

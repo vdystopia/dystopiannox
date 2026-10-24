@@ -4,6 +4,23 @@ Kit: the catalogue's `shrine` (a wall scene) and `waystone` (open, by a road in 
 `kit/dressing.Exterior`. Lab: `py tests/scenelab.py shrine` (since round 4 in the hamlet's ground, among houses).
 Westwood's evidence: 28 campaign scenes (Con04b's castle garden, Con05A, Con07B-E, War03a-c, War04a-b, War07A, Wiz02B).
 
+## QA round 3 (2026-10-23): the centrepiece centred as drawn [Q3N-3]
+
+EX-SHRINE-01 (the obelisk court with the gold wolf; 4, Fix): "The main statue/altar is slightly out of center with the
+cobblestone path down the middle. Make sure it's lined up and centered."
+
+- The centrepiece is centred on the aisle as it is drawn, not by its point. The gold wolf's point stood on the axis to
+  the pixel (v -37.00, the aisle's drawn middle -37.0), but the game draws its pedestal 0.4 uv (6 px) to the north-east
+  of its point. Each centrepiece's drawn base was measured on the editor's render: the render with the piece less the
+  render without it, and the outline of its base fitted. The results are in `setpieces.DRAWN_BASE`, as uv offsets from
+  the point: gold wolf (-0.70, +0.39), HorrendousStatue1 (+0.46, -0.28), HorrendousStatue2 (+0.43, -0.43), the altar
+  (-0.43, -0.26), the obelisk about 0. Each is set across the axis so that its base lands on it (`setpieces._on_axis`).
+  Along the axis it stays where it was.
+- Lab (seed 11; not re-rendered for the page): 01's wolf moves 0.39 uv SW, and its pedestal's front edge is now centred
+  on the aisle. The other four courts' centrepieces move 0.07-0.43 uv across. No tiles change.
+- Any sprite can be drawn off its point (the same family of fault as the floor tiles drawn half a square SW,
+  `yards.TILE_DJ`). A piece that must line up with paving is placed by its drawn footprint.
+
 ## QA round 2 (2026-10-14): the aisle on the axis, the statue facing the way in [Q2X-3, Q2T-1, Q2T-3]
 
 **This section overrides the rounds below.** EX-SHRINE-01/02/04: "The path down the center of the shrine is not lined

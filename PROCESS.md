@@ -100,6 +100,19 @@ the bottom of the screen. After the walls, `MineEntrance.ground()` lays the face
   bridge starts. Do not bring the cobblestone all the way up to the bank of the river"): under a chain bridge's span the
   road's paving gives way to trodden earth (`Waterworks._unpave_span`), the paving stopping at the end pieces. **Checked
   by** `water.bridge_paved`.
+- **...exactly at the deck's end, on both banks alike, as drawn** [Q3X-1] (BR-01, BR-06, BR-11: "On one side of the
+  bridge, the cobblestone ends before the bridge with a small gap of dirt. On the other side of the bridge, it ends on
+  the cobblestone. Make sure both sides start/end just on the edge of the end of the cobblestone. And make sure they're
+  consistent with each other"): neither a strip of earth between the paving and the planks nor paving running on under
+  them, at either end. Read it where things are drawn, not where the kit counts them: a rope bridge's planks reach two
+  units past its FarEnd piece and stop at its NearEnd piece (`water.DECK_REACH`); a tile is drawn a unit toward the SW
+  (-v) of its point (`TILE_V_DRAWN`, the same half-square as `yards.TILE_DJ` and `SQUARE_V`), which along a v-axis bridge
+  shifts both ends' paving the same way and so makes them differ; the paving's kerb lies on the first tile of earth and
+  carries its look a unit on (`EDGE_REACH`). The paving's visible edge can stand only at the drawn tiles' middles, so
+  the chain slides along its axis (a unit at most) until both of its deck's ends fall on one, and the paving stops
+  there (`Waterworks._road_fit`, `_road_to_deck`). Dirt roads' bridges are not moved. **Checked by**
+  `water.bridge_paved` (`bridge_road_ends`: a gap or an overrun past 0.75 uv at either end; STbrgap, STbrovr); look at
+  both ends of every paved crossing in `py review/qa/bridgelab.py --render`.
 - **Banks without fingers** [Q1W-11] (Brackwater, nox3: "little fingers sticking out into the river with hard edges"):
   no per-tile jitter on a stream's edge; `Waterworks._smooth` takes every finger of bank (water on three sides) into
   the water and every spit of water (bank on three sides) into the bank, on streams, ponds and round a dock's landing.
