@@ -295,10 +295,10 @@ def shove_chain(st):
     keys = list(range(4, 21, 2))
     carve(st, lanes((0, 2, 0, W), (2, L - 1, 2, W), (L - 1, L, 0, W), (3, 21, 0, 2)))
     pits(st, 3, L - 2, 4, W)
-    speed, hold, start = 6.5, 20, 10
+    speed, hold, start = 5.4, 20, 25
     stroke = travel([(0, 1.0), (0, 3.0)], speed)
     step = _f(stroke)                                          # the next key sets off when this one lands
-    acts = [st.act("sound", text="BigGong", src=st.at(3.0, 3.0))]
+    acts = [st.act("sound", text="BigGong", src=st.at(2.5, 3.0))]
     movers = []
     for k, a in enumerate(keys):
         mv = mover(st, f"K{k}", [block(st, a, 1.0, "StoneBlock")], [(a, 1.0), (a, 3.0)], speed, pause=hold,
@@ -309,18 +309,19 @@ def shove_chain(st):
                  st.act("disarm", mv, delay=at + 2 * step + hold + 3)]
     end = start + step * (len(keys) - 1) + 2 * step + hold + 3
     acts += [st.act("disarm", "Z"), st.act("arm", "Z", delay=end + 60)]
-    st.T.zone(f"{st.label}Z", st.at(4.0, 3.0), 46, shape="diamond", who="player", acts=acts)
-    reach = 0.77 * SQ / speed
-    margin_run = min((start + step * k + reach) - (keys[k] + TOUCH - 3.0) * SQ / RUN for k in range(len(keys)))
-    margin_walk = min((start + step * k + reach) - (keys[k] + TOUCH - 3.0) * SQ / WALK for k in range(len(keys)))
+    st.T.zone(f"{st.label}Z", st.at(2.5, 3.0), 46, shape="diamond", who="player", acts=acts)
+    reach = 0.77 * SQ / speed                                  # a key reaches the ledge's middle line
+    wire = 1.5                                                 # the tripwire's near edge
+    margin_run = min((start + step * k + reach) - (keys[k] + TOUCH - wire) * SQ / RUN for k in range(len(keys)))
+    margin_walk = (start + reach) - (keys[0] + TOUCH - wire) * SQ / WALK        # the first key, for a walker
     return _meta(st, tier="hard",
                 tells="a ledge over pits; its wall is a row of stone keys; a gong when you step on",
                 answer=f"run the moment the gong sounds and do not stop: each key slams {step} frames after the "
                        f"last, a wave down the ledge at {2 * SQ / step:.1f} px a frame against your run's 6.9 "
                        f"({margin_run / 30:.2f} s to spare at the closest key); it resets "
                        f"{(end + 60) / 30:.0f} s after it starts",
-                careless=f"walking: the wave catches you by the second key ({-margin_walk / 30:.2f} s short) and "
-                         f"shoves you off the ledge",
+                careless=f"walking: the first key catches you ({-margin_walk / 30:.2f} s short) and shoves you off "
+                         f"the ledge; the rest of the wave would anyway",
                 numbers=dict(step=step, hold=hold, start=start, run_margin=_f(margin_run),
                              walk_margin=_f(margin_walk)),
                 route=[(1, 3), (L, 3)])
