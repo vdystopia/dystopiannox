@@ -33,6 +33,13 @@ impossible; a variety of difficulty, nothing easy.
 | Pressure plate, lever | **the xfer's script names do not reach Go scripts in alpha13**: the kit watches them as zones | polled plate fired on press and release; a jump passes over; lever toggled |
 | Health regeneration | the hero regains ~0.3 HP a frame | |
 
+| Jump clearance (real input, `tests/traps_e2e/jumptest.py`) | a run, jump pressed 0.6 squares before the strip | spike strips 1.5 / 2.0 / 2.5 squares deep: 0 HP; 3.0: 1 HP; 3.5: 8 HP |
+| A script cannot jump the hero | an AIRBORNE flag set from the script is cleared by the engine | the trap tour parks the hero during a plan's jump frames |
+
+The simulator (`review/traps/sim.py`) against the game (`tests/traps_e2e/tour.py spike`, 30 runs through TLSpike,
+2026-10-23): careless walks and runs agree within a few HP (201/201, 275/274, 237/237, 157/158), plans exactly
+(0/0, 14/14, 21/21); the simulator is the fast check, the tour the proof.
+
 Not yet confirmed in play: Glyph (no effect when stood on by the probe), the lever click from the cursor,
 PoisonGasTrap, BearTrap, RollingBoulder (needs a push or a mover: it never rolls by itself).
 

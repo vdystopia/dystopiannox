@@ -635,7 +635,7 @@ def analyse(map_dir, only=None, trace=False):
         raise SystemExit(f"no .lab.json in {map_dir}")
     lab = json.load(open(os.path.join(map_dir, names[0])))
     data = json.load(open(os.path.join(map_dir, lab["name"] + ".traps.json")))
-    rows = []
+    rows, runs = [], {}
     for st in lab["stations"]:
         if only and st["label"] != only: continue
         sm = StationModel(data, st, [tuple(w) for w in lab.get("walls", [])],
@@ -669,9 +669,11 @@ def analyse(map_dir, only=None, trace=False):
         if used and slack < 0.5:
             slack = 1.0                                 # a lever station is passed from any moment once pulled
         row = dict(label=st["label"], title=st["title"], tier=tier)
+        rr = runs[st["label"]] = {}
         if res:
             dmg, tt, path = res
             frames_ = sm.path_frames(path)
+            rr["plan"] = [[round(x, 1), round(y, 1), int(air)] for x, y, air in frames_]
             ex, outcome, _ = sm.replay(frames_)
             late, outcome_late, _ = sm.replay(sm.path_frames(path, delay=4))
             row.update(plan=round(dmg, 1), time=round(tt * FPT / 30, 1), waits=sum(1 for a_, b_ in zip(path, path[1:])
@@ -684,11 +686,16 @@ def analyse(map_dir, only=None, trace=False):
             row.update(plan=None)
         for nm, sp in (("walk", WALK), ("run", RUN)):
             # the player arrives at any moment of the cycles: the mean over the moments, and the worst outcome
-            runs = [sm.replay(sm.straight(sp), offset=off) for off in [0] + offsets]
-            row[f"careless_{nm}"] = round(sum(r_[0] for r_ in runs) / len(runs), 1)
-            bad = [r_[1] for r_ in runs if r_[1] != "passed"]
-            row[f"careless_{nm}_outcome"] = (f"{bad[0]} {len(bad)}/{len(runs)}" if bad else "passed")
-            row[f"careless_{nm}_worst"] = round(max(r_[0] for r_ in runs), 1)
+            tries = [sm.replay(sm.straight(sp), offset=off) for off in [0] + offsets]
+            row[f"careless_{nm}"] = round(sum(r_[0] for r_ in tries) / len(tries), 1)
+            bad = [r_[1] for r_ in tries if r_[1] != "passed"]
+            row[f"careless_{nm}_outcome"] = (f"{bad[0]} {len(bad)}/{len(tries)}" if bad else "passed")
+            row[f"careless_{nm}_worst"] = round(max(r_[0] for r_ in tries), 1)
+        rr["walk"] = [[round(x, 1), round(y, 1), 0] for x, y, _ in sm.straight(WALK)]
+        rr["run"] = [[round(x, 1), round(y, 1), 0] for x, y, _ in sm.straight(RUN)]
+        for nm in ("walk", "run"):                      # what the replay says at the moment the tour runs them (0)
+            d_, o_, _ = sm.replay(sm.straight(WALK if nm == "walk" else RUN), offset=0)
+            row[f"careless_{nm}_0"] = [round(d_, 1), o_]
         row["slack"] = round(slack, 2)
         row["verdict"] = verdict(row)
         rows.append(row)
@@ -696,6 +703,8 @@ def analyse(map_dir, only=None, trace=False):
               f"lever={row.get('lever')} replay={row.get('replay')}/{row.get('replay_outcome')} "
               f"late={row.get('late')}/{row.get('late_outcome')} slack={row['slack']} | walk {row['careless_walk']}"
               f"/{row['careless_walk_outcome']} run {row['careless_run']}/{row['careless_run_outcome']} -> {row['verdict']}")
+    if not only:
+        json.dump(runs, open(os.path.join(map_dir, lab["name"] + ".runs.json"), "w"))
     out = os.path.join(map_dir, lab["name"] + (".sim.json" if not only else f".sim_{only}.json"))
     json.dump(rows, open(out, "w"), indent=1)
     md = [f"# {lab['name']}: simulated", "", "| Station | Tier | Plan HP | Time s | Jumps | Lever | Replay | 4 frames late | "

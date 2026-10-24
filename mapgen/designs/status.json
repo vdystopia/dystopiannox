@@ -15,7 +15,9 @@
     "test_transport": "TestTrans",
     "test_water": "TestWatr",
     "bosslab": "BossLab",
-    "traptest": "TrapTest"
+    "traptest": "TrapTest",
+    "jumptest": "JumpTest",
+    "traplab": "TLSpike..TLTrigger"
   },
   "frozen": {
     "ambermere": "Ambermere",
