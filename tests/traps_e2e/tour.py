@@ -102,7 +102,7 @@ def main(kind, max_s=None):
     if os.listdir(save):
         os.rename(save, os.path.join(lab.WORK, f"oldsave_{os.getpid()}"))
         os.makedirs(save)
-    steps = [("wait", frames + 400), ("screen", "t_tour_end")]
+    steps = [("wait", frames + 400)]
     yml = os.path.join(lab.WORK, "tour.yaml")
     open(yml, "w").write(e2e.yaml_for("warrior", steps))
     log = os.path.join(lab.LOGS, f"tour_{name}.txt")

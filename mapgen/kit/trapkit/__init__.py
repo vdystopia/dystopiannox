@@ -131,19 +131,20 @@ class Station:
         return self.T.act(kind, target, **kw)
 
     def wall_cell(self, a, b):
-        """The grid cell of the wall point nearest station point (a, b) (on the square corners)."""
+        """The grid cell of the wall point at station point (a, b) on the square corners (a and b whole squares).
+        Part.at draws (a, b) at uv (2 si + 1, 2 sj - 1) and wall point (p, q) stands at uv (2p, 2q), so the corner is
+        (floor(si + 0.5), floor(sj - 0.5)) (it was one square off along a before 2026-10-24: the blocks helper)."""
+        import math as _m
         from kit.layout import point_cell
         si, sj = self.part.sq(a, b)
-        return point_cell(int(round(si)), int(round(sj)))
+        return point_cell(int(_m.floor(si + 0.5 + 1e-9)), int(_m.floor(sj - 0.5 + 1e-9)))
 
     def gate(self, a, state="closed", material=None):
         """A row of secret walls across the station at `a` (on the square corners): a gate the script opens
         (walls_open) or shuts (walls_close). Returns the wall cells."""
-        from kit.layout import point_cell
         cells = []
         for k in range(1, self.W):
-            si, sj = self.part.sq(a, k)
-            x, y = point_cell(int(round(si)), int(round(sj)))
+            x, y = self.wall_cell(a, k)
             mat = material or self.part.wall or "DungeonStone"
             self.spec.wall(x, y, mat, secret=state)
             cells.append((x, y))
