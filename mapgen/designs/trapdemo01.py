@@ -53,7 +53,7 @@ boss = M.boss("hall", "B4")
 relic = M.item("sanctum", "MayorsScepter")
 satchel = M.item("store", "TreasureBag", 4, 4)
 M.m.obj_px("RedPotion", *M.at("store", 6, 2))
-aldous = M.person("camp", "Wiz02A", "TowerNPC", "Aldous", pic="ArchivistPic", title="Brother Aldous")
+aldous = M.person("camp", "Wiz02A", "TowerNPC", "BrotherAldous", pic="ArchivistPic", title="Brother Aldous")
 
 # ---- the story --------------------------------------------------------------------------------------------------
 q = M.q
