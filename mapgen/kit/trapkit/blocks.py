@@ -38,7 +38,7 @@ def sweeper(st):
     b = block(st, 3.3, 3.0)
     path = [(3.3, 3.0), (L - 2.3, 3.0)]
     speed, pause = 4.0, 15
-    mover(st, "M", [b], path, speed, pause=pause)
+    mover(st, "M", [b], path, speed, pause=pause, impact=10)
     t = travel(path, speed)
     st.rest += [((a0 + a1) / 2, 1.0) for a0, a1 in alc]
     return Meta(tier="standard",
@@ -46,8 +46,8 @@ def sweeper(st):
                 answer=f"step into an alcove as the block comes down at you; once it has passed going down, walk "
                        f"out behind it: it turns at the hall end and follows at 4 px a frame against your 3.3, never "
                        f"catching you before the end (one way {t / 30:.1f} s, pause 0.5 s)",
-                careless="meeting it in the lane: shoved back toward the hall at 4 px a frame, 1 HP a frame, "
-                         "30-130 HP",
+                careless="meeting it in the lane: struck (10) and shoved back toward the hall at 4 px a frame, "
+                         "1 HP a frame: 40-130 HP",
                 numbers=dict(speed=speed, one_way=_f(t), period=_f(2 * t + 2 * pause), alcoves=[a for a, _ in alc]),
                 route=[(1, 3), (7, 3), (7, 1), (7, 3), (L, 3)])
 
@@ -72,19 +72,19 @@ def snapping_jaws(st):
         plates = [f"P{k}a", f"P{k}b"]
         acts += [st.act("disarm", p) for p in plates] + [st.act("arm", p, delay=150) for p in plates]
         for p, b in zip(plates, (3.1, 4.9)):
-            st.plate(p, a - 2.6, b, size=(60, 60), acts=acts)
+            st.plate(p, a - 1.6, b, size=(60, 60), acts=acts)
         st.rest.append((a + 3.0, 4.0))
     shut = delay + stroke                                      # 20 frames: Westwood's jaw impact
     centre = delay + stroke * (1.77 / 2.05)                    # the blocks reach the lane's middle line
     return Meta(tier="standard",
                 tells="spike blocks in bays either side, a strip of plates before each pair",
-                answer=f"jump the plate strip (1.1 squares deep, a jump clears 3.7) and walk on; or step on it and "
-                       f"back: the jaws snap {shut / 30:.2f} s later, hold {hold / 30:.2f} s, are home by "
-                       f"{done / 30:.1f} s, and the plates sleep 5 s: walk through then ({_walk(4.9) / 30:.1f} s "
-                       f"needed of {(150 - centre) / 30:.1f} s)",
-                careless=f"walking over the plates into the jaws: a runner from the plate's far edge clears them "
-                         f"(13 of {centre:.0f} frames), a walker does not (27): caught between two spike blocks, "
-                         f"crushed 2 x 12 and held, ~35-50 HP a pair",
+                answer=f"jump the plate strip from before it (2.2 squares deep, a jump carries 3.7) and walk on; or "
+                       f"tread on its near edge and step back: the jaws snap {shut / 30:.2f} s later, hold "
+                       f"{hold / 30:.2f} s, are home by {done / 30:.1f} s, and the plates sleep 5 s: walk through "
+                       f"then ({_walk(3.9) / 30:.1f} s needed of {(150 - done) / 30:.1f} s)",
+                careless=f"walking on over the plates: the jaws meet at the lane's middle {centre:.0f} frames after "
+                         f"the first touch, when a walker is {(centre * WALK / SQ) - 1.47:.1f} squares into them: "
+                         f"caught between two spike blocks, crushed 2 x 12 and held: ~35-50 HP a pair",
                 numbers=dict(snap=_f(shut), hold=hold, open=_f(done), plate_sleep=150),
                 route=[(1, 4), (L, 4)])
 
@@ -100,25 +100,25 @@ def rolling_wave(st):
     for k, a in enumerate(rows):
         boxes.append((a - 1, a + 1, 0, 2) if k % 2 == 0 else (a - 1, a + 1, 6, 8))
     carve(st, lanes(*boxes))
-    speed, pause, stagger = 6.5, 40, 20
+    speed, pause, home_wait, stagger = 6.5, 6, 60, 20
     for k, a in enumerate(rows):
         home, far = (1.0, 5.0) if k % 2 == 0 else (7.0, 3.0)
         mover(st, f"R{k}", [block(st, a, home)], [(a, home), (a, far)], speed, pause=pause, armed=k == 0,
-              delay=stagger * k, crush=20)
+              delay=stagger * k, crush=20, home_wait=home_wait, impact=10)
         if k:
             st.rest.append((a - 2.0, 4.0))
     stroke = travel([(0, 1.0), (0, 5.0)], speed)              # 130 px: 20 frames
-    period = 2 * stroke + 2 * pause
-    far_open = pause + 2 * (3.42 * SQ / speed)
-    mid_open = pause + 2 * (1.77 * SQ / speed)
+    period = 2 * stroke + pause + home_wait
+    far_open = home_wait + 2 * (3.42 * SQ / speed)
+    mid_open = home_wait + 2 * (1.77 * SQ / speed)
     return Meta(tier="standard",
-                tells="rams in bays on alternating sides slam across, a wave every 4 s",
+                tells=f"rams in bays on alternating sides slam across, a wave every {period / 30:.1f} s",
                 answer=f"wait on the strip between rows (1.5 squares), cross each row as its ram goes home, on the "
                        f"side away from its bay: open {far_open / 30:.1f} s there ({mid_open / 30:.1f} s in the "
                        f"middle) for a {_walk(2 * TOUCH) / 30:.1f} s walk; the next row opens 0.67 s later",
-                careless=f"walking the middle at an even pace meets ~3 of 5 rams: each shoves you across the lane "
-                         f"and crushes you on the far wall, 20 + ~15 HP",
-                numbers=dict(stroke=_f(stroke), pause=pause, period=_f(period), stagger=stagger,
+                careless=f"walking the middle at an even pace meets about half the rams: each strikes (10), shoves "
+                         f"you across the lane and crushes you on the far wall (20): ~35 HP a ram",
+                numbers=dict(stroke=_f(stroke), pause=pause, home=home_wait, period=_f(period), stagger=stagger,
                              open_far=_f(far_open), open_mid=_f(mid_open)),
                 route=[(1, 4), (L, 4)])
 
@@ -139,7 +139,7 @@ def carousel(st):
     total = 0
     for k in range(n):
         path, total = loop_from(loop, k * 28 / n)
-        mover(st, f"C{k}", [block(st, *path[0])], path, speed, mode="loop", pause=0, sound=False)
+        mover(st, f"C{k}", [block(st, *path[0])], path, speed, mode="loop", pause=0, sound=False, impact=8)
     lap = total * SQ / speed
     gap = (total / n - 2 * TOUCH) * SQ / speed               # frames a point stays clear between two blocks
     st.rest += [(3.5, 5.0), (17.0, 5.0)]
@@ -149,8 +149,8 @@ def carousel(st):
                        f"north-west, walk with the flow round the island (14 squares) keeping your distance, and step "
                        f"out on the far side: {gap / 30:.1f} s of clear ring between blocks, and you walk 3.3 to "
                        f"their 3.0",
-                careless="walking in against the flow or into a passing block: shoved round the ring ahead of it, "
-                         "1 HP a frame, 30-80 HP before you can step out",
+                careless="walking in against the flow or into a passing block: struck (8) and shoved round the ring "
+                         "ahead of it, 1 HP a frame: 30-80 HP before you can step out",
                 numbers=dict(speed=speed, lap=_f(lap), every=_f(lap / n), clear=_f(gap)),
                 route=[(1, 5), (6, 5), (6, 2), (14, 2), (14, 5), (L, 5)])
 
@@ -206,7 +206,7 @@ def cross_traffic(st):
         per = sum(abs(loop[i][0] - loop[i - 1][0]) + abs(loop[i][1] - loop[i - 1][1]) for i in range(4))
         for k in range(n):
             path, total = loop_from(loop, k * per / n + t * per / (2 * n))
-            mover(st, f"T{t}{k}", [block(st, *path[0])], path, speed, mode="loop", pause=0, sound=False)
+            mover(st, f"T{t}{k}", [block(st, *path[0])], path, speed, mode="loop", pause=0, sound=False, impact=15)
         every = per / n * SQ / speed
     occupied = 2 * TOUCH * SQ / speed
     free = every - occupied
@@ -217,8 +217,8 @@ def cross_traffic(st):
                        f"a lane is clear {free:.0f} frames between blocks; a walk across takes {_walk(2 * TOUCH):.0f} "
                        f"(0.3 s spare), a run {_run(2 * TOUCH):.0f}; the strip between the tracks is wide enough "
                        f"to stand",
-                careless=f"walking straight across meets ~3 of 4 lanes: shoved along each at 5 px a frame toward the "
-                         f"turns, 1 HP a frame, 50-90 HP",
+                careless=f"walking straight across without waiting: struck in about half the lanes (15 a blow) and "
+                         f"shoved along toward the turns, 1 HP a frame: 40-90 HP",
                 numbers=dict(speed=speed, every=_f(every), occupied=_f(occupied), free=_f(free)),
                 route=[(1, W / 2), (6.75, W / 2), (10.25, W / 2), (13.75, W / 2), (L, W / 2)])
 
@@ -234,7 +234,7 @@ def runaway(st):
     pits(st, 13, 15, 5, 7)
     path = [(3.0, 4.0), (3.0, 2.0), (10.0, 2.0), (10.0, 6.0), (18.0, 6.0), (18.0, 2.0), (22.0, 2.0)]
     speed, start = 6.3, 8
-    mv = mover(st, "R", [block(st, 3.0, 4.0)], path, speed, mode="once", armed=False, crush=20)
+    mv = mover(st, "R", [block(st, 3.0, 4.0)], path, speed, mode="once", armed=False, crush=20, impact=15)
     run = travel(path, speed)
     back = start + run + 60
     rel = mv.replace(st.label, "")
@@ -253,8 +253,8 @@ def runaway(st):
                        f"stride: the block follows at {speed} px a frame against your 6.9 (a {_run(player) / 30:.1f} s "
                        f"run; {margin_pit * SQ / speed / 30:.2f} s to spare at the pits); it stops at the end and "
                        f"goes home 2 s later",
-                careless=f"walking: caught within ~2 s at the first bend, shoved ahead at 6.3 px a frame (1 HP a "
-                         f"frame) into the pit strip or to the end and crushed (20): 50-130 HP or the pit",
+                careless=f"walking: caught within ~2 s at the first bend, struck (15) and shoved ahead at 6.3 px a "
+                         f"frame (1 HP a frame) into the pit strip or to the end and crushed (20): 50-130 HP or the pit",
                 numbers=dict(speed=speed, run=_f(run), start=start, player_run=_f(_run(player)),
                              player_walk=_f(_walk(player))),
                 route=[(1, 2), (10, 2), (10, 6), (18, 6), (18, 2), (L, 2)])
@@ -262,33 +262,34 @@ def runaway(st):
 
 # ---- 08 ----------------------------------------------------------------------------------------------------------
 
-@pattern("block", size=(20, 10), tier="hard", title="Pendulums over the drop")
+@pattern("block", size=(24, 10), tier="hard", title="Pendulums over the drop")
 def pendulums(st):
-    """A two-square bridge over a pit field; three spike blocks swing across it on three different beats."""
+    """A two-square bridge over a pit field; four spike blocks swing across it, each on its own beat."""
     L, W = st.L, st.W
-    pits(st, 4, 16, 0, 4)
-    pits(st, 4, 16, 6, W)
+    pits(st, 4, 20, 0, 4)
+    pits(st, 4, 20, 6, W)
     lo, hi = 1.05, W - 1.05
-    swings = [(6.0, 5.5, 8), (9.5, 6.5, 6), (13.0, 4.8, 4)]
+    swings = [(6.0, 5.5, 8), (9.5, 6.5, 4), (13.0, 4.8, 4), (16.5, 6.0, 6)]
     info = []
     for k, (a, speed, pause) in enumerate(swings):
         home = lo if k % 2 == 0 else hi
         far = hi if k % 2 == 0 else lo
-        mover(st, f"P{k}", [block(st, a, home)], [(a, home), (a, far)], speed, pause=pause, sound=True)
+        mover(st, f"P{k}", [block(st, a, home)], [(a, home), (a, far)], speed, pause=pause, sound=True, impact=10)
         one = travel([(a, lo), (a, hi)], speed)
         between = one + pause
         danger = 2 * TOUCH * SQ / speed
         info.append((a, _f(between), _f(danger), _f(between - danger)))
     worst = min(i[3] for i in info)
-    st.rest += [(7.75, 5.0), (11.25, 5.0), (17.5, 5.0)]
+    st.rest += [(7.75, 5.0), (11.25, 5.0), (14.75, 5.0), (21.5, 5.0)]
     return Meta(tier="hard",
-                tells="a narrow bridge over pits, three spike blocks swinging across it",
-                answer=f"cross one swing at a time, waiting on the bridge between them (1 square clear): a swing "
-                       f"crosses the bridge every {info[0][1]}, {info[1][1]} and {info[2][1]} frames and is on it "
-                       f"for {info[0][2]}-{info[2][2]}; clear {worst}-{max(i[3] for i in info)} frames against a "
-                       f"{_walk(2 * TOUCH):.0f}-frame walk (0.3-0.6 s spare) or a {_run(2 * TOUCH):.0f}-frame run",
-                careless="walking the bridge at an even pace: ~98% are struck by one of the three, spiked and swept off "
-                         "the bridge into the pit",
+                tells="a narrow bridge over pits, four spike blocks swinging across it",
+                answer=f"cross one swing at a time, waiting on the bridge between them (1 square clear): the swings "
+                       f"cross the bridge every {', '.join(str(i[1]) for i in info)} frames and are on it "
+                       f"{min(i[2] for i in info)}-{max(i[2] for i in info)}; clear {worst}-{max(i[3] for i in info)} "
+                       f"frames against a {_walk(2 * TOUCH):.0f}-frame walk (0.2-0.6 s spare) or a "
+                       f"{_run(2 * TOUCH):.0f}-frame run: go the moment a swing has passed",
+                careless="walking onto the bridge without watching: struck by a swing (10) and swept off the bridge "
+                         "into the pit, about half the time; the rest wait where the blocks stop them and live",
                 numbers=dict(swings=info),
                 route=[(1, 5), (L, 5)])
 
@@ -304,7 +305,7 @@ def closing_room(st):
                     (9, L - 1, 9, 11), (L - 1, L, 0, W)))
     entry = wall_at(st, 4, 5, secret="open")
     exit_ = wall_at(st, 10, 8, secret="closed")
-    blocks = [block(st, 15.0, b) for b in (3.0, 5.0, 7.0)]
+    blocks = [block(st, 15.0, b, t) for b, t in ((3.0, "IronBlock"), (5.0, "SpikeBlock"), (7.0, "IronBlock"))]
     speed, start, hold = 1.15, 20, 20
     path = [(15.0, 3.0), (5.0, 3.0)]
     mv = mover(st, "W", blocks, path, speed, mode="once", armed=False, crush=30).replace(st.label, "")
@@ -326,16 +327,17 @@ def closing_room(st):
     run_to = _run(((12.0 - 4.6) ** 2 + 3.0 ** 2) ** 0.5)
     st.rest.append((7.0, 1.0))
     return Meta(tier="hard",
-                tells="a wall of spike blocks at the far end of a room; a lever in an alcove",
+                tells="a wall of iron and spike blocks at the far end; a lever in an alcove",
                 answer=f"the door slams as you enter and the wall creeps at you ({creep / 30:.1f} s to cross); go "
                        f"straight for the lever alcove: a walk gets there with {(reach - walk_to) / 30:.1f} s to "
                        f"spare, a run with {(reach - run_to) / 30:.1f}; pull the lever: the wall goes home and the "
                        f"side door opens for 12 s. Slow but safe: hide in the first alcove, let the wall pass and "
                        f"go home, follow it and pull the lever",
-                careless=f"staying in the open: pushed back against the shut door (1 HP a frame per block) and "
-                         f"crushed (30), held {hold / 30:.1f} s: 70-110 HP",
+                careless=f"staying in the open: pushed back against the shut door (the middle block's spikes: 1 HP "
+                         f"a frame) and crushed (30), held {hold / 30:.1f} s: 40-110 HP",
                 numbers=dict(creep=_f(creep), reach_alcove=_f(reach), walk_to=_f(walk_to), run_to=_f(run_to)),
-                route=[(1, 5), (5, 5), (11.5, 1.2), (12, 0.8), (10, 7.5), (10, 10), (L, 10)])
+                route=[(1, 5), (5, 5), (11.5, 2.2), (11.9, 1.1), (10, 6.5), (10, 9.5), (L - 1, 9.5), (L, 9.5)],
+                careless_route=[(1, 5), (15, 5)])
 
 
 # ---- 10 ----------------------------------------------------------------------------------------------------------
@@ -366,8 +368,8 @@ def gauntlet(st):
     rspeed, rpause, rstag = 8.0, 25, 15
     for k, a in enumerate(rams):
         home, far = (1.0, 5.0) if k % 2 == 0 else (7.0, 3.0)
-        mover(st, f"R{k}", [block(st, a, home)], [(a, home), (a, far)], rspeed, pause=rpause, armed=k == 0,
-              delay=rstag * k, crush=20)
+        mover(st, f"R{k}", [block(st, a, home)], [(a, home), (a, far)], rspeed, pause=6, armed=k == 0,
+              delay=rstag * k, crush=20, home_wait=rpause, impact=10)
     rstroke = travel([(0, 1.0), (0, 5.0)], rspeed)
     r_open = rpause + 2 * (3.42 * SQ / rspeed)
     # 3. rest: potions on the wide floor
@@ -381,7 +383,7 @@ def gauntlet(st):
     sw = []
     for k, (a, sp, pa) in enumerate(swings):
         home, far = (1.05, W - 1.05) if k % 2 == 0 else (W - 1.05, 1.05)
-        mover(st, f"S{k}", [block(st, a, home)], [(a, home), (a, far)], sp, pause=pa)
+        mover(st, f"S{k}", [block(st, a, home)], [(a, home), (a, far)], sp, pause=pa, impact=10)
         sw.append(_f(travel([(a, 1.05), (a, W - 1.05)], sp) + pa - 2 * TOUCH * SQ / sp))
     st.rest.append((30.0, 4.0))
     # 5. the vice: four blocks a side, open 2.3 s, shut 1 s

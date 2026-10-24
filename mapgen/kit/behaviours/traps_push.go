@@ -9,7 +9,8 @@ package PKG
 //     (HammerMissing, a small shake, and Crush damage to whoever is pinned against a block there: the game's own
 //     contact damage is only 1 HP a frame); a phase delay (the mover is armed Delay frames after the start, so rows
 //     of blocks run as a wave); a dwell at the start of the path (HomeWait) that differs from the far one (the
-//     mover's Pause), so a pusher can rest long at home and slam briefly;
+//     mover's Pause), so a pusher can rest long at home and slam briefly; Impact damage to a player the moving
+//     blocks strike (once a contact: a ram's blow, on top of the game's 1 HP a frame);
 //   - force fields (TrapForce): a box of floor that adds a force to every creature standing in it each frame (a
 //     conveyor belt; a gust of wind on a clock). A jumping player rides over it: the game sets a jumper's force
 //     itself every frame of the jump (object_update.go, PlayerState12), so the push is lost while airborne;
@@ -31,7 +32,9 @@ type trapPusher struct {
 	Delay    int  // frames after the start before the mover is armed (a phase offset)
 	HomeWait int  // frames at the start of the path (0: the mover's own Pause)
 	Sound    bool // SpikeBlockMove when it sets off, HammerMissing and a shake when it lands
+	Impact   int  // damage to a player a moving block of it strikes (once until he is clear of it again)
 	m        *trapMover
+	touch    map[int]bool
 	lastDir  int
 	lastDone bool
 	lastPos  ns.Pointf
@@ -183,6 +186,9 @@ func (p *trapPusher) step() {
 	if p.Sound && moved && !p.moving {
 		ns.AudioEvent(audio.SpikeBlockMove, pos)
 	}
+	if p.Impact > 0 {
+		p.strike(m, moved)
+	}
 	if (p.lastDir > 0 && m.dir < 0 && !p.back) || (!p.lastDone && m.done) {
 		if p.Sound {
 			ns.AudioEvent(audio.HammerMissing, pos)
@@ -193,6 +199,40 @@ func (p *trapPusher) step() {
 		}
 	}
 	p.lastDir, p.lastDone, p.lastPos, p.moving, p.seen = m.dir, m.done, pos, moved, true
+}
+
+// strike: a player newly touching one of the mover's blocks while it moves takes the Impact damage.
+func (p *trapPusher) strike(m *trapMover, moved bool) {
+	if p.touch == nil {
+		p.touch = map[int]bool{}
+	}
+	for k, pl := range ns.Players() {
+		u := pl.Unit()
+		if u == nil || u.CurrentHealth() <= 0 {
+			p.touch[k] = false
+			continue
+		}
+		q := u.Pos()
+		on := false
+		for _, o := range m.objs {
+			c := o.Pos()
+			dx, dy := q.X-c.X, q.Y-c.Y
+			if dx < 0 {
+				dx = -dx
+			}
+			if dy < 0 {
+				dy = -dy
+			}
+			if dx+dy < 56 {
+				on = true
+				break
+			}
+		}
+		if on && moved && !p.touch[k] {
+			u.Damage(nil, p.Impact, damage.IMPALE)
+		}
+		p.touch[k] = on
+	}
 }
 
 // trapCrush hurts every creature touching one of the mover's blocks (a 60x60 block is a diamond |dx|+|dy| < 42.4;

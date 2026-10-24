@@ -79,17 +79,19 @@ def block(st, a, b, type_="SpikeBlock"):
 
 
 def mover(st, s, objs, path, speed, mode="pingpong", pause=0, armed=True, delay=0, crush=0, home_wait=0,
-          sound=True):
+          sound=True, impact=0):
     """A mover (kit/traps.py) carrying `objs` along `path` (station squares) at `speed` px a frame, watched by
     traps_push.go: armed `delay` frames after the start (then `armed` should be False), `crush` damage to whoever
     is pinned against its blocks when it reaches the far end, `home_wait` frames at the start of the path
-    (pingpong; the far end keeps `pause`), its sounds."""
+    (pingpong; the far end keeps `pause`), `impact` damage to a player its moving blocks strike (once a contact),
+    its sounds."""
     name = f"{st.label}{s}"
     pts = [st.at(a, b) for a, b in path]
     st.T.mover(name, objs, pts, speed, mode=mode, pause=pause, armed=armed and not delay)
-    st.T.movers[name].update(delay=int(delay), crush=int(crush), home_wait=int(home_wait), path_ab=[list(p) for p in path])
+    st.T.movers[name].update(delay=int(delay), crush=int(crush), home_wait=int(home_wait), impact=int(impact),
+                             path_ab=[list(p) for p in path])
     st.T.starts.append(f"TrapPusher(trapPusher{{Mover: {json.dumps(name)}, Crush: {int(crush)}, Delay: {int(delay)}, "
-                       f"HomeWait: {int(home_wait)}, Sound: {str(bool(sound)).lower()}}})")
+                       f"HomeWait: {int(home_wait)}, Sound: {str(bool(sound)).lower()}, Impact: {int(impact)}}})")
     return name
 
 
