@@ -87,6 +87,23 @@ type spellVolley struct {
 	t0     int
 }
 
+// Ahead: a row of casts (Shots) set off when a player comes at the row at a pace that brings him to it within Fall
+// frames (a meteor's fall: a walker 3.2 squares off, a runner 6.8), so they land as he arrives; then the row
+// gathers for Cool frames. The box (C, U toward the row, HU, HV) is the row's approach; Row: the row's distance
+// along U from C. Standing still, stepping sideways or backing off never sets it off.
+type spellAhead struct {
+	Name  string
+	C     ns.Pointf
+	U     ns.Pointf
+	HU    float32
+	HV    float32
+	Row   float32
+	Fall  int
+	Cool  int
+	Shots []spellShot
+	cool  int
+}
+
 // A gate: while a player is in the box, its targets (volleys, hunts, clocks, zones) are armed; when the last
 // leaves they are disarmed (a volley or a clock starts its period again when armed): a station's spells run only
 // while someone is in it.
@@ -112,6 +129,7 @@ var (
 	spellHunts   []*spellHunt
 	spellVolleys []*spellVolley
 	spellGates   []*spellGate
+	spellAheads  []*spellAhead
 	spellTrack   = map[int]*spellPos{} // each player's last positions (ObjScriptID), for lead aiming
 	spellChain   []string              // glyphs to set off next frame
 )
@@ -130,6 +148,12 @@ func SpellVolley(v spellVolley) {
 	vv := v
 	vv.t0 = trapFrame
 	spellVolleys = append(spellVolleys, &vv)
+}
+
+func SpellAhead(a spellAhead) {
+	SpellTrapsOn()
+	aa := a
+	spellAheads = append(spellAheads, &aa)
 }
 
 func SpellGate(g spellGate) {
@@ -402,6 +426,35 @@ func spellTick() {
 		}
 		t.hist[t.n%len(t.hist)] = u.Pos()
 		t.n++
+	}
+	// rows that fall as you come at them
+	for _, r := range spellAheads {
+		if r.cool > 0 {
+			r.cool--
+			continue
+		}
+		for _, pl := range ns.Players() {
+			u := pl.Unit()
+			if u == nil || u.CurrentHealth() <= 0 || !spellInBox(r.C, r.U, r.HU, r.HV, u.Pos()) {
+				continue
+			}
+			t := spellTrack[u.ObjScriptID()]
+			if t == nil || t.n < 4 {
+				continue
+			}
+			p := t.hist[(t.n-1)%len(t.hist)]
+			q := t.hist[(t.n-4)%len(t.hist)]
+			vs := ((p.X-q.X)*r.U.X + (p.Y-q.Y)*r.U.Y) / 3
+			s := (p.X-r.C.X)*r.U.X + (p.Y-r.C.Y)*r.U.Y
+			if vs < 0.8 || s >= r.Row || (r.Row-s)/vs > float32(r.Fall) {
+				continue
+			}
+			for _, sh := range r.Shots {
+				spellCast(sh.Spell, sh.Lvl, spellSource(sh.Src, sh.From), sh.To)
+			}
+			r.cool = r.Cool
+			break
+		}
 	}
 	// gates: a station's spells armed while someone is in it
 	for _, g := range spellGates {
