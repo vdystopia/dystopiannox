@@ -817,6 +817,25 @@ def q2_chests_scattered(m):
     m.obj("Chest3", 206, -9.2); m.obj("Chest3", 214, -9.2)
 
 
+# ---- QA round 3, the barracks' chests (validate/checks.py qa2_space_flags; review/qa3/ledger-rooms.md Q3R-6..8) --------
+def q3_chests_sideways(m):
+    _declare(m, "barracks")                                    # Q3R-6: RM-BARRACKS-01 "perpendicular to the beds"
+    for u in (203, 207, 211):
+        m.obj("Cot2", u, 8.4); m.obj("Chest4", u, 5.75)       # the NW wall's chest at the foot of a bed headed NE
+
+
+def q3_chests_far(m):
+    _declare(m, "barracks")                                    # Q3R-7: RM-BARRACKS-02 "slightly closer to the three beds"
+    for u in (203, 207, 211):
+        m.obj("Cot2", u, 8.4); m.obj("Chest3", u, 5.65)       # facing away, 0.6 units off the foot
+
+
+def q3_pair_gap_bare(m):
+    _declare(m, "barracks")                                    # Q3R-8: RM-BARRACKS-03 "the empty gap between the pairs"
+    for u in (203, 205, 209, 211):
+        m.obj("Cot2", u, 8.4); m.obj("Chest3", u, 6.05)       # two pairs of beds, a chest snug at every foot, none between
+
+
 def q2_ogre_pen_in_house(m):
     _declare(m, "ogre_pen")                                    # Q2F-6: "This is using human buildings and floors"
     m.obj("OgreStraw1", 204, 6)
@@ -1321,6 +1340,12 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq2Mid", q2_bench_mid, "rooms", "warning", "a bench alone mid-floor - Q2T-5", "alone in the middle"),
     ("STq2Lin", q2_chests_unlined, "rooms", "warning", "two chests at two depths on one wall - Q2T-5", "not lined up"),
     ("STq2Chs", q2_chests_scattered, "rooms", "warning", "a barracks' chests off the beds' feet - Q2F-2", "at a bed's foot"),
+    ("STq3Fac", q3_chests_sideways, "rooms", "warning", "a barracks' foot chests side-on to their beds - Q3R-6",
+     "not away from the bed"),
+    ("STq3Far", q3_chests_far, "rooms", "warning", "a barracks' foot chests 0.6 units off the beds - Q3R-7",
+     "units off the foot of"),
+    ("STq3Gap", q3_pair_gap_bare, "rooms", "warning", "two pairs of beds with no chest between them - Q3R-8",
+     "holds no chest"),
     ("STq2Ogr", q2_ogre_pen_in_house, "rooms", "warning", "an ogre pen in a town house - Q2F-6", "a town house's"),
     ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
     ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),

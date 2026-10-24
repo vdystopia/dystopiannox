@@ -4615,12 +4615,24 @@ def qa2_space_flags(m, r, kind):
     objs = [o for o in r["objects"] if "MONSTER" not in o["cls"] and not m.is_door(o)]
     solid = [o for o in objs if m.blocking(o)]
     flags = []
+    runs0 = room_runs(m, r["cells"])
+    # (a chest at a bed's foot is the bed's own piece, snug against it: QA round 3, Q3R-7)
+    beds0 = [o for o in solid if QA1_BED.match(o["type"])]
+    heads = {id(b): bed_head(b, runs0) for b in beds0}
+    foot_of = {}                                     # id(chest) -> (bed, gap from its foot)
+    for c in solid:
+        if not QA1_CHEST.match(c["type"]): continue
+        for b in beds0:
+            h = heads[id(b)]
+            g = foot_chest_gap(c, b, h[2]) if h else None
+            if g is not None: foot_of[id(c)] = (b, g); break
     # Q2T-4: gaps (each piece faulted once, at its closest offender)
     seen = set()
     for i, a in enumerate(solid):
         for b in solid[i + 1:]:
             need = GP.need(a["type"], b["type"])
             if not need or id(a) in seen and id(b) in seen: continue
+            if foot_of.get(id(a), (None,))[0] is b or foot_of.get(id(b), (None,))[0] is a: continue
             g = _edge(a, b)
             if g < need - 0.05:
                 big = GP.BIG.match(GP.base(a["type"])) or GP.BIG.match(GP.base(b["type"]))
@@ -4662,9 +4674,36 @@ def qa2_space_flags(m, r, kind):
             o = max(ps, key=lambda p: p[0])[1]
             flags.append(("qa2_wall", f"{len(ps)} {k}s on one wall at depths {min(gs):.2f}-{max(gs):.2f}: not lined up",
                           o))
-    # Q2F-2: a barracks' chests in one of the user's two arrangements
+    # QA round 3 (Q3R-6, Q3R-7): a chest at a bed's foot faces away from the bed, its back to it; a barracks' stands
+    # snug at the foot
+    if rtype in QA3_FOOT_TYPES:
+        for c in solid:
+            if id(c) not in foot_of: continue
+            b, g = foot_of[id(c)]
+            d = heads[id(b)][2]
+            front = CHEST_FRONT.get(GP.base(c["type"]))
+            if front and front != d:
+                flags.append(("qa3_foot_chest", f"{c['type']} at the foot of {b['type']} faces {DIR_NAME[front]}, "
+                              f"not away from the bed ({DIR_NAME[d]})", c))
+            elif rtype == "barracks" and g > QA3_FOOT_SNUG[d in ((1, 0), (0, -1))]:
+                flags.append(("qa3_foot_chest", f"{c['type']} stands {g:.2f} units off the foot of {b['type']} (at "
+                              f"most {QA3_FOOT_SNUG[d in ((1, 0), (0, -1))]:.2f})", c))
+    # QA round 3 (Q3R-8): a paired row of a barracks' beds has a chest in every gap between its pairs
+    between = set()
     if rtype == "barracks":
-        chests = [o for o in solid if QA1_CHEST.match(o["type"])]
+        chests_ = [o for o in solid if QA1_CHEST.match(o["type"])]
+        for line, coord, a0, a1, b in bed_pair_gaps(beds0, heads):
+            inside = [c for c in chests_ if a0 < (uv_of(c)[1] if line == "/" else uv_of(c)[0]) < a1 and
+                      abs((uv_of(c)[0] if line == "/" else uv_of(c)[1]) - coord) < 1.6]
+            between.update(id(c) for c in inside)
+            if not inside and a1 - a0 >= QA3_GAP_CHEST:
+                name = ("NW" if coord < cu else "SE") if line == "/" else ("NE" if coord > cv else "SW")
+                flags.append(("qa3_pair_gap", f"the {a1 - a0:.1f}-unit gap between two pairs of beds on the {name} wall "
+                              f"holds no chest", b))
+    # Q2F-2: a barracks' chests in one of the user's two arrangements (the chests between the pairs of beds, Q3R-8,
+    # stand against the wall beside them, apart from both)
+    if rtype == "barracks":
+        chests = [o for o in solid if QA1_CHEST.match(o["type"]) and id(o) not in between]
         if len(chests) == 1:
             w = _against(chests[0], runs, cu, cv, m, reach=GP.MID_FLOOR, across=True)
             if not w or w[1] > GP.FLUSH:
@@ -4689,6 +4728,73 @@ def qa2_space_flags(m, r, kind):
 
 
 QA2_FOOT_CHESTS = 6          # kit/finish.py BARRACKS_FOOT_CHESTS
+# QA round 3 (review/qa3/ledger-rooms.md Q3R-6..8; kit/finish.py _barracks_chests): RM-BARRACKS-01 "The chests are
+# perpendicular to the beds. Change the way they are facing so that their back is to the bed and their front is facing
+# away from the bed"; 02 "Move the three chests slightly closer to the three beds"; 03 "Add another chest in the empty
+# gap between the pairs of beds". A chest's front by its variant (Westwood's numbering, kit/finish.py CHEST_ON_WALL):
+# Chest1 faces NW (-u), Chest2 NE (+v), Chest3 SW (-v), Chest4 SE (+u)
+CHEST_FRONT = {"Chest1": (-1, 0), "Chest2": (0, 1), "Chest3": (0, -1), "Chest4": (1, 0)}
+DIR_NAME = {(1, 0): "SE", (-1, 0): "NW", (0, 1): "NE", (0, -1): "SW"}
+QA3_FOOT_TYPES = {"barracks", "bedroom"}     # the rooms whose chests stand at beds' feet (the facing rule)
+# units a barracks' foot chest stands off its bed's foot at most: [a foot away from the camera (NE, NW), toward it (SE,
+# SW)]; a bed's sprite is drawn above its footprint, so the second reads further off (kit/finish.py FOOT_CHEST_GAPS)
+QA3_FOOT_SNUG = (0.65, 0.35)
+QA3_FOOT_REACH = 1.2         # a chest in line with a bed and this near its foot stands at its foot
+QA3_FOOT_INTO = 0.7          # ... or reaching this far into the footprint's end, which a cot's drawing leaves empty
+QA3_PAIR_SLACK = 0.3         # kit/finish.py PAIR_SLACK: a gap between pairs is a bed's width (less this) over the tightest
+QA3_GAP_CHEST = 1.9          # a gap between pairs this wide holds a chest and its clear gaps
+
+
+def bed_head(b, runs):
+    """(line, coord, foot direction (du, dv)) of the wall a bed's head stands against (its long axis across the wall,
+    its end within 0.8 units of the wall line), or None."""
+    u, v = uv_of(b)
+    hu, hv = _half_uv(b)
+    best = None
+    for (line, coord), (lo, hi) in runs.items():
+        if line == "/":                          # a wall of constant u: the bed lies along u, across it
+            if hu <= hv or not lo - 0.5 <= v <= hi + 0.5: continue
+            gap, d = abs(u - coord) - hu, (1 if u > coord else -1, 0)
+        else:
+            if hv <= hu or not lo - 0.5 <= u <= hi + 0.5: continue
+            gap, d = abs(v - coord) - hv, (0, 1 if v > coord else -1)
+        if -0.3 < gap <= 0.8 and (best is None or gap < best[3]): best = (line, coord, d, gap)
+    return best[:3] if best else None
+
+
+def foot_chest_gap(c, b, d):
+    """The gap from bed b's foot (its foot toward d) to chest c when c stands at that foot, in line with the bed, else
+    None."""
+    cu, cv = uv_of(c); bu, bv = uv_of(b)
+    chu, chv = _half_uv(c); bhu, bhv = _half_uv(b)
+    if d[0]:
+        if abs(cv - bv) > bhv: return None
+        g = (cu - bu) * d[0] - bhu - chu
+    else:
+        if abs(cu - bu) > bhu: return None
+        g = (cv - bv) * d[1] - bhv - chv
+    return g if -QA3_FOOT_INTO <= g <= QA3_FOOT_REACH else None
+
+
+def bed_pair_gaps(beds, heads):
+    """[(line, coord, a0, a1, bed)]: the gaps between the pairs of each row of beds headed on one wall, from one bed's
+    side to the next's: a bed's place left out, a bed's width (less QA3_PAIR_SLACK) wider than the row's tightest gap
+    (an evenly spaced row has none)."""
+    rows = collections.defaultdict(list)
+    for b in beds:
+        h = heads.get(id(b))
+        if not h: continue
+        u, v = uv_of(b); hu, hv = _half_uv(b)
+        rows[h[:2]].append((v, hv, b) if h[0] == "/" else (u, hu, b))
+    out = []
+    for (line, coord), row in rows.items():
+        row.sort(key=lambda x: x[0])
+        gaps = [(row[i][0] + row[i][1], row[i + 1][0] - row[i + 1][1], row[i][2]) for i in range(len(row) - 1)]
+        if not gaps: continue
+        tight = min(a1 - a0 for a0, a1, _ in gaps)
+        width = 2 * min(h for _, h, _ in row)
+        out += [(line, coord, a0, a1, b) for a0, a1, b in gaps if a1 - a0 >= tight + width - QA3_PAIR_SLACK]
+    return out
 
 
 QA2_TEXT = {
@@ -4698,6 +4804,10 @@ QA2_TEXT = {
                 "(Q2T-5)",
     "qa2_chests": "a barracks keeps one chest against a wall, or (six beds or fewer) one at every bed's foot (Q2F-2)",
     "qa2_ogre_shell": "an ogre room stands in the ogres' own walls and floors, never a town house's (Q2F-6)",
+    "qa3_foot_chest": "a chest at a bed's foot has its back to the bed and its front away from it, snug at the foot "
+                      "(Q3R-6, Q3R-7)",
+    "qa3_pair_gap": "where a barracks' beds stand in pairs, a chest stands against the wall in every gap between the "
+                    "pairs (Q3R-8)",
 }
 
 
@@ -4718,6 +4828,8 @@ def check_qa2_space(m, ctx, base):
 RULES += [("rooms.qa2_gap", "rooms", r"separate pieces never touch", "Q2T-4"),
           ("rooms.qa2_wall", "rooms", r"stand flush against their wall", "Q2T-5"),
           ("rooms.qa2_chests", "rooms", r"keeps one chest against a wall", "Q2F-2"),
-          ("rooms.qa2_ogre_shell", "rooms", r"the ogres' own walls and floors", "Q2F-6")]
-_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-4:]]
+          ("rooms.qa2_ogre_shell", "rooms", r"the ogres' own walls and floors", "Q2F-6"),
+          ("rooms.qa3_foot_chest", "rooms", r"has its back to the bed and its front away", "Q3R-6 Q3R-7"),
+          ("rooms.qa3_pair_gap", "rooms", r"in every gap between the pairs", "Q3R-8")]
+_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-6:]]
 ALL.append(check_qa2_space)
