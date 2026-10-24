@@ -2676,6 +2676,25 @@ def hall_nave(c, ax, side, first=5.4, step=4.0, end=2.4):
     return best
 
 
+HALL_FOCAL = (r"^Fountain$", r"^OrbPoolWithOrb$", r"^Orrery2$", r"^Statue2[aceg]$")
+
+
+def hall_focal(c, ax):
+    """A wide hall's focal piece on its axis a few units before the far wall, where the walk from the door ends: a
+    fountain, an orb pool, an orrery or a great statue, the first that stands there. Returns the piece or None."""
+    f = c.f
+    for pat in HALL_FOCAL:
+        t = c.pick(pat)
+        if not t: continue
+        h = max(f.half(t))
+        for d_ in (2.6 + h, 3.2 + h, 3.8 + h, 4.6 + h):
+            o = c.put(t, *on_axis(c, ax, d_))
+            if o:
+                c.log.append(f"hall focal {t} at {d_:.1f}")
+                return o
+    return None
+
+
 def hall(c, plan):
     """A colonnade in mirrored pairs either side of the aisle from the door, statues and braziers between the columns,
     benches and urns mirrored by the side walls, a statue pair flanking the middle of the far wall, lights in matching
@@ -2713,20 +2732,34 @@ def hall(c, plan):
         wide = side - 1 >= HALL_WIDE
         io = hall_nave(c, ax, side, step=4.0 if c.tiles >= 130 else 3.4) if wide else None
         mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", 2.6, (io - 0.4) if wide else 3.2)
-        stations(c, ax, [r"^Column[5-8]$", r"^Statue2[a-h]$", r"^Column[5-8]$", r"^Brazier$"],
-                 [r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$"] + ([] if wide else [VASE]),
+        if wide:
+            # (the coordinator's look at qa4: RM-HALL-01/03 had gone sparse) a wide hall is as full as the long halls:
+            # its focal piece on the axis before the far wall, the walls lined with benches, urns and plants in turn
+            # (two urns a side at most, so they never stand as another rank of statues), urns flanking the way in
+            hall_focal(c, ax)
+            # and the nave between the colonnades carpeted from the focal piece to the way in, so the middle reads as
+            # the hall's walk rather than bare floor
+            broad_carpet(c, ax, 4.0, ax["depth"] - 1.0, io - 1.8)
+        # (a narrow hall draws its pieces in the order it did, so 02, 04 and 05, rated as they were, stay as they were)
+        pl = c.pick_once(r"^(Plant1|Plant3|Plant4|Plant5)$") if wide else None
+        bench = r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$"
+        outer = [bench, VASE, bench, ("^" + re.escape(pl) + "$") if pl else VASE] if wide else [bench, VASE]
+        stations(c, ax, [r"^Column[5-8]$", r"^Statue2[a-h]$", r"^Column[5-8]$", r"^Brazier$"], outer,
                  first=5.4, step=4.0 if c.tiles >= 130 else 3.4, light_inner=True, inner_off=io, exact=wide)
-        if not wide: way_in_urns(c, ax)
-        # plants in the far corners (rules/rooms/hall.md: "plants in the corners")
-        pl = c.pick_once(r"^(Plant1|Plant3|Plant4|Plant5)$")
+        way_in_urns(c, ax)
+        if not wide: pl = c.pick_once(r"^(Plant1|Plant3|Plant4|Plant5)$")
+        # plants in the far corners (rules/rooms/hall.md: "plants in the corners"), and the near ones in a wide hall
         reach = min(ax["mid"] - (c.vW if r["line"] == "/" else c.uN), (c.vE if r["line"] == "/" else c.uS) - ax["mid"])
         if pl:
             for d_, o_ in ((1.3, reach - 1.3), (1.8, reach - 1.8), (2.4, reach - 2.4)):
                 if mirrored(c, ax, pl, d_, o_): break
+            if wide:
+                for d_, o_ in ((ax["depth"] - 1.3, reach - 1.3), (ax["depth"] - 1.8, reach - 1.8)):
+                    if mirrored(c, ax, pl, d_, o_): break
     else:
         f.colonnade(gap=4.2, aisle=3.2)
     c.corner_lights(("W", "E"), 1.0)
-    c.lights_balanced(4 if c.tiles >= 150 else 2)
+    c.lights_balanced(6 if c.tiles >= 240 else 4 if c.tiles >= 150 else 2)
     col = c.rng.choice(("Blue", "Red", "Green", "White"))
     c.hangings(rf"^{col}Tapestry\d$" if c.f.style != "dunmir" else r"^DunMirHangingShield\d+$",
                step=3.6, most=6)
