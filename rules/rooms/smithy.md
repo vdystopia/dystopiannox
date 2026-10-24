@@ -100,3 +100,26 @@ The smith behind his counter (the furnisher's keeper spot, StoryMap.shops), else
   two stools; coverage 0.06. The racks stand against the back walls, never in rows dead centre (the shop's independent
   judge: rows read as generated); the stores heap as a store's (`store_heaps`, water barrels leading). The counter
   stays (the user: the smith behind his counter).
+
+## QA round 3 (2026-10-23; review/qa3/ledger-rooms.md Q3R-9, Q3R-10)
+
+Rated 4.6: 02, 03, 05 kept at 5. RM-SMITHY-04: "A little overcrowded with objects reduced by 10%". RM-SMITHY-01: Fix
+at 4 with no note.
+
+- **The fault, read off the pictures and the maps**: 01 (81 tiles) and 04 (80) are the set's two rooms of 80-99 tiles,
+  and they were its fullest: 29 pieces each, 0.36 a tile, against 0.33 for 02 and 05 and 0.31 for 03. Three of the
+  top-up's rules met in that band: a tenth more pieces from 80 tiles (round 1's "more in large rooms"), which the walls
+  could not hold, so 12 of each room's pieces were extras set beside whatever stood, the middle's stacks too (from 100
+  tiles the extras had gone on the walls only since round 2). 01's middle read as two rows of barrels, 22 of its 29
+  pieces barrels, its walls holding one rack; 04's middle a scatter of kegs round its stacks. 01's fault is taken to be
+  04's: crowded with barrels mid-floor.
+- **Rule**: a smithy's stock stands by its walls, with a stack or two of it in the middle on the axis; at most 0.12
+  barrels and crates a floor tile out on the floor (more than 2 units from every wall). In the 80-99 band no tenth more
+  (`SPEC["smithy"] bump_from=100`: the user's 10%), the extras only beside a piece against a wall and against it too
+  (`extras_by_walls`, `EXTRA_WALL_REACH`), then racks and armour stands on the bare walls before any more barrels
+  (`wall_extras`), and where the walls hold no more, the smith's work table with its stools in the barest part of the
+  floor (`band_group`: the brief's "a work table with a stool"). Rooms under 80 tiles and from 100 are as round 3 (02,
+  03, 05 identical).
+- **Checked by** `composition.mid_stock` (planted STq3mid; round 3's 01 and 04 fail it, 02, 03, 05 pass). Pictures:
+  review/out/roomlab/smithy/qa4/renders/ (01: 23 pieces, 14 kinds, an armour stand, the work table; 04: 24 pieces, two
+  pole-arm racks).

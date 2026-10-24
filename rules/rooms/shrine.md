@@ -116,3 +116,33 @@ Westwood's five shrines (curated: Con07D, Wiz02B, Wiz11A's three) are built roun
   else a basin of fire, else bare floor (Westwood's: a key or a spell book). Clear of the doors' lines (GW-7).
 - Candelabras in the corners, a chest, a tapestry or two; **no plants, no statues of the town's kind.**
 - **The Land of the Dead's** niche is a shrine by its mana obelisks; the lich god's statue only where it fits.
+
+## QA round 3 (2026-10-23, ledger `review/qa3/ledger-rooms.md` Q3R-2..5)
+
+The user (mean 4.2, all kept: 4, 3, 5, 5, 4), of the whole set: "Good, but stop using that same altar so often, as I've
+said before in other sets. Use alternate objects instead of that altar in every single [one]" (the note is cut off
+there). **Recurring**: round 2's chapels (Q2S-1, "Every single one of these chapels has the same square stone altar").
+
+- **The cause**: every light shrine took Dun Mir's square stone altar (DunMirAltar1) as its holy thing, in the middle of
+  its square of obelisks (`shrine_square`) or on the far wall (`step_altar_wall`): both took the first of the same
+  list; every dark shrine kept the recipe's lich god's statue. The chapel's fix (`CHAPEL_ALTARS`) had not reached them.
+- **The holy thing varies over a map's shrines** in strict rotation (`kit/works.py SHRINE_HOLY`, `DARK_HOLY`, drawn by
+  `kit/sacred.py _spread`: no option twice while another that fits is unused). A shrine: the stone altar; a sacred
+  fire (a brazier, as Westwood's shrines without the floor for an altar keep a basin of fire); the warrior saint's
+  great statue facing the door (HorrendousStatue1 on a NW wall, 2 on a NE wall); Dun Mir's golden wolf on its plinth
+  (drawn looking SE: across a NW wall, at a SE door); the holy font (the orb pool); a saint's tomb along the axis, its
+  foot to the door. A dark shrine: the lich god's statue; the Land of the Dead's ark; the scales of judgement; a bier
+  (a sarcophagus along the axis); the burning heap of skulls (LOTDFlamingSkullsStatic).
+- **Where it stands**: in the middle of the square of obelisks when it fits there (the rotation's pick, else an option
+  no shrine of the map has used yet); where none fits, a brazier's fire in the square and the pick on the far wall in
+  line with it, alone (no more obelisks beside it). Without a square, on the far wall in line with the door when that
+  is a back wall, else centred on a back wall's longest bare stretch, turned for the wall it stands on; the recipe's
+  own (a dark shrine's lich statue) is taken up first. The obelisks, basins, candles, tapestries and runner stay as
+  they were (round 3's 04 is round 3's room with a brazier for its altar).
+- **Other types**: the chapel varies its altar since round 2 (`CHAPEL_ALTARS`), the mana room its rings' centres
+  (`MANA_CENTRES`, the stone altar one of five), the coven its own (`COVEN_ALTARS`). The outdoor shrine's open-chapel
+  arrangement (`kit/setpieces.py SHRINE_CENTRE`) and the waystone scene (`kit/scenes.py`, Westwood's own) keep a stone
+  altar as one choice among others.
+- **Checked by** `sacred.altar_kind`, extended to shrines (planted STsShrA): a map's shrines, light and dark together,
+  share a holy thing (the largest of the holy pieces in each) no more than ceil(shrines / 5) times; round 3's lab (3 of
+  5 stone altars) fails it. Pictures: review/out/roomlab/shrine/qa4/renders/.

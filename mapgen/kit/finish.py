@@ -146,8 +146,20 @@ def remove(f, objs):
     for o in objs: f._remove(o)
 
 
+# A chest's variant by the wall at its back, its front into the room: Westwood's numbering (kit/furnish.py SCHEMES and
+# camps.CHEST_BACK: Chest1 on SE walls, Chest2 SW, Chest3 NE, Chest4 NW; Chest1 and 4 lie along v, Chest2 and 3 along u).
+# The mined rule (rules/out/decoration.json, Chest's use_variant_for_wall_side) names Chest4 for a SW wall from 3.5
+# weighted uses: the NW wall's chest, drawn side-on to a SW wall. So a bed headed on a SW wall had its foot chest
+# perpendicular to it (QA round 3, RM-BARRACKS-01: "The chests are perpendicular to the beds. Change the way they are
+# facing so that their back is to the bed and their front is facing away from the bed"; Q3R-6): the chest at a bed's
+# foot is the head wall's chest, its back toward the bed, for every wall a bed can head on.
+CHEST_ON_WALL = {"/|TL": "Chest1", "\\|TR": "Chest2", "\\|BL": "Chest3", "/|BR": "Chest4"}
+
+
 def variant(f, base, side):
-    """The piece of `base` (Chest, Nightstand, Bookcase...) for a wall side, as the furnisher numbers it."""
+    """The piece of `base` (Chest, Nightstand, Bookcase...) for a wall side, as the furnisher numbers it (a chest: its
+    back to that wall, CHEST_ON_WALL)."""
+    if base == "Chest" and side in CHEST_ON_WALL and f.ok_type(CHEST_ON_WALL[side]): return CHEST_ON_WALL[side]
     t = f.variant_for_side(base, side) if base in f.dirvar else None
     return t or f.along_variant(base + "1", side)
 
@@ -1383,16 +1395,20 @@ def _barracks_chests(f, rng):
     """The barracks' chests in one of the user's two arrangements (QA round 2, the barracks set: "if there is one
     treasure chest, put it against the wall. If there are 6 or fewer beds, multiple treasure chests can be placed, put
     them at the foot of every bed facing away from the bed"; RM-BARRACKS-01/03/05 "fix chest"): with BARRACKS_FOOT_CHESTS
-    beds or fewer, a chest at every bed's foot, its back to the bed (the variant for the bed's head wall), all or none;
-    else (or when a foot has no room) one chest flush against a wall, centred on its free stretch."""
+    beds or fewer, a chest at every bed's foot, its back to the bed (the variant for the bed's head wall, CHEST_ON_WALL),
+    snug (FOOT_CHEST_GAPS), all or none; else (or when a foot has no room) one chest flush against a wall, centred on
+    its free stretch. Where the beds stand in pairs, a chest flush on the head wall in every gap between the pairs too,
+    and then no other chest against a wall (QA round 3, Q3R-6..8)."""
     remove(f, [o for o, _, _ in items(f, CHEST)])
     beds = items(f, BED)
+    between = _pair_gap_chests(f, beds)          # (QA round 3: a chest in every gap between pairs of beds, Q3R-8)
     if beds and len(beds) <= BARRACKS_FOOT_CHESTS:
         got = []
         for bed in beds:
             w = head_wall(f, bed)
             if not w: break
             r, a, _ = w
+            # (the head wall's chest: its back to the bed, its front away from it, CHEST_ON_WALL; QA round 3, Q3R-6)
             c = variant(f, "Chest", r["side"])
             if not c or not f.ok_type(c): break
             rec = bed[2]
@@ -1400,8 +1416,10 @@ def _barracks_chests(f, rng):
             chp = halves_on(r, (0, 0) + f.half(c))[1]
             foot = perp_of(r, rec[0], rec[1]) + bhp
             o = None
-            for gap in (0.5, 0.6, 0.8):
-                o = free_put(f, c, *uv_on(r, foot + gap + chp, along_of(r, rec[0], rec[1])))
+            # snug at the foot (QA round 3, RM-BARRACKS-02: "Move the three chests slightly closer to the three beds";
+            # round 3's chests stood 0.5 units off; Q3R-7): the bed's own piece, held to no gap from it
+            for gap in FOOT_CHEST_GAPS[r["side"] in BACK]:
+                o = free_put(f, c, *uv_on(r, foot + gap + chp, along_of(r, rec[0], rec[1])), unit=rec)
                 if o: break
             if not o:
                 if os.environ.get("NOX_FINISH_DEBUG"):
@@ -1411,21 +1429,87 @@ def _barracks_chests(f, rng):
                           [(tt, round(rr[0] - u, 1), round(rr[1] - v, 1)) for tt, rr in f._typed if abs(rr[0] - u) < 2 and abs(rr[1] - v) < 2])
                 break
             got.append(o)
-        if os.environ.get("NOX_FINISH_DEBUG"): print("footchests", f.room.id, len(beds), len(got))
-        if beds and len(got) == len(beds): return got
+        if os.environ.get("NOX_FINISH_DEBUG"): print("footchests", f.room.id, len(beds), len(got), "between", len(between))
+        if beds and len(got) == len(beds): return got + between
         remove(f, got)
+    # (the chests between the pairs stand against the head wall: with them, no other chest; else one flush on a wall)
+    if between: return between
     for sides in (BACK, tuple(WALL_NAME)):
         o = centre_on_back(f, rng, "Chest", min_len=2.0, sides=sides)
         if o: return [o]
     return []
 
 
-def free_put(f, t, u, v):
+# units between a barracks bed's foot and its chest, the snuggest that fits (Q3R-7), by where the foot points. A cot is
+# drawn shorter than its footprint (some 40 of its 60 px) and above it, a chest on its own: at a foot toward the camera
+# (a bed headed on a back wall, NE or NW: its foot SW or SE) the drawn foot stands some 25 px above its footprint's end,
+# so a chest there reads a unit further off than its footprint stands (round 3's 0.5 units read as half again a chest's
+# length off the foot, RM-BARRACKS-02 "Move the three chests slightly closer to the three beds"); at a foot away from it
+# (headed on a front wall) the drawn foot comes that much nearer. So a chest at a foot toward the camera reaches into
+# the footprint's empty end, its front just past it (a negative gap); at one away it keeps a clear gap. Westwood's own
+# chests stand 0.13-0.44 off a foot toward the camera, 1.1-1.4 off one away. [headed on a front wall, on a back wall]
+FOOT_CHEST_GAPS = ((0.35, 0.45, 0.6), (-0.55, -0.4, -0.25, -0.1, 0.02))
+# a row's gap between pairs of beds: a bed's place left out (the knowledge base's runs of two beds along a wall set a
+# close row in pairs, as round 3's RM-BARRACKS-03: gaps of 1.0 and 3.9 units in turn), at least a bed's width (less
+# PAIR_SLACK) wider than the row's tightest gap; an evenly spaced row has none (Q3R-8)
+PAIR_SLACK = 0.3
+
+
+def _pair_gap_chests(f, beds):
+    """A chest flush on the head wall in every gap between the pairs of a paired row of beds, its back to the wall,
+    centred in the gap (QA round 3, RM-BARRACKS-03: "Add another chest in the empty gap between the pairs of beds";
+    round 3's one chest flush on the wall had stood in one of the two gaps; Q3R-8): bed_pair_gaps. Returns the chests
+    placed."""
+    got = []
+    for r, a0, a1 in bed_pair_gaps(f, beds):
+        c = variant(f, "Chest", r["side"])
+        if not c or not f.ok_type(c): continue
+        ha, hp = halves_on(r, (0, 0) + f.half(c))
+        if a1 - a0 < 2 * ha + 2 * 0.4: continue
+        o = free_put(f, c, *uv_on(r, hp + 0.3, (a0 + a1) / 2))
+        if o: got.append(o)
+    return got
+
+
+def bed_pair_gaps(f, beds):
+    """[(head wall run, a0, a1)]: the gaps between the pairs of each row of beds headed on one wall (along the wall,
+    from one bed's side to the next's): a bed's place left out, a bed's width (less PAIR_SLACK) wider than the row's
+    tightest gap."""
+    rows = {}
+    for bed in beds:
+        w = head_wall(f, bed)
+        if not w: continue
+        r = w[0]
+        rec = bed[2]
+        rows.setdefault(id(r), (r, []))[1].append((along_of(r, rec[0], rec[1]), halves_on(r, rec)[0]))
+    out = []
+    for r, row in rows.values():
+        row.sort()
+        gaps = [(row[i][0] + row[i][1], row[i + 1][0] - row[i + 1][1]) for i in range(len(row) - 1)]
+        if not gaps: continue
+        tight = min(b - a for a, b in gaps)
+        width = 2 * min(h for _, h in row)
+        out += [(r, a, b) for a, b in gaps if b - a >= tight + width - PAIR_SLACK]
+    return out
+
+
+def free_put(f, t, u, v, unit=None):
     """A piece placed where its footprint fits, keeps its gaps (kit/gaps.py) and leaves the room walkable, the
-    knowledge base's room caps aside (a barracks' chest at every bed's foot, Q2F-2)."""
+    knowledge base's room caps aside (a barracks' chest at every bed's foot, Q2F-2). unit: the footprint record of the
+    piece it belongs to (a foot chest's bed), held to no gap from it and free to reach into its footprint's end (a
+    cot is drawn shorter than its footprint: FOOT_CHEST_GAPS)."""
     if not f.ok_type(t): return None
     hu, hv = f.half(t)
-    if not f.g.fits(u, v, hu, hv, True, False, 0.1) or not f._gaps_ok(t, u, v, hu, hv, True, "floor"): return None
+    saved = f._group
+    f._group = [unit] if unit is not None else saved
+    k = next((i for i, p in enumerate(f.g.placed) if p is unit), None) if unit is not None else None
+    if k is not None: del f.g.placed[k]
+    try:
+        if not f.g.fits(u, v, hu, hv, True, False, 0.1, touch=unit is not None) or \
+                not f._gaps_ok(t, u, v, hu, hv, True, "floor"): return None
+    finally:
+        f._group = saved
+        if k is not None: f.g.placed.insert(k, unit)
     if not f.g.reachable_ok((u, v, hu, hv, True, "floor")): return None
     return f.put(t, u, v, True)
 

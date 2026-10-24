@@ -119,3 +119,30 @@ corner"; -03 "Slightly too much armor and weaponry in the south corner". Now (`k
 - A heap of kegs and barrels of tools flush on the wall the racks left bare (a front wall first), kept off the racks:
   the room's fullness from other kinds than arms (Q2T-8).
 - Checked: `rooms.qa2_gap`, `rooms.qa2_wall` (a chest flush; planted STq2Wal, STq2Mid).
+
+## QA round 3 (2026-10-23; review/qa3/ledger-rooms.md Q3R-6..8)
+
+Rated 4.4 (04, 05 kept at 5). RM-BARRACKS-01: "The chests are perpendicular to the beds. Change the way they are facing
+so that their back is to the bed and their front is facing away from the bed." 02: "Move the three chests slightly
+closer to the three beds." 03: "Add another chest in the empty gap between the pairs of beds." Round 2's rule stands
+(one chest flush on a wall, or with six beds or fewer a chest at every bed's foot facing away); refined:
+
+- **A foot chest's back to its bed, its front away, for every wall a bed heads on**: the chest is the head wall's
+  chest, Westwood's numbering (`kit/finish.py CHEST_ON_WALL`): a bed headed on the NW wall takes Chest4 (facing SE), NE
+  Chest3 (facing SW), SW Chest2 (facing NE), SE Chest1 (facing NW). Westwood's own beds show the same (Bed4 with Chest4
+  at its SE foot, Bed3 with Chest3 at its SW foot, Bed2 with Chest2 at its NE foot, Bed1 with Chest1 at its NW foot:
+  the corpus, 60 cases). The cause in round 3: the mined rule for a SW wall (`rules/out/decoration.json`, 3.5 weighted
+  uses) named Chest4, the NW wall's chest, so 01's beds headed on the SW wall had their chests side-on.
+- **Snug at the foot, as drawn**: a cot is drawn shorter than its footprint and above it, so a chest at a foot toward
+  the camera (a bed headed on the NE or NW wall) reached a unit further off than its footprint stood (round 3's 0.5
+  units read as a chest's length off the foot). Such a chest reaches into the footprint's empty end, its front just past
+  it (`FOOT_CHEST_GAPS`: -0.55 units first); at a foot away from the camera (headed on the SE or SW wall), whose drawn
+  foot comes nearer, it keeps 0.35. The chest is the bed's own piece: no gap is held between them.
+- **A chest in every gap between pairs of beds**: a close row is laid in pairs (the knowledge base's runs of two beds
+  along a wall leave every third bed's place empty: 03's gaps of 1.0 and 3.9 units in turn); each gap between pairs (a
+  bed's width wider than the row's tightest gap) takes a chest flush on the head wall, centred, its back to the wall
+  (`_pair_gap_chests`). With them the room keeps no other chest against a wall; a room of six beds or fewer keeps its
+  foot chests as well.
+- **Checked by** `rooms.qa3_foot_chest` (planted STq3Fac: a foot chest side-on; STq3Far: 0.6 units off a foot toward
+  the camera) and `rooms.qa3_pair_gap` (STq3Gap); `rooms.qa2_chests` counts the chests between pairs apart. Pictures:
+  review/out/roomlab/barracks/qa4/renders/.

@@ -658,9 +658,11 @@ ROOMS = {
                   # crypt): a centrepiece on the far wall between mana obelisks (4 in 5 crypts), rows of sarcophagi or
                   # breakable coffins either side of the aisle, bones heaped at their heads, statues and tombstones in pairs
                   composer="crypt", lift=("DunMir|", "LOTD|"),
+                  # (no crates: QA round 3, the crypt set, "the pair of crates in each room look off. Remove them";
+                  # the storage is the crypt chest alone; Q3R-1)
                   types={"tomb": r"^Crypt\d+$|^Coffin\d$|^CoffinBreaking\d$|^Tombstone\d+$|^DunMirTombstone\d$|^LOTDTombstone",
                          "statue": r"^Statue2[a-h]$|^Obelisk$|^StatueVase[12]|^LOTDManaObelisk$|^Gargoyle\d$",
-                         "storage": r"^CryptChest\d$|^DarkCrate[12]$|^Crate[12]$", "column": r"^RuinsColumnIndoorRubble\d+$",
+                         "storage": r"^CryptChest\d$", "column": r"^RuinsColumnIndoorRubble\d+$",
                          "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$|^LOTDFlamingSkulls"},
                   top_up=(), lights_per100=2.0,
                   # a step out from the walls (Westwood's: none against a wall, none further than 2.5 units from one):
@@ -940,7 +942,7 @@ ROOMS = {
                        composer="crypt",
                        types={"tomb": r"^LOTDTombstone|^Crypt\d+$|^Coffin\d$",
                               "statue": r"^LOTDManaObelisk$|^StatueVase[12]|^Gargoyle\d$",
-                              "storage": r"^CryptChest\d$|^DarkCrate[12]$|^Crate[12]$", "wall_decor": r"^LOTDTapestry[12]$",
+                              "storage": r"^CryptChest\d$", "wall_decor": r"^LOTDTapestry[12]$",
                               "column": r"^RuinsColumnIndoorRubble\d+$",
                               "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$|^LOTDFlamingSkulls"},
                        prefer={"statue": {"LOTDManaObelisk": 1}, "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
