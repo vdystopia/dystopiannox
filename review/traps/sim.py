@@ -470,6 +470,21 @@ class StationModel:
                 out |= set(self.cells_near(a, b, 14 / SQ))
         return out
 
+    def zone_events(self, frames_):
+        """[(frame, acts)] the zones, plates and watches fire as a route is walked (the fields see no player: a
+        room's entry that wakes its blocks or restarts its clocks happens only in the replay)."""
+        w = World(self.data, 0)
+        w.closed = {wc for wc in self.secret if self.secret_state.get(wc, "closed") == "closed"}
+        rec, orig = [], w.fire
+
+        def fire(acts):
+            rec.append((w.f, acts))
+            orig(acts)
+        w.fire = fire
+        for x, y, air in frames_:
+            w.tick((x, y), air)
+        return rec
+
     def moments(self):
         """Six arrival moments (frames) spread over the station's longest cycle: its clocks' periods, its movers'
         rounds and its globes' turns (a player comes at any point of them)."""
@@ -806,6 +821,22 @@ def analyse(map_dir, only=None, trace=False):
             r2 = sm.plan(G2, A2, start_cells=[(p1[-1][1], p1[-1][2])], t0=t1, d0=d1)
             if r2 and (res is None or r2[0] < res[0] - 5):
                 res, used = (r2[0], r2[1], p1[:-1] + r2[2]), zname
+        # what the route sets off (an entry that wakes the blocks, a plate that restarts a clock) fed back to the
+        # fields, and the plan made again, up to three times while its replay gets better
+        for _ in range(3 if res else 0):
+            fr0 = sm.path_frames(res[2])
+            ex0, out0, _f = sm.replay(fr0)
+            if out0 == "passed" and ex0 <= res[0] + 5: break
+            ev = sm.zone_events(fr0)
+            if not ev: break
+            Ge, Ae = sm.fields(0, events=ev)
+            r = sm.plan(Ge, Ae)
+            if not r: break
+            ex1, out1, _f = sm.replay(sm.path_frames(r[2]))
+            if (out1 == "passed" and out0 != "passed") or (out1 == out0 and ex1 < ex0 - 5):
+                res = (ex1, r[1], r[2])
+            else:
+                break
         slack_ok = 0
         offsets = sm.moments()
         for off in offsets:
