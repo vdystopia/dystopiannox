@@ -15,7 +15,7 @@ from kit.trapkit._moving import (carve, lanes, block, mover, travel, loop_from, 
                                  TOUCH, WALK, RUN, SQ)
 from kit.layout import square_tile
 
-TRACK = "GreenBrick"           # the floor a block's loop runs over (cross traffic)
+TRACK = "DungeonStoneDark"     # the floor a block's loop runs over (cross traffic)
 
 
 def _f(x):
