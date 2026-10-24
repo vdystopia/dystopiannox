@@ -30,7 +30,7 @@ import json, math, os, random, zlib
 from nox import Spec, SOLO
 from kit.dungeon import Dungeon
 from kit.traps import Traps
-from kit.trapkit import Station, PATTERNS
+from kit.trapkit import Station, PATTERNS, tier_of
 from kit.quests import QuestBook, A, QUEST, COMPLETED
 from kit.npcs import Population, facing
 
@@ -107,7 +107,7 @@ class Mission:
         if kind == "auto":
             tier = which
             cand = [(k, i, p) for k in self.fav + list(PATTERNS) if k in PATTERNS
-                    for i, p in enumerate(PATTERNS[k]) if p.tier == tier and (k, i) not in self.used and p.size[0] <= 30]
+                    for i, p in enumerate(PATTERNS[k]) if tier_of(p) == tier and (k, i) not in self.used and p.size[0] <= 30]
             seen, uniq = set(), []
             for c in cand:
                 if (c[0], c[1]) not in seen: seen.add((c[0], c[1])); uniq.append(c)

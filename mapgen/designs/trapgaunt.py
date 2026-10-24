@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 from nox import Spec, SOLO
 from kit.dungeon import Dungeon
 from kit.traps import Traps
-from kit.trapkit import Station, PATTERNS, TITLES
+from kit.trapkit import Station, PATTERNS, TITLES, tier_of
 from kit.signs import wrap
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -79,8 +79,7 @@ def pick_patterns(T_, rng):
     for s, tier in enumerate(tiers):
         def ok(c):
             k, i, p = c
-            pt = getattr(p, "tier", "standard")
-            meta_tier = pt
+            meta_tier = tier_of(p)
             return (k, i) not in used and meta_tier == tier and (tier == "standard" or k in seen_std) and \
                 (s < n - 1 or p.size[0] >= 30 or tier == "standard" or True)
         cand = [c for c in pool if ok(c)]

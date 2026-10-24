@@ -154,6 +154,29 @@ class Station:
         self.rest.append((a, b))
 
 
+_TIERS = {}
+
+
+def tier_of(p):
+    """A pattern's tier as its Meta says (a pattern may set it in the Meta only): built once on a scratch map."""
+    key = (p.kind, p.__name__)
+    if key not in _TIERS:
+        import random as _r
+        from nox import Spec
+        from kit.dungeon import Dungeon
+        from kit.traps import Traps
+        m = Spec("TierProbe")
+        d = Dungeon(m, _r.Random(1))
+        part = d.box("st", 100, 0, p.size[0], p.size[1], axis="j")
+        T = Traps(m, prefix="")
+        try:
+            meta = p(Station(T, part, "X", _r.Random(1), fall_to=(3000, 3000), spec=m))
+            _TIERS[key] = meta.get("tier", p.tier)
+        except Exception:
+            _TIERS[key] = p.tier
+    return _TIERS[key]
+
+
 def frames(seconds):
     return int(round(seconds * 30))
 
