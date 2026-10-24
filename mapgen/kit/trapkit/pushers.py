@@ -20,6 +20,14 @@ def _f(x):
     return int(round(x))
 
 
+def _meta(st, **kw):
+    """The station's Meta, with its force fields (for the simulator: box, direction, strength, gusts)."""
+    m = Meta(**kw)
+    if getattr(st, "forces", None):
+        m["forces"] = st.forces
+    return m
+
+
 def _walk(sq):
     return sq * SQ / WALK
 
@@ -56,20 +64,20 @@ def pushers_on_the_beat(st):
     """Three stone pushers in wall slots shove across a three-square walkway to a row of pits, all on one 3 s beat."""
     L, W = st.L, st.W
     ks = [5, 9, 13]
-    carve(st, lanes((0, 2, 0, W), (2, L - 1, 2, W), (L - 1, L, 0, W), *[(a - 1, a + 1, 0, 2) for a in ks]))
-    pits(st, 3, L - 2, 5, 6)
+    carve(st, lanes((0, 2, 0, W), (2, L - 1, 0, 4), (L - 1, L, 0, W), *[(a - 1, a + 1, 4, 6) for a in ks]))
+    pits(st, 3, L - 2, 0, 1)
     speed, far, home = 4.4, 15, 31
     for k, a in enumerate(ks):
-        mover(st, f"P{k}", [block(st, a, 1.0, "StoneBlock")], [(a, 1.0), (a, 4.0)], speed, pause=far,
+        mover(st, f"P{k}", [block(st, a, 5.0, "StoneBlock")], [(a, 5.0), (a, 2.0)], speed, pause=far,
               home_wait=home, sound=k == 1)
         if k:
-            st.rest.append((a - 2.0, 3.5))
-    stroke = travel([(0, 1.0), (0, 4.0)], speed)
+            st.rest.append((a - 2.0, 2.5))
+    stroke = travel([(0, 5.0), (0, 2.0)], speed)
     period = 2 * stroke + far + home
-    edge_open = home + 2 * (2.47 * SQ / speed)               # the pit-side line b = 4.7
-    mid_open = home + 2 * (1.27 * SQ / speed)                # the middle, b = 3.5
+    edge_open = home + 2 * (2.47 * SQ / speed)               # the pit-side line b = 1.3
+    mid_open = home + 2 * (1.27 * SQ / speed)                # the middle, b = 2.5
     band = _walk(2 * TOUCH)
-    return Meta(tier="standard",
+    return _meta(st, tier="standard",
                 tells="stone blocks in wall slots shove across the walkway to a row of pits",
                 answer=f"cross each pusher as it goes home, on the line beside the pits (it reaches there last): "
                        f"open {edge_open / 30:.1f} s there, {mid_open / 30:.1f} s in the middle, for a "
@@ -78,7 +86,7 @@ def pushers_on_the_beat(st):
                          f"you into the pits",
                 numbers=dict(stroke=_f(stroke), far=far, home=home, period=_f(period), open_edge=_f(edge_open),
                              open_mid=_f(mid_open), band=_f(band)),
-                route=[(1, 4.7), (L, 4.7)], careless_route=[(1, 3.5), (L, 3.5)])
+                route=[(1, 1.3), (L, 1.3)], careless_route=[(1, 2.5), (L, 2.5)])
 
 
 # ---- 02 ----------------------------------------------------------------------------------------------------------
@@ -99,7 +107,7 @@ def belts(st):
         st.rest.append((a1 + 1.0, 3.0))
     cross = _walk(4)
     drift = strength * cross / SQ
-    return Meta(tier="standard",
+    return _meta(st, tier="standard",
                 tells="three belts of riveted slats cross the hall, each running into a chasm",
                 answer=f"step onto each belt at its upstream edge (away from its chasm) and walk across leaning into "
                        f"the drift (a third off straight is enough); walking straight drifts you "
@@ -128,7 +136,7 @@ def orb_causeway(st):
     strength = 40
     for k, (a, b) in enumerate(bends + edges):
         bumper(st, f"O{k}", a, b, strength)
-    return Meta(tier="standard",
+    return _meta(st, tier="standard",
                 tells="a narrow causeway winds over pits; glowing orbs stand at its bends",
                 answer="keep to the outer half of each leg and swing wide round every bend, crossing over between "
                        "bends (an orb reaches 0.9 squares; about 1 is left beside it); or jump an orb (it is low): "
@@ -158,7 +166,7 @@ def gusts(st):
     calm = period - gust
     seg = _walk(4)
     drift = strength * gust / SQ
-    return Meta(tier="standard",
+    return _meta(st, tier="standard",
                 tells="a narrow bridge along the wall over pits; a wind gusts across it",
                 answer=f"two ticks, then a 1 s gust every {period / 30:.1f} s: cross a stretch of bridge (4 squares, "
                        f"{seg / 30:.1f} s) in the {calm / 30:.1f} s calm and stand out the gust on a pad, against the "
@@ -174,13 +182,14 @@ def gusts(st):
 
 @pattern("push", size=(20, 9), title="The sliding wall")
 def sliding_wall(st):
-    """A wall of four iron blocks slides across the hall to a trench of pits and back; the hall must be crossed
-    along its whole length."""
+    """A wall of four iron blocks slides across the hall from one trench of pits to the other and back; the hall
+    must be crossed along its whole length."""
     L, W = st.L, st.W
-    pits(st, 4, 16, W - 1, W)
-    blocks = [block(st, a, 1.0, "IronBlock") for a in (7, 9, 11, 13)]
+    pits(st, 4, 16, 0, 1)
+    pits(st, 4, 16, W - 1, W)                                  # the wall rests over a second trench
+    blocks = [block(st, a, W - 1.0, "IronBlock") for a in (7, 9, 11, 13)]
     speed, far, home = 3.0, 20, 75
-    path = [(7, 1.0), (7, W - 2.0)]
+    path = [(7, W - 1.0), (7, 2.0)]
     mover(st, "W", blocks, path, speed, pause=far, home_wait=home)
     stroke = travel(path, speed)
     period = 2 * stroke + far + home
@@ -188,16 +197,16 @@ def sliding_wall(st):
     trench_open = home + 2 * ((W - 1 - 0.35 - TOUCH - 1.0) * SQ / speed)
     mid_open = home + 2 * ((W / 2 - TOUCH - 1.0) * SQ / speed)
     st.rest.append((17.5, W / 2))
-    return Meta(tier="standard",
-                tells="a wall of iron blocks along the left of the hall slides across to a trench",
+    return _meta(st, tier="standard",
+                tells="a wall of iron blocks slides across the hall from trench to trench",
                 answer=f"cross the wall's whole length ({span:.1f} squares, {_walk(span) / 30:.1f} s) as it goes "
                        f"home, on the line beside the trench (it reaches there last): open {trench_open / 30:.1f} s "
                        f"there, {mid_open / 30:.1f} s in the middle; the wall comes every {period / 30:.1f} s",
                 careless=f"walking the middle when it moves: it shoves you sideways at {speed} px a frame, faster than "
-                         f"you can walk out of its 8-square face: into the trench",
+                         f"you can walk out of its 8-square face: into one trench or the other",
                 numbers=dict(stroke=_f(stroke), far=far, home=home, period=_f(period), open_trench=_f(trench_open),
                              open_mid=_f(mid_open), walk_span=_f(_walk(span))),
-                route=[(1, W - 1.4), (L, W - 1.4)], careless_route=[(1, W / 2), (L, W / 2)])
+                route=[(1, 1.4), (L, 1.4)], careless_route=[(1, W / 2), (L, W / 2)])
 
 
 # ---- 06 ----------------------------------------------------------------------------------------------------------
@@ -225,7 +234,7 @@ def switchback(st):
     reach = 0.77 * SQ / speed                                  # a pusher reaches the walkway's middle line
     danger = 2 * stroke + far - 2 * reach
     both_quiet = period / 2 - danger
-    return Meta(tier="hard",
+    return _meta(st, tier="hard",
                 tells="walkways either side of a trench, lined with stone pushers that fire side by side",
                 answer=f"each side fires every {period / 30:.1f} s, the other side half a beat later, so each is "
                        f"quiet {(period - danger) / 30:.1f} s and both are quiet {both_quiet / 30:.2f} s twice a beat: "
@@ -245,25 +254,25 @@ def belt_and_pistons(st):
     line against the drift is the line the pistons strike first."""
     L, W = st.L, st.W
     ps = [6, 10, 14]
-    carve(st, lanes((0, 2, 0, W), (2, L - 1, 2, W), (L - 1, L, 0, W), *[(a - 1, a + 1, 0, 2) for a in ps]))
+    carve(st, lanes((0, 2, 0, W), (2, L - 1, 0, 6), (L - 1, L, 0, W), *[(a - 1, a + 1, 6, 8) for a in ps]))
     a0, a1 = 4, 18
     _paint(st, a0, a1, 0, W, BELT)
-    pits(st, a0, a1, 6, W)
+    pits(st, a0, a1, 0, 2)
     strength = 1.3
-    force(st, "B", a0, a1, 0, W, (0, 1), strength, sound="Gear2", tick=60)
+    force(st, "B", a0, a1, 0, W, (0, -1), strength, sound="Gear2", tick=60)
     speed, far, home, stagger = 7.0, 4, 35, 20
-    path_b = (1.0, 4.5)
+    path_b = (7.0, 3.5)
     for k, a in enumerate(ps):
-        mover(st, f"P{k}", [block(st, a, 1.0, "StoneBlock")], [(a, path_b[0]), (a, path_b[1])], speed, pause=far,
+        mover(st, f"P{k}", [block(st, a, 7.0, "StoneBlock")], [(a, path_b[0]), (a, path_b[1])], speed, pause=far,
               home_wait=home, armed=k == 0, delay=stagger * k)
         if k:
-            st.rest.append((a - 2.0, 2.4))
+            st.rest.append((a - 2.0, 5.6))
     stroke = travel([(0, path_b[0]), (0, path_b[1])], speed)
     period = 2 * stroke + far + home
     quiet = home + 2 * (0.12 * SQ / speed)
     lean = (1 - (strength / WALK) ** 2) ** 0.5 * WALK
     cross = 2 * TOUCH * SQ / lean
-    return Meta(tier="hard",
+    return _meta(st, tier="hard",
                 tells="a long belt runs into a trench; pistons wait in the wall it runs from",
                 answer=f"keep to the wall side leaning into the drift (it pulls {strength} px a frame; leaning you "
                        f"make {lean:.1f}) and wait pressed to the wall between pistons; pass each in its quiet: "
@@ -273,7 +282,7 @@ def belt_and_pistons(st):
                          "throws anyone it reaches past the middle",
                 numbers=dict(strength=strength, stroke=_f(stroke), home=home, period=_f(period), quiet=_f(quiet),
                              cross_lean=_f(cross)),
-                route=[(1, 2.4), (L, 2.4)], careless_route=[(1, 4.0), (L, 4.0)])
+                route=[(1, 5.6), (L, 5.6)], careless_route=[(1, 4.0), (L, 4.0)])
 
 
 # ---- 08 ----------------------------------------------------------------------------------------------------------
@@ -304,7 +313,7 @@ def shove_chain(st):
     reach = 0.77 * SQ / speed
     margin_run = min((start + step * k + reach) - (keys[k] + TOUCH - 3.0) * SQ / RUN for k in range(len(keys)))
     margin_walk = min((start + step * k + reach) - (keys[k] + TOUCH - 3.0) * SQ / WALK for k in range(len(keys)))
-    return Meta(tier="hard",
+    return _meta(st, tier="hard",
                 tells="a ledge over pits; its wall is a row of stone keys; a gong when you step on",
                 answer=f"run the moment the gong sounds and do not stop: each key slams {step} frames after the "
                        f"last, a wave down the ledge at {2 * SQ / step:.1f} px a frame against your run's 6.9 "
@@ -326,7 +335,7 @@ def tilting_floor(st):
     a0, a1 = 4, 18
     pits(st, a0, a1, 0, 3)
     pits(st, a0, a1, 7, W)
-    period, tilt, strength = 120, 45, 1.6
+    period, tilt, strength = 130, 55, 1.6
     force(st, "R", a0, a1, 0, W, (0, 1), strength, period=period, on=[(0, tilt)], sound="PushCast")
     force(st, "L", a0, a1, 0, W, (0, -1), strength, period=period, on=[(period // 2, period // 2 + tilt)],
           sound="PushCast")
@@ -335,10 +344,11 @@ def tilting_floor(st):
     drift = strength * tilt / SQ
     lean = (1 - (strength / WALK) ** 2) ** 0.5 * WALK
     st.rest += [(2.0, 5.0), (19.5, 5.0)]
-    return Meta(tier="hard",
+    return _meta(st, tier="hard",
                 tells="a walkway between two pit fields; the floor slides one way, then the other",
-                answer=f"a tick, then the floor slides toward one pit field for 1.5 s, rests 0.5 s, slides toward "
-                       f"the other, rests: a slide carries a standing player {drift:.1f} squares of the walkway's 4; "
+                answer=f"a tick, then the floor slides toward one pit field for {tilt / 30:.1f} s, rests "
+                       f"{(period / 2 - tilt) / 30:.1f} s, slides toward the other, rests: a slide carries a standing "
+                       f"player {drift:.1f} squares of the walkway's 4; "
                        f"before each slide step to its uphill edge, or lean into it as you walk (you still make "
                        f"{lean:.1f} px a frame), or jump; ~5 slides to cross",
                 careless=f"walking the middle without a thought: the first slide carries you {drift:.1f} squares, "
@@ -355,17 +365,17 @@ def long_fall(st):
     """A belt, pushers on the beat, a rest, an orb causeway and a gusting ledge, one after another, pits all the way."""
     L, W = st.L, st.W
     ks = [12, 16]
-    boxes = [(0, 10, 0, W), (10, 18, 2, 6), (18, 44, 0, W)] + [(a - 1, a + 1, 0, 2) for a in ks]
+    boxes = [(0, 10, 0, W), (10, 18, 2, 6), (18, 44, 0, W)] + [(a - 1, a + 1, 6, 8) for a in ks]
     carve(st, lanes(*boxes))
-    # 1. a belt (a = 3 .. 8) into a chasm on the right
+    # 1. a belt (a = 3 .. 8) into a chasm on the left
     _paint(st, 3, 8, 0, W, BELT)
-    pits(st, 3, 8, 5, W)
-    force(st, "B", 3, 8, 0, W, (0, 1), 1.4, sound="Gear1", tick=60)
+    pits(st, 3, 8, 0, 3)
+    force(st, "B", 3, 8, 0, W, (0, -1), 1.4, sound="Gear1", tick=60)
     # 2. two stone pushers to a pit row (a = 10 .. 18)
-    pits(st, 10, 18, 5, 6)
+    pits(st, 10, 18, 2, 3)
     speed, far, home = 5.0, 8, 40
     for k, a in enumerate(ks):
-        mover(st, f"P{k}", [block(st, a, 1.0, "StoneBlock")], [(a, 1.0), (a, 4.0)], speed, pause=far,
+        mover(st, f"P{k}", [block(st, a, 7.0, "StoneBlock")], [(a, 7.0), (a, 4.0)], speed, pause=far,
               home_wait=home, armed=k == 0, delay=30 * k)
     p_open = home + 2 * (2.47 * SQ / speed)
     # 3. rest
@@ -383,14 +393,14 @@ def long_fall(st):
     pits(st, 32, 42, 0, W, skip=solid)
     force(st, "G", 32, 42, 0, W, (0, 1), 2.0, period=90, on=[(0, 30)], sound="PushCast")
     force(st, "T", 32, 42, 0, W, (0, 1), 0.0, period=90, on=[(60, 90)], sound="GenerateTick", tick=15)
-    return Meta(tier="hard",
+    return _meta(st, tier="hard",
                 tells="a belt, stone pushers, a rest, an orb causeway and a gusting ledge, over pits",
                 answer=f"cross the belt from its upstream edge leaning into it; pass each pusher as it goes home on "
                        f"the pit-side line ({p_open / 30:.1f} s open); drink; take the causeway's bends wide; cross the "
                        f"ledge in the 2 s calms and stand the gust out on the pad against the wall",
                 careless="the first chasm, or the next one",
                 numbers=dict(pusher_open=_f(p_open)),
-                route=[(1, 0.8), (8.5, 0.8), (9.5, 4.7), (18, 4.7), (19.5, 1.6), (24.4, 1.6), (24.4, 3.6),
+                route=[(1, 7.2), (8.5, 7.2), (9.5, 3.3), (18, 3.3), (19.5, 1.6), (24.4, 1.6), (24.4, 3.6),
                        (23.6, 4.6), (23.6, 6.4), (28.4, 6.4), (28.4, 4.4), (27.6, 3.4), (27.6, 1.6), (32, 1.6),
                        (32.5, 0.6), (L, 0.6)],
                 careless_route=[(1, 3.0), (L, 3.0)])
