@@ -2,6 +2,11 @@
 ID, one contact sheet per type, and items.json (every ID with its type, sheet, picture and caption).
 
     py review/qa/package.py <round> [--room-iter qa1] [--scene-iter qa1] [--dock-iters qa1,qa1b] [--bridge-dir bridges]
+                            [--only rooms|exteriors|bridges|docks]
+
+The rooms are every type with a --room-iter iteration under review/out/roomlab (a round re-renders only the types it
+reworks, so only those have its iteration); the bridges are the bridge lab's variants.json, which lists only the
+crossings it was asked to picture (bridgelab --only BR-01,BR-06), labels kept.
 
 Labels: RM-<TYPE>-NN (rooms), EX-<TYPE>-NN (exteriors), BR-NN (bridges), DK-NN (docks), e.g. RM-LIBRARY-03.
 Writes review/out/qa/<round>/{rooms,exteriors,bridges,docks}/<label>.png, sheets/<group>.jpg and items.json.
@@ -106,7 +111,10 @@ def bridges(rnd, items, src_dir="bridges"):
         Image.open(src).save(dst)
         group.append(dict(id=v["label"], cat="bridge", type="bridge", png=dst, caption=bridgelab.describe(v)))
     items += group
-    sheet(rnd, "BR", f"Bridges over a river (BR-01..{len(group):02d})", group)
+    # a round that re-renders a few crossings (bridgelab --only) keeps their labels: the title names them
+    ids = [g["id"] for g in group]
+    span = f"BR-01..{len(group):02d}" if ids == [f"BR-{k + 1:02d}" for k in range(len(ids))] else ", ".join(ids)
+    sheet(rnd, "BR", f"Bridges over a river ({span})", group)
 
 
 def sheet(rnd, key, title, group):

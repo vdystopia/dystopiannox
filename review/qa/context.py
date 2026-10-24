@@ -4,7 +4,8 @@ round, its mean rating, the user's set note on it, and one line on what changed 
     py review/qa/context.py <prev> <round>   -> review/out/qa/<round>/before/<cat>-<type>.jpg + context.json
 
 page.py embeds context.json when it exists. Types split out of an older one (coven from chapel) show the parent's
-pictures, rating and note.
+pictures, rating and note. A type re-rendered in part with its labels kept (round 4's three cobble-road bridges of
+round 3's fifteen) shows those same items of the previous round and their mean.
 """
 import collections, json, os, sys
 from PIL import Image, ImageDraw, ImageFont, ImageOps
@@ -50,11 +51,21 @@ def main(prev, rnd):
     os.makedirs(os.path.join(out, "before"), exist_ok=True)
     fb = json.load(open(os.path.join(Q, prev, "feedback.json"), encoding="utf-8"))
     rate = collections.defaultdict(list)
-    for it in fb["items"]:
-        if it.get("rating"): rate[(it["cat"], it["type"])].append(it["rating"])
     by_prev, by_new = collections.defaultdict(list), collections.defaultdict(list)
     for it in load_items(prev): by_prev[(it["cat"], it["type"])].append(it)
     for it in load_items(rnd): by_new[(it["cat"], it["type"])].append(it)
+    # a type re-rendered in part with its labels kept (round 4: BR-01, BR-06, BR-11 of round 3's fifteen) is shown
+    # beside those same items of the previous round, and their mean
+    part = {}
+    for (cat, t), new in by_new.items():
+        src, ids = (cat, SPLIT.get(t, t)), {i["id"] for i in new}
+        same = [i for i in by_prev.get(src, []) if i["id"] in ids]
+        if same and len(same) < len(by_prev[src]):
+            by_prev[src] = same
+            part[src] = {i["id"] for i in same}
+    for it in fb["items"]:
+        src = (it["cat"], it["type"])
+        if it.get("rating") and (src not in part or it["id"] in part[src]): rate[src].append(it["rating"])
     cp = os.path.join(HERE, "changes", rnd + ".json")
     changes = json.load(open(cp, encoding="utf-8")) if os.path.exists(cp) else {}
     try: font = ImageFont.truetype("arialbd.ttf", 22)
