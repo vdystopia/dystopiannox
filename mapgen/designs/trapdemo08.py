@@ -5,16 +5,16 @@ The story
 - The hook: Dudley, the smith's lad, got out of the forge with a cut arm and has made camp at its gate. Dravik
   Stormblade, a spellsword with a band of fire demons, killed his master and took the forge; he wants the storm
   anvil's heart, the stone that lets the anvil make blades that call lightning. The guild built the forge's machines
-  to guard the anvil: fire jets, belts, presses and saws, and they are still running.
-- Main quest (the anvil's heart): get down through the forge, put down Dravik in his forge-hall and bring the heart
-  from the vault behind it back to Dudley, who pays.
+  to guard the anvil: fire jets, pushers, presses and blades, and they are still running.
+- Main quest (the anvil's heart): get down through the forge, put down Dravik in his forge-hall (the old smithy) and
+  bring the heart from the vault behind it back to Dudley, who pays.
 - Side quest (the master's tongs): the master's tool bag, with his tongs in it, lies in the slag store behind the
   engine room's pusher passage. Dudley gives fire potions and a little gold for it.
-- The traps, in the order a player meets them: flame jets on a clock at the gate (taught where a mistake is cheap,
-  with the camp's potions behind); the pushers on the beat from the engine room (the winches
-  that work the guild's machines) to the slag store (the side quest's
-  price, a dead end); the sweeper block to the workshop; the saw to the powder store; then, after the middle, the
-  belt and pistons to the guild's great hall and the skulls and fire into Dravik's forge-hall, the old smithy.
+- The traps, in the order a player meets them (each kind taught standard before its hard form): flame jets on a
+  clock at the gate (where a mistake is cheap, the camp's potions behind); the pushers on the beat from the engine
+  room (the winches that work the guild's machines) to the slag store (the side quest's price, a dead end); the
+  snapping jaws, the forge's presses, to the workshop; the blades in the wall to the powder store; then, after the
+  middle, find the gap to the guild's great hall and the skulls and fire into Dravik's forge-hall.
 
     py mapgen/designs/trapdemo08.py [out_dir|-]
 """
@@ -22,7 +22,6 @@ import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from kit.trapdemo import Mission
 from kit.quests import A
-from kit.trapkit import PATTERNS
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 NAME = "TrapDem08"
@@ -41,9 +40,9 @@ M.room("vault", (12, 12), role="vault", kind="treasury")
 M.link("camp", "gate", trap=("flame", 0))                    # flame jets on a clock: the way in
 M.link("gate", "engine", length=6)
 M.link("engine", "slag", trap=("push", 0))                  # pushers on the beat: the side quest's price
-M.link("engine", "workshop", trap=("block", 0))             # the sweeper
-M.link("workshop", "powder", trap=("blade", 4) if "blade" in PATTERNS else ("flame", 2))   # the saw
-M.link("powder", "greathall", trap=("push", 6))              # belt and pistons (hard)
+M.link("engine", "workshop", trap=("block", 1))             # snapping jaws: the presses
+M.link("workshop", "powder", trap=("blade", 1))              # the jaws: blades in the wall
+M.link("powder", "greathall", trap=("blade", 6))             # find the gap (hard)
 M.link("greathall", "forge", trap=("flame", 7))              # skulls and fire (hard): into Dravik's forge-hall
 M.link("forge", "vault", length=5)
 M.layout()
