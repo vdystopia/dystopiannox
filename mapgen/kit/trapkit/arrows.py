@@ -137,19 +137,21 @@ def click_and_pause(st):
 @pattern("arrow", size=(22, 6), tier="standard", title="Volley wall")
 def volley_wall(st):
     ln = Lanes(st)
+    # four lanes two squares apart, all firing a burst of four arrows (0.5 s) every 1.33 s: a walk crosses a lane
+    # every 0.66 s, so an even walk meets the burst at every second lane whatever the moment it starts
     g = st.group("V", [ln.trap(i + 0.5) for i in (8, 10, 12, 14)])
-    c = st.clock("C", g, 60, [(20, 22)])
+    c = st.clock("C", g, 40, stream(0, 16))
     P.mouth(st, P.restarts(st, [c]))
-    st.rest += [(7.0, 3.0), (9.5, 3.0), (11.5, 3.0), (13.5, 3.0)]
-    return Meta(tier="standard", tells="four arrow traps on the side wall two squares apart, firing all together "
-                                       "every 2 s",
-                answer="after a volley cross two lanes (0.65 s each at a walk), wait between lanes for the next, "
-                       "cross the other two; or run all four in one quiet (1 s)",
-                careless="a straight walk from the way in meets the volley at the first lane and the fourth: 50 HP",
-                mistake="one arrow, 25 HP")
+    st.rest += [(7.0, st.W / 2), (9.5, st.W / 2), (11.5, st.W / 2), (13.5, st.W / 2)]
+    return Meta(tier="standard", tells="four arrow traps on the side wall two squares apart, firing bursts of four "
+                                       "arrows together, a burst every 1.33 s",
+                answer="cross one lane after each burst and wait on the floor before the next lane (0.8 s of quiet; "
+                       "a lane takes 0.2 s to cross at a walk); a runner takes three lanes in one quiet",
+                careless="an even walk meets a burst at every second lane: 50 HP",
+                mistake="an arrow or two, 25-50 HP")
 
 
-@pattern("arrow", size=(22, 6), tier="standard", title="Hold at the brink")
+@pattern("arrow", size=(22, 7), tier="standard", title="Hold at the brink")
 def brink(st):
     ln = Lanes(st)
     W = st.W
@@ -179,10 +181,10 @@ def quiet_lever(st):
         clocks.append(st.clock(f"C{k}", g, 6, [(0, 2)], phase=2 * k))
     quiet = frames(5)
     acts = ([st.act("disarm", c) for c in clocks] + [st.act("arm", c, delay=quiet) for c in clocks] +
-            P.ticks(st, 6.5, ln.b(st.W - 0.6), quiet // 15))
-    st.lever("L", "FloorLever1", 6.5, ln.b(st.W - 0.55), acts=acts, release=acts)
+            P.ticks(st, 6.5, ln.b(0.6), quiet // 15))
+    st.lever("L", "FloorLever1", 6.5, ln.b(0.55), acts=acts, release=acts)
     return Meta(tier="standard", tells="three streams of arrows across the hall, five a second each while anyone is "
-                                       "in front of them; a lever by the far wall before them",
+                                       "in front of them; a lever by the wall before them",
                 answer="pull the lever: the streams stop for 5 s (the gears tick); the nine squares take 3 s at a "
                        "walk",
                 careless="walking through the streams: an arrow or two at each, 75-150 HP",
@@ -225,17 +227,17 @@ def walk_with_quiet(st):
                 mistake="one stream met loud: one or two arrows, 25-50 HP")
 
 
-@pattern("arrow", size=(24, 6), tier="hard", title="Run the rotten floor")
+@pattern("arrow", size=(24, 7), tier="hard", title="Run the rotten floor")
 def run_rot(st):
     ln = Lanes(st)
     W = st.W
-    groups = P.crumble(st, P.rows(7, 15, W=W), delay=8)
+    groups = P.crumble(st, P.rows(7, 15, W=W), delay=10)
     # two streams over the rot, quiet in turn: the first for 0.67 s, the second 0.47 s later (a runner's time)
     period = 60
     c1 = st.clock("C1", ln.lane("S1", 9), period, loud(period, 0, 20))
     c2 = st.clock("C2", ln.lane("S2", 12), period, loud(period, 14, 34))
     P.mouth(st, P.closes(st, groups) + P.restarts(st, [c1, c2]))
-    return Meta(tier="hard", tells="eight rows of cracked floor that give way 0.27 s after a touch, two streams of "
+    return Meta(tier="hard", tells="eight rows of cracked floor that give way 0.33 s after a touch, two streams of "
                                    "arrows over them that go quiet in turn",
                 answer="run (a walk is too slow for the rot); start from the solid floor so that you cross the first "
                        "stream in its quiet: the second falls quiet as you reach it. Watch two cycles from the edge",
@@ -269,7 +271,7 @@ def skull_causeway(st):
                 mistake="one fireball, ~96 HP; a step off a ledge: the pit room")
 
 
-@pattern("arrow", size=(42, 6), tier="hard", title="The long gallery")
+@pattern("arrow", size=(42, 7), tier="hard", title="The long gallery")
 def long_gallery(st):
     ln = Lanes(st)
     W = st.W
