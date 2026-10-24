@@ -14,7 +14,8 @@
     "test_rooms": "RoomTest",
     "test_transport": "TestTrans",
     "test_water": "TestWatr",
-    "bosslab": "BossLab"
+    "bosslab": "BossLab",
+    "traptest": "TrapTest"
   },
   "frozen": {
     "ambermere": "Ambermere",

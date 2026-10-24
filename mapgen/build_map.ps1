@@ -5,7 +5,7 @@
 # Spec (grid cells for walls/tiles; world pixels, 23 px per cell, for objects/waypoints/polygons):
 #   name, nxz (default true), info{summary, description, author, version, date, type, minPlayers, maxPlayers},
 #   ambient[r,g,b],
-#   walls[{x,y,facing,material[,variation][,window]}],
+#   walls[{x,y,facing,material[,variation][,window][,breakable][,secret{flags,state,wait}]}],
 #   tiles[{x,y,material[,edges[[overlayMaterial, edgeType, direction]]]}],
 #   objects[{type,x,y[,team][,durability][,door][,clone{map,scr}][,xfer{field: value}][,items[object...]]
 #            [,key][,link][,enabled][,create_flags]}],
@@ -66,6 +66,13 @@ foreach ($w in $s.walls) {
     $pt = New-Object Drawing.Point($w.x, $w.y)
     $wall = New-Object NoxShared.Map+Wall($pt, [NoxShared.Map+Wall+WallFacing]$w.facing, [byte]$mat, [byte]100, [byte]$var)
     if ($w.window) { $wall.Window = $true }
+    if ($w.breakable) { $wall.Destructable = $true }
+    if ($w.secret) {
+        # a wall scripts open and close (kit/traps.py): scan flags 1 = scripted, state 1 closed / 3 open
+        $wall.Secret_ScanFlags = [byte]$w.secret.flags
+        $wall.Secret_WallState = [byte]$w.secret.state
+        $wall.Secret_OpenWaitSeconds = [int]$w.secret.wait
+    }
     $map.Walls[$pt] = $wall
 }
 

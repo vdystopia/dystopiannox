@@ -36,6 +36,7 @@ class Traps:
     def __init__(self, spec, prefix="T"):
         self.spec, self.prefix = spec, prefix
         self.groups, self.clocks, self.movers, self.zones, self.switches = {}, {}, {}, {}, []
+        self.watches = []
         self.starts = []                 # extra Go lines run at the start (after the clocks start)
         self.count = 0
         self.objects = {}                # script name -> the object dict (type, x, y)
@@ -77,10 +78,53 @@ class Traps:
         return name
 
     def zone(self, name, centre, r, shape="diamond", h=0.0, who="player", once=False, rearm=0, armed=True,
-             acts=(), release=()):
+             acts=(), release=(), jump=False, toggle=False):
         self.zones[name] = dict(name=name, shape=shape, c=[round(centre[0], 1), round(centre[1], 1)], r=float(r),
                                 h=float(h), who=who, once=once, rearm=int(rearm), armed=armed, acts=list(acts),
-                                release=list(release))
+                                release=list(release), jump=jump, toggle=toggle)
+        return name
+
+    # ---- plates, triggers, levers ----------------------------------------------------------------------------
+    # OpenNox alpha13 does not bind a trigger's xfer script names to the map's Go functions (the in-game bench,
+    # tests/traps_e2e, 2026-10-23: no callback ever ran), so the script watches them as zones: a plate fires when a
+    # player (or a creature) stands on it, a lever when the player steps up to it (clicking it walks him there).
+    PLATE_PAD = 8.0                         # a toucher's circle meets the plate's diamond (player radius 10)
+
+    @staticmethod
+    def go_name(name):
+        return "".join(ch for ch in name.title() if ch.isalnum())
+
+    def plate(self, name, x, y, size=(45, 45), who="creature", once=False, acts=(), release=(), visible=True,
+              armed=True, rearm=0):
+        """A pressure plate (visible; a jumping player passes over it) or an invisible trigger spot (no object;
+        catches jumpers too): a diamond `size` (a thing.bin BOX: |dx| + |dy| < (w + h) * 0.354), each side at most
+        60. `acts` run each time someone steps on, `release` when the last steps off. who: player, creature
+        (players and monsters, Westwood's usual: 70% of its plates) or any."""
+        assert max(size) <= 60, size
+        if visible:
+            allowed = dict(player=4, creature=6, any=0)[who]
+            self.obj("PressurePlate", x, y, name=f"{self.prefix}Plate{self.go_name(name)}",
+                     xfer={"SizeX": int(size[0]), "SizeY": int(size[1]), "EdgeColor": [90, 90, 90],
+                           "BackColor": [10, 10, 10], "UnkInt1": 0, "ScriptOnPressed": "", "ScriptOnReleased": "",
+                           "ScriptOnCollided": "", "AllowedObjClass": allowed, "IgnoredObjClass": 0,
+                           "AllowedTeamID": 0, "IgnoredTeamID": 0, "TriggerState": 0, "Unk7": 0, "UnkInt2": 0})
+        r = (size[0] + size[1]) * 0.35355 + self.PLATE_PAD
+        self.zone(name, (x, y), r, shape="diamond", who="any" if who in ("creature", "any") else "player",
+                  once=once, armed=armed, acts=acts, release=release, rearm=rearm, jump=visible)
+        return name
+
+    def lever(self, name, type_, x, y, acts=(), release=(), once=False, armed=True, reach=34.0):
+        """A lever, button, chain pull or wall switch: the player steps up to it (or clicks it, which walks him
+        there) and it flips: `acts` on its first position, `release` on its second, alternating; it flips again
+        only after he has stepped away."""
+        self.obj(type_, x, y, name=f"{self.prefix}Lever{self.go_name(name)}")
+        self.zone(name, (x, y), reach, shape="circle", who="player", once=once, armed=armed, acts=acts,
+                  release=release, toggle=True, rearm=15)
+        return name
+
+    def watch(self, name, obj, acts=()):
+        """Fire `acts` once when the object `obj` (a script name: gold, a key, an idol) is picked up or is gone."""
+        self.watches.append(dict(name=name, obj=obj, acts=list(acts)))
         return name
 
     def switch(self, name, obj, acts=()):
@@ -95,7 +139,8 @@ class Traps:
     # ---- output ------------------------------------------------------------------------------------------------
     def data(self):
         return dict(groups=self.groups, clocks=list(self.clocks.values()), movers=list(self.movers.values()),
-                    zones=list(self.zones.values()), switches=self.switches, labels=self.labels,
+                    zones=list(self.zones.values()), switches=self.switches, watches=self.watches,
+                    labels=self.labels,
                     objects={k: dict(type=v["type"], x=v["x"], y=v["y"], enabled=v.get("enabled", True))
                              for k, v in self.objects.items()})
 
@@ -133,8 +178,12 @@ class Traps:
         for z in self.zones.values():
             L.append(f"\tTrapZone(trapZone{{Name: {_go_str(z['name'])}, Shape: {_go_str(z['shape'])}, "
                      f"C: {_go_pt(z['c'])}, R: {z['r']:.1f}, H: {z['h']:.1f}, Who: {_go_str(z['who'])}, "
+                     f"Jump: {str(z['jump']).lower()}, Toggle: {str(z['toggle']).lower()}, "
                      f"Once: {str(z['once']).lower()}, Rearm: {z['rearm']}, Armed: {str(z['armed']).lower()}, "
                      f"Acts: {self._acts_go(z['acts'])}, Release: {self._acts_go(z['release'])}}})")
+        for w in self.watches:
+            L.append(f"	TrapWatch(trapWatch{{Name: {_go_str(w['name'])}, Obj: {_go_str(w['obj'])}, "
+                     f"Acts: {self._acts_go(w['acts'])}}})")
         for s in self.switches:
             L.append(f"\tTrapSwitch(trapSwitch{{Name: {_go_str(s['name'])}, Obj: {_go_str(s['obj'])}, "
                      f"Acts: {self._acts_go(s['acts'])}}})")

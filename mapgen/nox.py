@@ -270,11 +270,15 @@ class Spec:
         self.rng = random.Random(1)
 
     # ---- walls -------------------------------------------------------------------------
-    def wall(self, x, y, material, variation=None, window=False, facing=None):
+    def wall(self, x, y, material, variation=None, window=False, facing=None, secret=None, breakable=False):
         """Wall cell. variation=None (recommended) picks a valid style for the final wall shape in
-        Westwood's proportions; an explicit variation that is invalid for the shape is replaced."""
+        Westwood's proportions; an explicit variation that is invalid for the shape is replaced.
+        secret: a wall the map's script opens and closes (only secret walls react to WallOpen/Enable): "closed" or
+        "open" at the start (Westwood: scan flags 1, state 1 closed / 3 open); it slides in 23 frames, never hurts.
+        breakable: a wall a script (or a blow) can break."""
         assert (x + y) % 2 == 0, (x, y)
-        self.wallmap[(x, y)] = dict(material=material, variation=variation, window=window, facing=facing)
+        self.wallmap[(x, y)] = dict(material=material, variation=variation, window=window, facing=facing,
+                                    secret=secret, breakable=breakable)
 
     def remove_wall(self, x, y):
         self.wallmap.pop((x, y), None)
@@ -454,8 +458,13 @@ class Spec:
                                  or (x + a[0], y + a[1]) in self.door_gaps)
                 facing = FACING_BY_ARMS[arms]
             mat = self._wall_material(w["material"], facing)
-            walls.append(dict(x=x, y=y, facing=facing, material=mat,
-                              variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
+            wd = dict(x=x, y=y, facing=facing, material=mat,
+                      variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"])
+            if w.get("secret"):
+                wd["secret"] = dict(flags=1, state=3 if w["secret"] == "open" else 1, wait=3)
+            if w.get("breakable"):
+                wd["breakable"] = True
+            walls.append(wd)
         fences = fence_facings({(w["x"], w["y"]): (w["facing"], w["material"]) for w in walls})
         self._wall_line_floors()
         self._door_thresholds()

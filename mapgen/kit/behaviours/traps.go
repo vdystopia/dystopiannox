@@ -18,6 +18,7 @@ package PKG
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/noxscript/ns/v4/audio"
 	"github.com/noxworld-dev/noxscript/ns/v4/spell"
 )
 
@@ -76,6 +77,8 @@ type trapZone struct {
 	R       float32
 	H       float32
 	Who     string // player, any
+	Jump    bool   // a jumping player passes over it (a pressure plate; an invisible trigger catches jumpers)
+	Toggle  bool   // a lever: each touch alternates Acts and Release (leave the zone before it flips again)
 	Once    bool
 	Rearm   int // frames before it can fire again after it was left
 	Armed   bool
@@ -84,6 +87,8 @@ type trapZone struct {
 	in      bool
 	fired   bool
 	cool    int
+	state   bool
+	who     ns.Obj
 }
 
 type trapSwitch struct {
@@ -93,6 +98,16 @@ type trapSwitch struct {
 	obj  ns.Obj
 	last bool
 	seen bool
+}
+
+// A watch: an object (a gold pile, a key) picked up or gone fires its actions once.
+type trapWatch struct {
+	Name  string
+	Obj   string
+	Acts  []trapAct
+	obj   ns.Obj
+	done  bool
+	found bool
 }
 
 type trapPending struct {
@@ -108,6 +123,8 @@ var (
 	trapMovers   = map[string]*trapMover{}
 	trapZones    = map[string]*trapZone{}
 	trapSwitches []*trapSwitch
+	trapWatches  []*trapWatch
+	trapCaller   ns.Obj // the last zone's toucher: "cast_at_caller" aims at him
 	trapQueue    []trapPending
 	trapOrder    []string // clocks, then movers, then zones, in the order defined (deterministic)
 )
@@ -131,6 +148,11 @@ func TrapZone(z trapZone) {
 	zz := z
 	trapZones[z.Name] = &zz
 	trapOrder = append(trapOrder, z.Name)
+}
+
+func TrapWatch(w trapWatch) {
+	ww := w
+	trapWatches = append(trapWatches, &ww)
 }
 
 func TrapSwitch(s trapSwitch) {
@@ -224,6 +246,26 @@ func trapTick() {
 	for _, name := range trapOrder {
 		trapZoneStep(trapZones[name])
 	}
+	for _, w := range trapWatches {
+		if w.done {
+			continue
+		}
+		if w.obj == nil {
+			w.obj = ns.Object(w.Obj)
+			if w.obj != nil {
+				w.found = true
+			} else if w.found {
+				w.done = true
+				trapFire(w.Acts)
+			}
+			continue
+		}
+		if w.obj.GetHolder() != nil {
+			w.done = true
+			trapCaller = w.obj.GetHolder()
+			trapFire(w.Acts)
+		}
+	}
 	for _, s := range trapSwitches {
 		if s.obj == nil {
 			s.obj = ns.Object(s.Obj)
@@ -281,6 +323,10 @@ func trapDo(a trapAct) {
 		}
 	case "cast":
 		ns.CastSpell(spell.Spell(a.Spell), a.From, a.To)
+	case "cast_at_caller": // a statue's death ray at whoever pressed the plate, where he stood
+		if trapCaller != nil {
+			ns.CastSpell(spell.Spell(a.Spell), a.From, trapCaller.Pos())
+		}
 	case "walls_open", "walls_close":
 		for _, w := range a.Walls {
 			if wl := ns.Wall(w[0], w[1]); wl != nil {
@@ -299,6 +345,14 @@ func trapDo(a trapAct) {
 		}
 	case "say":
 		ns.PrintStrToAll(a.Text)
+	case "log": // for tests: a line in the game's log
+		println("traps: " + a.Text)
+	case "sound": // a sound at a point (Text: the audio name, From: where)
+		ns.AudioEvent(audio.Name(a.Text), a.From)
+	case "restart": // a clock starts its period again from now (a station's run begins)
+		if c := trapClocks[a.Target]; c != nil {
+			c.t0 = trapFrame
+		}
 	case "reset":
 		if m := trapMovers[a.Target]; m != nil {
 			m.seg, m.along, m.dir, m.wait, m.done = 0, 0, 1, 0, false
@@ -456,9 +510,14 @@ func trapInZone(z *trapZone, p ns.Pointf) bool {
 func trapZoneOccupied(z *trapZone) bool {
 	for _, pl := range ns.Players() {
 		u := pl.Unit()
-		if u != nil && u.CurrentHealth() > 0 && trapInZone(z, u.Pos()) {
-			return true
+		if u == nil || u.CurrentHealth() <= 0 || !trapInZone(z, u.Pos()) {
+			continue
 		}
+		if z.Jump && uint32(u.Flags())&0x4000 != 0 { // AIRBORNE: in a jump
+			continue
+		}
+		z.who = u
+		return true
 	}
 	if z.Who == "any" && trapFrame%3 == 0 {
 		r := z.R
@@ -467,6 +526,7 @@ func trapZoneOccupied(z *trapZone) bool {
 		}
 		for _, o := range ns.FindAllObjects(ns.InCirclef{Center: z.C, R: float64(r + 4)}) {
 			if o.CurrentHealth() > 0 && o.MaxHealth() > 0 && trapInZone(z, o.Pos()) {
+				z.who = o
 				return true
 			}
 		}
@@ -489,11 +549,20 @@ func trapZoneStep(z *trapZone) {
 		z.in = true
 		if (!z.Once || !z.fired) && z.cool == 0 {
 			z.fired = true
-			trapFire(z.Acts)
+			trapCaller = z.who
+			if z.Toggle && z.state {
+				z.state = false
+				trapFire(z.Release)
+			} else {
+				z.state = true
+				trapFire(z.Acts)
+			}
 		}
 	} else if !occ && z.in {
 		z.in = false
 		z.cool = z.Rearm
-		trapFire(z.Release)
+		if !z.Toggle {
+			trapFire(z.Release)
+		}
 	}
 }
