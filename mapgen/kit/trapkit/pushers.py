@@ -10,7 +10,8 @@ to twice that: an in-game check), a walking player can lean into it, and a jump 
 jumper's force itself). Belts are laid in riveted slats; every gust and tilt sounds, with a tick before it.
 """
 from kit.trapkit import pattern, Meta
-from kit.trapkit._moving import (carve, lanes, block, mover, travel, pits, force, bumper, TOUCH, WALK, RUN, SQ)
+from kit.trapkit._moving import (carve, lanes, block, mover, travel, pits, force, bumper, wake, TOUCH, WALK, RUN,
+                                 SQ)
 from kit.layout import square_tile
 
 BELT = "WoodSlatFloorRIVETS"
@@ -225,12 +226,14 @@ def switchback(st):
     speed, far, home, period = 6.5, 6, 54, 80
     stroke = travel([(0, 1.0), (0, 3.0)], speed)
     home = period - 2 * _f(stroke) - far
+    phases = []
     for k, a in enumerate(nw):
-        mover(st, f"N{k}", [block(st, a, 1.0, "StoneBlock")], [(a, 1.0), (a, 3.0)], speed, pause=far,
-              home_wait=home, sound=k == 2)
+        phases.append((mover(st, f"N{k}", [block(st, a, 1.0, "StoneBlock")], [(a, 1.0), (a, 3.0)], speed, pause=far,
+                             home_wait=home, armed=False, sound=k == 2), 15))
     for k, a in enumerate(se):
-        mover(st, f"S{k}", [block(st, a, 9.0, "StoneBlock")], [(a, 9.0), (a, 7.0)], speed, pause=far,
-              home_wait=home, armed=False, delay=period // 2, sound=k == 2)
+        phases.append((mover(st, f"S{k}", [block(st, a, 9.0, "StoneBlock")], [(a, 9.0), (a, 7.0)], speed, pause=far,
+                             home_wait=home, armed=False, sound=k == 2), 15 + period // 2))
+    wake(st, 3.0, 5.0, 3.0, phases)
     reach = 0.77 * SQ / speed                                  # a pusher reaches the walkway's middle line
     danger = 2 * stroke + far - 2 * reach
     both_quiet = period / 2 - danger
@@ -262,11 +265,13 @@ def belt_and_pistons(st):
     force(st, "B", a0, a1, 0, W, (0, -1), strength, sound="Gear2", tick=60)
     speed, far, home, stagger = 7.0, 4, 35, 20
     path_b = (7.0, 3.5)
+    phases = []
     for k, a in enumerate(ps):
-        mover(st, f"P{k}", [block(st, a, 7.0, "StoneBlock")], [(a, path_b[0]), (a, path_b[1])], speed, pause=far,
-              home_wait=home, armed=k == 0, delay=stagger * k)
+        phases.append((mover(st, f"P{k}", [block(st, a, 7.0, "StoneBlock")], [(a, path_b[0]), (a, path_b[1])], speed,
+                             pause=far, home_wait=home, armed=False), 20 + stagger * k))
         if k:
             st.rest.append((a - 2.0, 5.6))
+    wake(st, 3.0, 3.0, 3.0, phases)
     stroke = travel([(0, path_b[0]), (0, path_b[1])], speed)
     period = 2 * stroke + far + home
     quiet = home + 2 * (0.12 * SQ / speed)
@@ -375,9 +380,9 @@ def long_fall(st):
     # 2. two stone pushers to a pit row (a = 10 .. 18)
     pits(st, 10, 18, 2, 3)
     speed, far, home = 5.0, 8, 40
-    for k, a in enumerate(ks):
-        mover(st, f"P{k}", [block(st, a, 7.0, "StoneBlock")], [(a, 7.0), (a, 4.0)], speed, pause=far,
-              home_wait=home, armed=k == 0, delay=30 * k)
+    phases = [(mover(st, f"P{k}", [block(st, a, 7.0, "StoneBlock")], [(a, 7.0), (a, 4.0)], speed, pause=far,
+                     home_wait=home, armed=False), 20 + 30 * k) for k, a in enumerate(ks)]
+    wake(st, 4.0, 4.0, 4.0, phases)
     p_open = home + 2 * (2.47 * SQ / speed)
     # 3. rest
     st.potion(19.5, 1.0)
