@@ -8,8 +8,8 @@ The story
 - Main quest (the Master's Hammer): pull the quench lever in the furnace hall (it drowns the furnace and opens the
   crucible door), put down Ignis Varr in the crucible hall and bring the Master's Hammer back from the guild vault.
   Hask pays in gold.
-- Side quest (the guild ledger): the ledger was left in the cold store, off the casting floor behind a pair of
-  presses. Hask gives fire-ward potions for it (useful against Varr).
+- Side quest (the guild's black book, a BlackBook1: the book of the guild's debts): it was left in the cold
+  store, off the casting floor behind a pair of presses. Hask gives fire-ward potions for it (useful against Varr).
 - The traps, in the order a player meets them: flame grates on a clock at the way in; the snapping presses before the
   cold store (taught in a side room); the pushers on the beat into the guild hall; two lanes of fire to the bunkhouse;
   the block gauntlet to the furnace hall (the presses again, and a ram wave, a swept bridge and a vice); belt and
@@ -121,13 +121,13 @@ MAIN, SIDE = "hammer", "ledger"
 LEVER = "Pull the quench lever in the furnace hall."
 VARR = "Defeat Ignis Varr in the crucible hall."
 BRING = "Bring the Master's Hammer from the guild vault to Hask."
-LEDGER = "Find the guild ledger in the cold store."
+LEDGER = "Find the guild's black book in the cold store."
 q.talker(hask, [
     q.say("The Master's Hammer! You did it! The guild is saved, and the forges will ring again. Here is your "
           "reward -- 500 in gold, and well earned.",
           when=q.at(MAIN, 3, has="WarHammer"),
           do=[A.take("WarHammer"), A.gold(500), A.stage(MAIN, 4), q.done(BRING)]),
-    q.say("Our ledger! Without it we would never know who owes the guild what. Take these potions. They keep the fire "
+    q.say("Our black book! Every debt owed to the guild is written in it. Take these potions. They keep the fire "
           "off your skin.",
           when=q.when(has="BlackBook1", not_=f"{SIDE}done"),
           do=[A.take("BlackBook1"), A.give("FireProtectPotion", 2), A.flag(f"{SIDE}done"), q.done(LEDGER)]),
