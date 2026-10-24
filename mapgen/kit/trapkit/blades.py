@@ -206,22 +206,23 @@ def round_the_pillars(st):
 
 @_pattern("blade", size=(22, 6), title="The jaws")
 def jaws(st):
-    # three lanes of jaws: two blades from the side walls close to the middle and open again; lanes alternate, so as
-    # one shuts the next opens. Open: the middle is free; shut: the sides are free.
+    # four lanes of jaws: two blades from the side walls close to the middle and open again; lanes alternate, so as
+    # one shuts the next opens. Open: the middle is free; shut: the sides are free. (Three rows cost a careless walk
+    # 31 HP in the game: one more, 2026-10-24.)
     W = st.W
     lo, hi = 0.45, W - 0.45
     sl, sr = W / 2 - 0.45, W / 2 + 0.45
     speed, pause = 4.0, 30
-    for k, a in enumerate((7, 11, 15)):
+    for k, a in enumerate((6, 10, 14, 18)):
         left, right = [(a, lo), (a, sl)], [(a, hi), (a, sr)]
         if k % 2:
             left, right = left[::-1], right[::-1]
         _move(st, f"L{k}", [_blade(st, *left[0])], left, speed, pause=pause)
         _move(st, f"R{k}", [_blade(st, *right[0])], right, speed, pause=pause)
-    st.rest += [(9.0, W / 2), (13.0, W / 2)]
+    st.rest += [(8.0, W / 2), (12.0, W / 2), (16.0, W / 2)]
     stroke = (sl - lo) * SQ / speed
     period = 2 * (stroke + pause)
-    return Meta(tier="standard", tells="three rows of blade jaws snapping shut and open, each row out of step with "
+    return Meta(tier="standard", tells="four rows of blade jaws snapping shut and open, each row out of step with "
                                        "the next",
                 answer="cross a row in the middle while its jaws stand open, or along a wall while they are shut "
                        "(each lasts 1 s; a walk crosses a row in ~14 frames); wait between rows",
