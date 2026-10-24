@@ -27,7 +27,7 @@ def font(n):
 
 
 def render(map_path, png):
-    if not os.path.exists(png):
+    if not os.path.exists(png) or os.path.getmtime(map_path) > os.path.getmtime(png):   # drawn again after a rebuild
         subprocess.run([EDITOR, os.path.abspath(map_path), "--render-image", os.path.abspath(png), "full:5880"],
                        check=True, capture_output=True)
     return Image.open(png).convert("RGB")
