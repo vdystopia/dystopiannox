@@ -13,6 +13,9 @@ HammerMissing on landing).
 from kit.trapkit import pattern, Meta, frames
 from kit.trapkit._moving import (carve, lanes, block, mover, travel, loop_from, snap_acts, pits, wall_at,
                                  TOUCH, WALK, RUN, SQ)
+from kit.layout import square_tile
+
+TRACK = "GreenBrick"           # the floor a block's loop runs over (cross traffic)
 
 
 def _f(x):
@@ -191,12 +194,19 @@ def breathing_vice(st):
 
 # ---- 06 ----------------------------------------------------------------------------------------------------------
 
-@pattern("block", size=(21, 10), tier="hard", title="Cross traffic")
+@pattern("block", size=(22, 10), tier="hard", title="Cross traffic")
 def cross_traffic(st):
     """Two racetracks of spike blocks cross the hall: four lanes of traffic, two medians, a strip between."""
     L, W = st.L, st.W
     lo, hi = 1.05, W - 1.05
-    tracks = [((5.0, 8.5), False), ((12.0, 15.5), True)]
+    tracks = [((5.0, 9.0), False), ((13.0, 17.0), True)]
+    for a0, a1 in ((4, 10), (12, 18)):                       # the racetracks laid in a darker stone
+        for a in range(a0, a1):
+            for b in range(W):
+                if a in (a0, a0 + 1, a1 - 2, a1 - 1) or b in (0, 1, W - 2, W - 1):
+                    t = square_tile(*st.part.square(a + 0.5, b + 0.5))
+                    if t in st.spec.floor:
+                        st.spec.floor[t] = TRACK
     speed, n = 5.0, 3
     every = 0
     for t, ((a0, a1), flip) in enumerate(tracks):
@@ -210,17 +220,17 @@ def cross_traffic(st):
         every = per / n * SQ / speed
     occupied = 2 * TOUCH * SQ / speed
     free = every - occupied
-    st.rest += [(6.75, W / 2), (10.25, W / 2), (13.75, W / 2), (18.5, W / 2)]
+    st.rest += [(7.0, W / 2), (11.0, W / 2), (15.0, W / 2), (20.0, W / 2)]
     return Meta(tier="hard",
                 tells="spike blocks circle two racetracks: four lanes of traffic",
-                answer=f"cross one lane at a time from median to median (the medians are safe away from the turns): "
-                       f"a lane is clear {free:.0f} frames between blocks; a walk across takes {_walk(2 * TOUCH):.0f} "
-                       f"(0.3 s spare), a run {_run(2 * TOUCH):.0f}; the strip between the tracks is wide enough "
-                       f"to stand",
+                answer=f"cross one lane at a time from median to median (the medians, 1.5 squares, are safe away from "
+                       f"the turns at the walls): a lane is clear {free:.0f} frames between blocks; a walk across "
+                       f"takes {_walk(2 * TOUCH):.0f} ({(free - _walk(2 * TOUCH)) / 30:.2f} s spare), a run "
+                       f"{_run(2 * TOUCH):.0f} ({(free - _run(2 * TOUCH)) / 30:.2f} s); go as a block passes",
                 careless=f"walking straight across without waiting: struck in about half the lanes (15 a blow) and "
                          f"shoved along toward the turns, 1 HP a frame: 40-90 HP",
                 numbers=dict(speed=speed, every=_f(every), occupied=_f(occupied), free=_f(free)),
-                route=[(1, W / 2), (6.75, W / 2), (10.25, W / 2), (13.75, W / 2), (L, W / 2)])
+                route=[(1, W / 2), (7.0, W / 2), (11.0, W / 2), (15.0, W / 2), (L, W / 2)])
 
 
 # ---- 07 ----------------------------------------------------------------------------------------------------------
@@ -241,7 +251,7 @@ def runaway(st):
     zone = st.T.zone(f"{st.label}Z", st.at(5.0, 2.0), 46, shape="diamond", who="player",
                      acts=[st.act("sound", text="BigGong", src=st.at(3.0, 4.0)),
                            st.act("reset", rel), st.act("arm", rel, delay=start),
-                           st.act("retract", rel, delay=_f(back), frames=80),
+                           st.act("push_retract", rel, delay=_f(back), frames=80),
                            st.act("disarm", "Z"), st.act("arm", "Z", delay=_f(back + run * 6.3 / 8.0 + 60))])
     # the race: player path from the wire (a = 4) to the way out, block path from its bay
     player = 26.8
@@ -314,10 +324,10 @@ def closing_room(st):
     st.T.zone(f"{st.label}Z", st.at(7.0, 5.0), 2.4 * SQ * 2 ** 0.5, shape="diamond", who="player",
               acts=[st.act("walls_close", walls=[entry]), st.act("sound", text="BigGong", src=st.at(10, 5)),
                     st.act("reset", mv), st.act("arm", mv, delay=start), st.act("disarm", "Z"),
-                    st.act("retract", mv, delay=_f(fail), frames=20),
+                    st.act("push_retract", mv, delay=_f(fail), frames=20),
                     st.act("walls_open", walls=[entry], delay=_f(fail + 90)),
                     st.act("arm", "Z", delay=_f(fail + 330))])
-    pull = [st.act("disarm", mv), st.act("retract", mv, frames=60), st.act("walls_open", walls=[exit_]),
+    pull = [st.act("disarm", mv), st.act("push_retract", mv, frames=60), st.act("walls_open", walls=[exit_]),
             st.act("walls_open", walls=[entry], delay=30), st.act("sound", text="LeverToggle", src=st.at(12, 0.5)),
             st.act("walls_close", walls=[exit_], delay=360), st.act("arm", "Z", delay=360)]
     st.lever("L", "FloorLever3", 12.0, 0.55, acts=pull, release=pull)

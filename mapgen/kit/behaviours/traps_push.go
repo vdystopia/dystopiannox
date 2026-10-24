@@ -5,19 +5,19 @@ package PKG
 //
 // traps.go moves the blocks (its movers: SetPos each frame, which shoves a player along and lets a spike block hurt
 // him 1 HP a frame). This file adds, every frame:
-//   - block events (TrapPusher): a mover's blocks set off (SpikeBlockMove) and land at the far end of their stroke
+//   - block events (TrapPushMover): a mover's blocks set off (SpikeBlockMove) and land at the far end of their stroke
 //     (HammerMissing, a small shake, and Crush damage to whoever is pinned against a block there: the game's own
 //     contact damage is only 1 HP a frame); a phase delay (the mover is armed Delay frames after the start, so rows
 //     of blocks run as a wave); a dwell at the start of the path (HomeWait) that differs from the far one (the
 //     mover's Pause), so a pusher can rest long at home and slam briefly; Impact damage to a player the moving
 //     blocks strike (once a contact: a ram's blow, on top of the game's 1 HP a frame);
-//   - force fields (TrapForce): a box of floor that adds a force to every creature standing in it each frame (a
+//   - force fields (TrapPushField): a box of floor that adds a force to every creature standing in it each frame (a
 //     conveyor belt; a gust of wind on a clock). A jumping player rides over it: the game sets a jumper's force
 //     itself every frame of the jump (object_update.go, PlayerState12), so the push is lost while airborne;
-//   - actions: "bump" (a bumper throws its toucher away from its centre: From, force Frames), "force_on" and
-//     "force_off" (a field), "retract" (a mover runs back to the start of its path at Frames/10 px a frame and
-//     stops there, armed again by its next "arm"), "crush" (whoever touches the mover Target's blocks now takes
-//     Frames damage).
+//   - actions: "push_bump" (a bumper throws its toucher away from its centre: From, force Frames),
+//     "push_force_on" and "push_force_off" (a field), "push_retract" (a mover runs back to the start of its path at
+//     Frames/10 px a frame and stops there, armed again by its next "arm"), "push_crush" (whoever touches the mover
+//     Target's blocks now takes Frames damage).
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
@@ -26,7 +26,7 @@ import (
 	"github.com/noxworld-dev/noxscript/ns/v4/effect"
 )
 
-type trapPusher struct {
+type pushMover struct {
 	Mover    string
 	Crush    int  // damage to whoever touches one of its blocks when the stroke ends at the far end
 	Delay    int  // frames after the start before the mover is armed (a phase offset)
@@ -44,7 +44,7 @@ type trapPusher struct {
 	back     bool
 }
 
-type trapForce struct {
+type pushField struct {
 	Name   string
 	C      ns.Pointf // the centre of the box
 	U      ns.Pointf // unit vector along its length
@@ -62,48 +62,48 @@ type trapForce struct {
 }
 
 var (
-	trapPushers   []*trapPusher
-	trapPusherBy  = map[string]*trapPusher{}
-	trapForces    []*trapForce
-	trapForceBy   = map[string]*trapForce{}
-	trapPushTicks bool
+	pushMovers   []*pushMover
+	pushMoverBy  = map[string]*pushMover{}
+	pushFields    []*pushField
+	pushFieldBy   = map[string]*pushField{}
+	pushTicking bool
 )
 
-// TrapPusher watches a mover of traps.go (call after StartTraps: traps_config.go's extra start lines).
-func TrapPusher(p trapPusher) {
+// TrapPushMover watches a mover of traps.go (call after StartTraps: traps_config.go's extra start lines).
+func TrapPushMover(p pushMover) {
 	pp := p
 	pp.m = trapMovers[p.Mover]
 	if pp.m != nil {
 		pp.speed = pp.m.Speed
 		pp.lastDir = pp.m.dir
 	}
-	trapPushers = append(trapPushers, &pp)
-	trapPusherBy[p.Mover] = &pp
+	pushMovers = append(pushMovers, &pp)
+	pushMoverBy[p.Mover] = &pp
 	if p.Delay > 0 {
 		trapQueue = append(trapQueue, trapPending{at: trapFrame + p.Delay, act: trapAct{Kind: "arm", Target: p.Mover}})
 	}
-	trapPushStart()
+	pushStart()
 }
 
-// TrapForce adds a force field (call after StartTraps).
-func TrapForce(f trapForce) {
+// TrapPushField adds a force field (call after StartTraps).
+func TrapPushField(f pushField) {
 	ff := f
 	ff.t0 = trapFrame
-	trapForces = append(trapForces, &ff)
-	trapForceBy[f.Name] = &ff
-	trapPushStart()
+	pushFields = append(pushFields, &ff)
+	pushFieldBy[f.Name] = &ff
+	pushStart()
 }
 
-func trapPushStart() {
-	if trapPushTicks {
+func pushStart() {
+	if pushTicking {
 		return
 	}
-	trapPushTicks = true
-	ns.OnFrame(trapPushTick)
+	pushTicking = true
+	ns.OnFrame(pushTick)
 }
 
 func init() {
-	trapExt["bump"] = func(a trapAct) {
+	trapExt["push_bump"] = func(a trapAct) {
 		if trapCaller == nil || trapCaller.CurrentHealth() <= 0 {
 			return
 		}
@@ -111,30 +111,30 @@ func init() {
 		ns.AudioEvent(audio.BallBounce, a.From)
 		ns.Effect(effect.WHITE_FLASH, a.From, a.From)
 	}
-	trapExt["force_on"] = func(a trapAct) {
-		if f := trapForceBy[a.Target]; f != nil {
+	trapExt["push_force_on"] = func(a trapAct) {
+		if f := pushFieldBy[a.Target]; f != nil {
 			if !f.Armed {
 				f.t0 = trapFrame
 			}
 			f.Armed = true
 		}
 	}
-	trapExt["force_off"] = func(a trapAct) {
-		if f := trapForceBy[a.Target]; f != nil {
+	trapExt["push_force_off"] = func(a trapAct) {
+		if f := pushFieldBy[a.Target]; f != nil {
 			f.Armed = false
 		}
 	}
-	trapExt["retract"] = func(a trapAct) {
+	trapExt["push_retract"] = func(a trapAct) {
 		m := trapMovers[a.Target]
 		if m == nil {
 			return
 		}
-		p := trapPusherBy[a.Target]
+		p := pushMoverBy[a.Target]
 		if p == nil {
-			p = &trapPusher{Mover: a.Target, m: m, speed: m.Speed, lastDir: m.dir}
-			trapPushers = append(trapPushers, p)
-			trapPusherBy[a.Target] = p
-			trapPushStart()
+			p = &pushMover{Mover: a.Target, m: m, speed: m.Speed, lastDir: m.dir}
+			pushMovers = append(pushMovers, p)
+			pushMoverBy[a.Target] = p
+			pushStart()
 		}
 		if !p.back {
 			p.speed = m.Speed
@@ -145,26 +145,26 @@ func init() {
 		m.dir, m.wait, m.done, m.Armed = -1, 0, false, true
 		p.back, p.lastDir = true, -1
 	}
-	trapExt["crush"] = func(a trapAct) {
+	trapExt["push_crush"] = func(a trapAct) {
 		if m := trapMovers[a.Target]; m != nil {
-			trapCrush(m, a.Frames)
+			pushCrush(m, a.Frames)
 		}
 	}
 }
 
-func trapPushTick() {
+func pushTick() {
 	if !trapsOn {
 		return
 	}
-	for _, p := range trapPushers {
+	for _, p := range pushMovers {
 		p.step()
 	}
-	for _, f := range trapForces {
+	for _, f := range pushFields {
 		f.step()
 	}
 }
 
-func (p *trapPusher) step() {
+func (p *pushMover) step() {
 	m := p.m
 	if m == nil {
 		if m = trapMovers[p.Mover]; m == nil {
@@ -195,14 +195,14 @@ func (p *trapPusher) step() {
 			ns.Effect(effect.JIGGLE, pos, ns.Ptf(3, 0))
 		}
 		if p.Crush > 0 {
-			trapCrush(m, p.Crush)
+			pushCrush(m, p.Crush)
 		}
 	}
 	p.lastDir, p.lastDone, p.lastPos, p.moving, p.seen = m.dir, m.done, pos, moved, true
 }
 
 // strike: a player newly touching one of the mover's blocks while it moves takes the Impact damage.
-func (p *trapPusher) strike(m *trapMover, moved bool) {
+func (p *pushMover) strike(m *trapMover, moved bool) {
 	if p.touch == nil {
 		p.touch = map[int]bool{}
 	}
@@ -235,9 +235,9 @@ func (p *trapPusher) strike(m *trapMover, moved bool) {
 	}
 }
 
-// trapCrush hurts every creature touching one of the mover's blocks (a 60x60 block is a diamond |dx|+|dy| < 42.4;
+// pushCrush hurts every creature touching one of the mover's blocks (a 60x60 block is a diamond |dx|+|dy| < 42.4;
 // a creature of radius 10 pressed against it has its centre within ~56 of it in that measure).
-func trapCrush(m *trapMover, dmg int) {
+func pushCrush(m *trapMover, dmg int) {
 	if dmg <= 0 {
 		return
 	}
@@ -262,7 +262,7 @@ func trapCrush(m *trapMover, dmg int) {
 	}
 }
 
-func (f *trapForce) step() {
+func (f *pushField) step() {
 	if !f.Armed {
 		f.was = false
 		return

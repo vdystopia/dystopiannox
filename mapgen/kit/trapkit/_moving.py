@@ -90,7 +90,7 @@ def mover(st, s, objs, path, speed, mode="pingpong", pause=0, armed=True, delay=
     st.T.mover(name, objs, pts, speed, mode=mode, pause=pause, armed=armed and not delay)
     st.T.movers[name].update(delay=int(delay), crush=int(crush), home_wait=int(home_wait), impact=int(impact),
                              path_ab=[list(p) for p in path])
-    st.T.starts.append(f"TrapPusher(trapPusher{{Mover: {json.dumps(name)}, Crush: {int(crush)}, Delay: {int(delay)}, "
+    st.T.starts.append(f"TrapPushMover(pushMover{{Mover: {json.dumps(name)}, Crush: {int(crush)}, Delay: {int(delay)}, "
                        f"HomeWait: {int(home_wait)}, Sound: {str(bool(sound)).lower()}, Impact: {int(impact)}}})")
     return name
 
@@ -171,7 +171,7 @@ def force(st, s, a0, a1, b0, b1, d, strength, period=0, on=(), phase=0, armed=Tr
     ux, uy = st.along()
     on_go = "[][2]int{" + ", ".join(f"{{{int(t0)}, {int(t1)}}}" for t0, t1 in on) + "}"
     st.T.starts.append(
-        f"TrapForce(trapForce{{Name: {json.dumps(name)}, C: ns.Ptf({cx:.1f}, {cy:.1f}), U: ns.Ptf({ux:.4f}, {uy:.4f}), "
+        f"TrapPushField(pushField{{Name: {json.dumps(name)}, C: ns.Ptf({cx:.1f}, {cy:.1f}), U: ns.Ptf({ux:.4f}, {uy:.4f}), "
         f"HL: {(a1 - a0) / 2 * SQ:.1f}, HW: {(b1 - b0) / 2 * SQ:.1f}, F: ns.Ptf({fx:.3f}, {fy:.3f}), "
         f"Period: {int(period)}, On: {on_go}, Phase: {int(phase)}, Armed: {str(armed).lower()}, "
         f"Sound: {json.dumps(sound)}, Tick: {int(tick)}}})")
@@ -189,4 +189,4 @@ def bumper(st, s, a, b, strength=40):
     st.obj("ForceOrb", a, b)
     x, y = st.at(a, b)
     return st.T.zone(f"{st.label}{s}", (x, y), 15 + 10 + 4, shape="circle", who="any", jump=True, rearm=8,
-                     acts=[st.act("bump", src=(x, y), frames=strength)])
+                     acts=[st.act("push_bump", src=(x, y), frames=strength)])
