@@ -92,7 +92,7 @@ def real(rw):
     if not rw: return ""
     out = rw["outcome"]
     out = {"fell": "shoved or dropped into the pit", "passed": "got through"}.get(out, out.replace("stuck at", "held back at a ="))
-    return f"walked straight in with real input (the game's own physics): {rw['lost']} HP, {out}"
+    return f"a careless walk with real input (the game's own physics): {rw['lost']} HP, {out}"
 
 
 def caption(st, sim, tour, rw=None):
@@ -109,7 +109,7 @@ def caption(st, sim, tour, rw=None):
             if g.get("walk"): s += f", careless walk {g['walk'][0]} HP {g['walk'][1]}"
             s += "."
     if rw:
-        s += " Careless and " + real(rw) + "."
+        s += " " + real(rw)[0].upper() + real(rw)[1:] + "."
     return s
 
 
@@ -152,7 +152,7 @@ def main(rnd, dirs):
                     out += f"; in the game a careful pass cost {g['plan'][0]} HP ({g['plan'][1]})"
                     if g.get("walk"): out += f", a careless walk {g['walk'][0]} HP ({g['walk'][1]})"
                 if rws.get(s["label"]):
-                    out += "; careless and " + real(rws[s["label"]])
+                    out += "; " + real(rws[s["label"]])
                 out += ")"
                 return out
             stages = "; ".join(stage(s) for s in info["stations"])
