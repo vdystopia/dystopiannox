@@ -677,7 +677,7 @@ class StationModel:
                 if v["type"] in CRUMBLE and not w.en.get(o, True):
                     if inside and not air and o not in crumble_touch:
                         to = (v.get("xfer") or {}).get("ScriptTimeout", 4)
-                        crumble_touch[o] = f + max(1, to)
+                        crumble_touch[o] = f + max(1, to) + 6        # measured: a fall ~10 frames after a touch at timeout 4
                     if o in crumble_touch and f >= crumble_touch[o]:
                         w.en[o] = True
                     continue
