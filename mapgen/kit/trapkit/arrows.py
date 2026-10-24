@@ -194,7 +194,7 @@ def quiet_lever(st):
 @pattern("arrow", size=(26, 7), tier="hard", title="The lane hall")
 def lane_hall(st):
     ln = Lanes(st)
-    bare = [1, 4, 6, 3, 0, 2, 5, 3]
+    bare = [1, 4, 2, 5, 0, 3, 5, 2]           # counted from the trap wall; never the row under the front wall
     for k, i in enumerate(range(5, 21, 2)):
         g = ln.lane(f"L{k}", i)
         for j in range(st.W):

@@ -192,9 +192,9 @@ def look_before(st):
 def breathing(st):
     W = st.W
     clocks = []
-    # three bands of trapdoors two rows deep, open 1.5 s and shut 2 s, each opening 0.4 s after the one before; a
-    # straight walk from the way in reaches the first band just as it opens
-    for k, (i, t0) in enumerate(((6, 58), (11, 70), (16, 82))):
+    # three bands of trapdoors two rows deep, open 1.5 s and shut 2 s, each opening 0.4 s after the one before; the
+    # first is open when an even run from the way in reaches it (0.95 s) and still when an even walk does (2 s)
+    for k, (i, t0) in enumerate(((6, 26), (11, 38), (16, 50))):
         g = st.group(f"B{k}", holes(st, rows(i, i + 2, W=W), open=False))
         on = [(t0 % 105, min(105, t0 % 105 + 45))]
         if t0 % 105 + 45 > 105:
@@ -206,7 +206,7 @@ def breathing(st):
                                        "for 2 s, one after another down the hall",
                 answer="wait at a band's edge until it shuts, then walk over (shut 2 s; the band takes 0.7 s at a "
                        "walk); the floor between the bands is solid",
-                careless="a straight walk from the way in reaches the first band as it opens: the pit room",
+                careless="a straight walk or run from the way in finds the first band open: the pit room",
                 mistake="the pit room")
 
 
@@ -315,23 +315,23 @@ def falls_behind(st):
 @pattern("pit", size=(25, 7), tier="hard", title="Sinking islands")
 def islands(st):
     W = st.W
-    # three rafts of trapdoors three rows deep across a chasm (two-row gaps between); each sinks (opens) for 2 s in a
-    # 4 s cycle, the next one 1.5 s later: hop on as a raft rises, hop off before it sinks
+    # three rafts of trapdoors three rows deep across a chasm (two-row gaps between); each is up for 1.33 s in every
+    # 4 s, the next rising as the one before sinks: a jump (0.6 s in the air) must leave a raft in its last 0.6 s
     holes(st, rows(5, 7, W=W) + rows(10, 12, W=W) + rows(15, 17, W=W) + rows(20, 22, W=W))
     clocks = []
-    P, down = 120, 60
+    P, down = 120, 80
     for k, i in enumerate((7, 12, 17)):
         g = st.group(f"I{k}", holes(st, rows(i, i + 3, W=W), open=False))
-        t0 = (45 * k) % P
+        t0 = (40 * k) % P
         on = [(t0, min(P, t0 + down))] + ([(0, t0 + down - P)] if t0 + down > P else [])
         clocks.append(st.clock(f"C{k}", g, P, on))
     mouth(st, restarts(st, clocks))
     st.rest += [(8.5, W / 2), (13.5, W / 2), (18.5, W / 2)]
-    return Meta(tier="hard", tells="a chasm crossed by three rafts of trapdoors; each sinks out of sight for 2 s in "
-                                   "every 4 and rises again, the next 1.5 s after",
-                answer="jump to a raft just after it rises and off it before it sinks: each hop has a window of "
-                       "about 1 s that comes 1.5 s after the last, so take each hop early in its window or the "
-                       "lateness adds up; two-row gaps, 1.7 squares of raft to take off from",
+    return Meta(tier="hard", tells="a chasm crossed by three rafts of trapdoors; each is up for 1.33 s in every 4, "
+                                   "the next rising as the one before sinks",
+                answer="stand on a raft until the next one is about to rise, then jump: you must leave in the last "
+                       "0.6 s before yours sinks (the jump lands as the next rises); two-row gaps, take off from the "
+                       "raft's last 1.7 squares; the first hop from the floor and the last to the far floor are free",
                 careless="walking on: the first gap; waiting on a raft: it sinks under you",
                 mistake="the pit room")
 
