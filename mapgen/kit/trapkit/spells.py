@@ -205,8 +205,8 @@ def gas_plates(st):
 @pattern("spell", size=(24, 6), tier="hard", title="Glyphs and the warden")
 def glyph_field(st):
     _on(st)
-    bs = (0.75, 2.25, 3.75, 5.25)
-    gaps = (1, 3, 0, 2)
+    bs = (0.6, 1.8, 3.0, 4.2, 5.4)                           # 1.2 squares apart: no way between two (20 px each)
+    gaps = (1, 4, 0, 3)
     for i, a in enumerate((6.0, 9.5, 13.0, 16.5)):           # rows 3.5 squares apart: a row's chain stays in it
         for j, b in enumerate(bs):
             if j == gaps[i]:
@@ -224,11 +224,12 @@ def glyph_field(st):
     # the glyphs (the second threat: keep moving)
     _statue(st, st.L - 0.7, st.W / 2, neg(st.along()))
     _hunt(st, "H", 4.0, 18.5, "SPELL_DEATH_RAY", st.at(st.L - 1.6, st.W / 2), period=45, delay=15, sound="ManaClick")
-    return Meta(tier="hard", tells="four rows of faint violet runes (glyphs), one gap in each, never in line; a statue "
-                                   "at the end that clicks where you stand and rays that spot half a second later",
+    return Meta(tier="hard", tells="four rows of faint violet runes (glyphs) wall to wall, one gap in each, never in "
+                                   "line; a statue at the end that clicks where you stand and rays that spot half a "
+                                   "second later",
                 answer="weave through the gaps or jump a row, and never stand still for half a second among the "
                        "glyphs: the warden rays every 1.5 s where you stood",
-                careless="treading a glyph sets off its row: slowed, in three toxic clouds for 15 s, 60-100 HP; "
+                careless="treading a glyph sets off its row: slowed, in four toxic clouds for 15 s, 60-100 HP; "
                          "stopping to think: 90 HP a ray",
                 mistake="one row of glyphs (~50 HP and the poison) or one ray (90)",
                 uncertain="the engine's glyph touch did not fire on the bench; the script fires each glyph itself "
