@@ -9,7 +9,8 @@ package PKG
 //     (HammerMissing, a small shake, and Crush damage to whoever is pinned against a block there: the game's own
 //     contact damage is only 1 HP a frame); a phase delay (the mover is armed Delay frames after the start, so rows
 //     of blocks run as a wave); a dwell at the start of the path (HomeWait) that differs from the far one (the
-//     mover's Pause), so a pusher can rest long at home and slam briefly; Impact damage to a player the moving
+//     mover's Pause), so a pusher can rest long at home and slam briefly (a loop mover [home, far] lands at its far
+//     point: FarWait is its dwell there); Impact damage to a player the moving
 //     blocks strike (once a contact: a ram's blow, on top of the game's 1 HP a frame);
 //   - force fields (TrapPushField): a box of floor that adds a force to every creature standing in it each frame (a
 //     conveyor belt; a gust of wind on a clock). A jumping player rides over it: the game sets a jumper's force
@@ -33,7 +34,9 @@ type pushMover struct {
 	HomeWait int  // frames at the start of the path (0: the mover's own Pause)
 	Sound    bool // SpikeBlockMove when it sets off, HammerMissing and a shake when it lands
 	Impact   int  // damage to a player a moving block of it strikes (once until he is clear of it again)
+	FarWait  int  // a loop mover's dwell at its second point (its far end: a loop's own Pause is at the first)
 	m        *trapMover
+	lastSeg  int
 	touch    map[int]bool
 	lastDir  int
 	lastDone bool
@@ -183,13 +186,17 @@ func (p *pushMover) step() {
 	} else if p.lastDir < 0 && m.dir > 0 && p.HomeWait > 0 && m.Mode == "pingpong" {
 		m.wait = p.HomeWait
 	}
+	looped := m.Mode == "loop" && p.lastSeg == 0 && m.seg == 1 // a loop [home, far, ...] reached its far end
+	if looped && p.FarWait > 0 {
+		m.wait = p.FarWait
+	}
 	if p.Sound && moved && !p.moving {
 		ns.AudioEvent(audio.SpikeBlockMove, pos)
 	}
 	if p.Impact > 0 {
 		p.strike(m, moved)
 	}
-	if (p.lastDir > 0 && m.dir < 0 && !p.back) || (!p.lastDone && m.done) {
+	if (p.lastDir > 0 && m.dir < 0 && !p.back) || (!p.lastDone && m.done) || looped {
 		if p.Sound {
 			ns.AudioEvent(audio.HammerMissing, pos)
 			ns.Effect(effect.JIGGLE, pos, ns.Ptf(3, 0))
@@ -198,7 +205,7 @@ func (p *pushMover) step() {
 			pushCrush(m, p.Crush)
 		}
 	}
-	p.lastDir, p.lastDone, p.lastPos, p.moving, p.seen = m.dir, m.done, pos, moved, true
+	p.lastDir, p.lastDone, p.lastPos, p.moving, p.seen, p.lastSeg = m.dir, m.done, pos, moved, true, m.seg
 }
 
 // strike: a player newly touching one of the mover's blocks while it moves takes the Impact damage.
